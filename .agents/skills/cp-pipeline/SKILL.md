@@ -1,46 +1,107 @@
 ---
 name: cp-pipeline
-description: End-to-end Competitive Programming Translation Pipeline. Use when the user provides one or more Competitive Programming problem URLs and wants a complete Vietnamese translation, explanation generation, LaTeX document generation, and PDF compilation.
+description: Skill điều phối toàn diện Hệ thống Dịch thuật và Tạo tài liệu Competitive Programming (End-to-End Orchestrator). Tự động kích hoạt khi người dùng cung cấp URL bài toán CP để dịch thuật và xuất file PDF.
 ---
 
-# CP Pipeline
+# CP Pipeline Orchestrator
 
-When invoked with:
+## Tổng quan
 
-/cp-pipeline <url>
+`cp-pipeline` là Skill cốt lõi đóng vai trò "Nhạc trưởng" (Orchestrator) điều phối toàn bộ Hệ thống Dịch thuật Competitive Programming. Thay vì tự mình thực hiện các tác vụ phân tích, dịch thuật hay xử lý file, Skill này tự động hóa quy trình gọi tuần tự các bộ kỹ năng chuyên biệt khác, giám sát luồng dữ liệu đầu vào/đầu ra, và xử lý rủi ro xuyên suốt chu trình. Mục đích cao nhất là chuyển đổi tự động một URL bài toán (từ các nguồn như Codeforces, CSES, USACO...) thành một tài liệu PDF tiếng Việt chuẩn mực ICPC/HSG.
 
-Execute the following chain strictly:
+## Kiến trúc
 
-1. Run cp-crawler
-   * Fetch statement
-   * Extract title
-   * Extract limits
-   * Extract samples
+Pipeline hoạt động theo mô hình dây chuyền (Chain-of-Skills) tuyến tính:
+**Crawler** → **Parser** → **Translator** → **LaTeX** → **PDF Compiler**
 
-2. Run cp-parser
-   * Normalize structure
-   * Validate fields
+## Vị trí và Vai trò của các Skill
 
-3. Run cp-translator
-   * Translate statement to Vietnamese
-   * Preserve math notation
-   * Preserve examples
+*   **.agents/skills/cp-crawler/SKILL.md**
+    *Vai trò:* Thu thập HTML/Markdown nguyên bản từ URL. Hỗ trợ vượt tường lửa Cloudflare/Anti-bot qua các fallback API mạnh mẽ (CloakBrowser, Crawl4AI, Playwright).
+*   **.agents/skills/cp-parser/SKILL.md**
+    *Vai trò:* Đọc hiểu tài liệu thô, nhận diện ngữ nghĩa và trích xuất thành cấu trúc dữ liệu JSON tiêu chuẩn (Title, Statement, Input, Output, Constraints, Samples).
+*   **.agents/skills/cp-translator/SKILL.md**
+    *Vai trò:* Dịch thuật nội dung sang tiếng Việt chuyên ngành lập trình thi đấu (CP) và tự động suy luận, sinh ra giải thích (explanation) chi tiết cho từng Sample test.
+*   **.agents/skills/cp-latex/SKILL.md**
+    *Vai trò:* Định dạng và render dữ liệu đã dịch vào chuẩn Golden Template Tiếng Việt (`template.tex`).
 
-4. Run cp-latex
-   * Render template.tex
-   * Generate output.tex
+---
 
-5. Compile
-   * pdflatex output.tex (hoặc latexmk -pdf)
+## Workflow Tiêu Chuẩn
 
-6. Save outputs
-   * outputs/output.tex
-   * outputs/output.pdf
+Khi người dùng thực thi lệnh:
+`/cp-pipeline <url>`
 
-Return:
-* PDF path
-* Summary
-* Errors if any
+Agent sẽ tự động chạy không ngừng nghỉ theo 5 giai đoạn sau:
 
-Do not stop between phases.
-Continue automatically until PDF is generated or a fatal error occurs.
+### Phase 1: Crawl
+*   **Thực thi:** Khởi chạy `cp-crawler` (gọi script `tools/crawl_problem.py`).
+*   **Mục tiêu:** Vượt rào Cloudflare, tải nội dung DOM/Markdown.
+*   **Expected Output:** Sinh ra file `cache/problem_raw.json` (hoặc JSON log trong bộ nhớ).
+
+### Phase 2: Parse
+*   **Thực thi:** Khởi chạy `cp-parser` trên dữ liệu raw.
+*   **Mục tiêu:** Chuẩn hóa cấu trúc (Normalize structure) và validate các trường bắt buộc.
+*   **Expected Output:** Dữ liệu chuẩn hóa `cache/problem_normalized.json`.
+
+### Phase 3: Translation
+*   **Thực thi:** Khởi chạy `cp-translator`.
+*   **Mục tiêu:** Dịch thuật sang tiếng Việt và sinh Explanation.
+*   **Expected Output:** Dữ liệu ngôn ngữ đích `cache/problem_vi.json`.
+
+### Phase 4: LaTeX Generation
+*   **Thực thi:** Khởi chạy `cp-latex`.
+*   **Mục tiêu:** Gắn dữ liệu vào `template.tex`.
+*   **Expected Output:** Mã nguồn file tex tại `outputs/output.tex`.
+
+### Phase 5: PDF Compilation
+*   **Thực thi:** Gọi tool `compile_latex.py` (hoặc trực tiếp `pdflatex -interaction=nonstopmode`).
+*   **Mục tiêu:** Biên dịch ra file PDF hoàn thiện.
+*   **Expected Output:** File tài liệu cuối cùng tại `outputs/output.pdf`.
+
+---
+
+## Quản Lý Lỗi (Failure Handling)
+
+Hệ thống được thiết kế để tự phục hồi hoặc báo cáo chính xác vị trí lỗi:
+*   **Crawler Failure:** Tự động retry với browser/backend fallback kế tiếp (Crawl4AI -> CloakBrowser -> Playwright -> Requests).
+*   **Parser Failure:** Nếu không tìm thấy Input/Output, dừng pipeline và báo cáo cấu trúc không hợp lệ (Report invalid structure).
+*   **Translation Failure:** Nếu gặp thuật ngữ quá dị biệt hoặc mất context, bảo toàn nguyên bản tiếng Anh (Preserve original statement) và cảnh báo người dùng.
+*   **LaTeX Failure:** Bắt toàn bộ log compiler từ `pdflatex`. Báo cáo nguyên nhân gốc rễ (Root cause) do lỗi ngoặc, kí tự lạ, hoặc thiếu font.
+
+---
+
+## Quy Tắc Chất Lượng (Quality Rules)
+
+Quá trình Translation bắt buộc phải tuân thủ nghiêm ngặt các quy tắc sau:
+*   **Preserve mathematics:** Giữ nguyên vẹn 100% công thức Toán Học, kí hiệu biến.
+*   **Preserve formulas:** Không được tự ý thay đổi phép tính hoặc kí hiệu tiệm cận (Big-O).
+*   **Preserve examples:** Không chỉnh sửa nội dung test samples.
+*   **Preserve constraints:** Giữ tuyệt đối chính xác giới hạn biến, time limit, memory limit.
+*   **Preserve sample IO:** Định dạng bảng mẫu Input/Output phải khớp 100% đề gốc.
+*   **Never hallucinate content:** Tuyệt đối không tự bịa thông tin đề bài.
+*   **Never modify problem meaning:** Không làm thay đổi ý nghĩa thuật toán cốt lõi.
+
+---
+
+## Chế Độ Đa Liên Kết (Multi-URL Behavior)
+
+Khi người dùng truyền vào nhiều bài toán cùng lúc:
+`/cp-pipeline url1 url2 url3`
+*   **Tiến trình:** Xử lý tuần tự (Process sequentially) từng bài.
+*   **Kết xuất:** Các bài được gộp chung thành từng Section trong cùng một file `outputs/output.tex` và `outputs/output.pdf`. Tuyệt đối nhất quán về format và từ vựng.
+
+---
+
+## Quy Hoạch Thư Mục (Directory Policy)
+
+*   **`cache/`**: Chứa các file trung gian như `problem_raw.json`, `problem_normalized.json`, `problem_vi.json`. Các file này là tạm thời để Audit và Debug khi hệ thống sụp đổ.
+*   **`outputs/`**: Chứa các file kết xuất cuối cùng mà người dùng tương tác (`output.tex`, `output.pdf`).
+*   **`reports/`**: Nơi Agent lưu trữ các file báo cáo phân tích lỗi, audit kiến trúc, hoặc `latest_run.md` sau khi kết thúc pipeline.
+
+---
+
+## Tiêu Chí Hoàn Thành (Completion Criteria)
+
+*   Pipeline chỉ được xác nhận **THÀNH CÔNG** khi và chỉ khi file **`outputs/output.pdf` tồn tại** và đọc được.
+*   Nếu PDF không được sinh ra, quy trình bị tính là THẤT BẠI. Phải in ra nguyên nhân cụ thể và kết thúc. Mọi bước ở giữa không được tính là thành công nếu chưa có PDF.
