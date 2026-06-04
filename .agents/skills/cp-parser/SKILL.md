@@ -14,6 +14,12 @@ Gemini phải đọc nội dung raw HTML/Markdown từ công cụ crawl và tự
 ## Output
 JSON với schema: name, source, statement, input, output, constraints, notes, samples.
 
+## Xử lý PDF Statement (LLM-First)
+Nếu bài toán được cung cấp dưới dạng PDF:
+- **Direct PDF Reading (Ưu tiên):** Sử dụng tool `view_file` để đọc trực tiếp nội dung văn bản từ file PDF (lưu tại `cache/pdf/`).
+- **Image Fallback:** Nếu PDF chỉ chứa ảnh hoặc văn bản bị lỗi font (toán học không hiển thị đúng), Gemini phải sử dụng tool `view_file` để nạp các file ảnh chụp PDF (lưu tại `cache/pdf_images/`).
+- **Nghiêm cấm OCR bằng Python:** Mọi quá trình trích xuất, nhận diện ký tự, phân tích hình học trang PDF PHẢI do Gemini tự thực hiện bằng Computer Vision. Không được dùng bất kỳ tool/script Python nào để trích xuất text.
+
 ## Lessons Learned
 1. LLM đôi khi sinh thiếu trường bắt buộc (như `samples` bị rỗng) nếu HTML quá phức tạp.
 2. Dữ liệu toán học có thể bị làm hỏng nếu Parser không giữ nguyên định dạng MathJax/LaTeX.

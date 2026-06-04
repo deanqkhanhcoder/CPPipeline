@@ -11,7 +11,8 @@ Mọi `\titlepage`, `\tableofcontents`, header, footer, và macro ĐỀU PHẢI 
 KHÔNG ĐƯỢC tự sinh hay hardcode trong Python script.
 1. Output phải GIỐNG PHONG CÁCH Template chuẩn (`template.tex`).
 2. Dùng `mdframed` nhất quán: `\problem` box, `inputbox`, `outputbox`, `constraintbox`.
-3. KHÔNG tự sáng tạo layout mới. KHÔNG đơn giản hóa. Học thuộc từng macro và sử dụng chính xác.
+3. KHÔNG ĐƯỢC PHÂN BIỆT nguồn gốc dữ liệu là HTML hay PDF. Dù bài toán được crawl từ file PDF của Olympiad hay từ trang HTML Codeforces, file LaTeX output cuối cùng phải hoàn toàn giống nhau về mặt định dạng, không được thêm bớt macro nào khác ngoài Template.
+4. KHÔNG tự sáng tạo layout mới. KHÔNG đơn giản hóa. Học thuộc từng macro và sử dụng chính xác.
 7. Explanation phải mang tính giảng dạy, phân tích. Bắt đầu bằng macro `\explanation`.
 8. Constraints phải chuẩn hóa trong `constraintbox` hoặc `itemize` dưới macro `\constraints`.
 9. Listings phải có background màu xám (`codebg`), viền đơn `rulecolor`. Khai báo `\lstset` chuẩn.

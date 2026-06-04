@@ -11,8 +11,13 @@ description: Skill điều phối toàn diện Hệ thống Dịch thuật và T
 
 ## Kiến trúc
 
-Pipeline hoạt động theo mô hình dây chuyền (Chain-of-Skills) tuyến tính:
 **Crawler** → **Parser** → **Translator** → **LaTeX** → **PDF Compiler**
+
+## PDF Handling (LLM-First)
+Hệ thống nay hỗ trợ đọc hiểu đề bài dạng PDF (IOI, APIO, CEOI...). Toàn bộ quy trình diễn ra theo chuẩn LLM-First:
+1. **Content Detection**: Crawler tự nhận diện URL PDF, tải về `cache/pdf/`.
+2. **Image Fallback**: PDF được convert sang ảnh (`cache/pdf_images/`) làm fallback nếu font lỗi.
+3. **LLM Parsing**: Nghiêm cấm Python parse/OCR. LLM trực tiếp sử dụng tool `view_file` để nạp PDF/Ảnh và suy luận thành JSON.
 
 ## Vị trí và Vai trò của các Skill
 

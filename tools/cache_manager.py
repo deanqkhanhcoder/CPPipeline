@@ -49,7 +49,7 @@ def lookup_cache(url):
             pass
     return None
 
-def save_cache(url, title, html, markdown):
+def save_cache(url, title, html="", markdown="", content_type="html", pdf_path=None, images=None):
     _init_cache()
     pid = get_problem_id(url)
     source = get_source(url)
@@ -61,9 +61,12 @@ def save_cache(url, title, html, markdown):
         "problem_id": pid,
         "title": title,
         "timestamp": datetime.now().isoformat(),
+        "type": content_type,
         "html": html,
         "text": markdown,
         "markdown": markdown,
+        "pdf_path": pdf_path,
+        "images": images or [],
         "_cached": True
     }
     

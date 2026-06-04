@@ -195,6 +195,64 @@ def crawl_with_crawl4ai(url, retries=2):
         return None
     return asyncio.run(run())
 
+def is_pdf(url):
+    if url.lower().endswith(".pdf"):
+        return True
+    try:
+        import requests
+        resp = requests.head(url, timeout=10, allow_redirects=True)
+        content_type = resp.headers.get("Content-Type", "").lower()
+        if "application/pdf" in content_type:
+            return True
+    except Exception:
+        pass
+    return False
+
+def crawl_pdf(url):
+    import requests
+    import fitz  # PyMuPDF
+    from cache_manager import get_problem_id
+    
+    print(f"[PDF Crawler] Downloading PDF from {url}...", file=sys.stderr)
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        resp = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
+        if resp.status_code != 200:
+            print(f"[PDF Crawler] HTTP {resp.status_code} Error", file=sys.stderr)
+            return None
+            
+        pid = get_problem_id(url)
+        os.makedirs("cache/pdf", exist_ok=True)
+        os.makedirs("cache/pdf_images", exist_ok=True)
+        
+        pdf_path = f"cache/pdf/{pid}.pdf"
+        with open(pdf_path, "wb") as f:
+            f.write(resp.content)
+            
+        print(f"[PDF Crawler] PDF saved to {pdf_path}. Converting to images...", file=sys.stderr)
+        
+        doc = fitz.open(pdf_path)
+        image_paths = []
+        for page_num in range(len(doc)):
+            page = doc.load_page(page_num)
+            pix = page.get_pixmap(dpi=150)
+            img_path = f"cache/pdf_images/{pid}_page_{page_num+1:03d}.png"
+            pix.save(img_path)
+            image_paths.append(img_path)
+            
+        return {
+            "url": url,
+            "title": f"PDF Document {pid}",
+            "html": f"PDF Document converted to {len(image_paths)} images.",
+            "markdown": "",
+            "type": "pdf",
+            "pdf_path": pdf_path,
+            "images": image_paths
+        }
+    except Exception as e:
+        print(f"[PDF Crawler] Error: {e}", file=sys.stderr)
+        return None
+
 def crawl_problem(url: str) -> dict:
     from cache_manager import lookup_cache, save_cache
     
@@ -206,15 +264,31 @@ def crawl_problem(url: str) -> dict:
         
     print("[Cache] MISS - Starting Smart Crawler Flow", file=sys.stderr)
     
-    # PHASE 3: SMART CRAWLER FLOW
-    res = crawl_with_brave(url)
-    if not res: res = crawl_with_cloakbrowser(url)
-    if not res: res = crawl_with_playwright_stealth(url)
-    if not res: res = crawl_with_crawl4ai(url)
+    res = None
+    if is_pdf(url):
+        res = crawl_pdf(url)
+    
+    if not res:
+        # PHASE 3: SMART CRAWLER FLOW
+        res = crawl_with_brave(url)
+        if not res: res = crawl_with_cloakbrowser(url)
+        if not res: res = crawl_with_playwright_stealth(url)
+        if not res: res = crawl_with_crawl4ai(url)
     
     if res and not res["html"].startswith("Error:"):
         # PHASE 7: AUTO CACHE AFTER SUCCESS
-        save_cache(res["url"], res["title"], res["html"], res["markdown"])
+        content_type = res.get("type", "html")
+        pdf_path = res.get("pdf_path", None)
+        images = res.get("images", [])
+        save_cache(
+            url=res["url"], 
+            title=res["title"], 
+            html=res["html"], 
+            markdown=res.get("markdown", ""),
+            content_type=content_type,
+            pdf_path=pdf_path,
+            images=images
+        )
         res["_cached"] = True
         return res
     
