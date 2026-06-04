@@ -21,3 +21,18 @@ Mỗi fallback đều được tích hợp:
 ## Scripts
 Thực thi crawl:
 `python tools/crawl_problem.py <URL>`
+
+## Lessons Learned
+1. **Cloudflare False Positive**: Keyword detection (như `__CF`) không đáng tin cậy vì các file script của Cloudflare có thể được nhúng vào các page hợp lệ.
+2. **Brave Session Lock**: Nếu người dùng đang mở trình duyệt, Playwright không thể ghi đè session và sẽ bị treo/crash.
+3. **Crawl4AI Instability**: Thư viện này thường xuyên thay đổi API gây sập toàn hệ thống nếu không có cơ chế bắt lỗi.
+
+## Anti Regression Rules
+- **Rule 1**: LUÔN KIỂM TRA sự tồn tại của class bài toán (ví dụ `.problem-statement`) TRƯỚC KHI kết luận Cloudflare chặn bằng keyword.
+- **Rule 2**: Phải bắt exception khi khởi tạo Browser Context và in ra thông báo lỗi yêu cầu đóng trình duyệt thay vì retry vô nghĩa.
+- **Rule 3**: Mọi crawler module (đặc biệt là Crawl4AI) PHẢI được bọc trong `try-catch` và tự động fallback. Pipeline không được crash vì một crawler hỏng.
+
+## Known Failure Modes
+- Playwright bị TimeoutError do Brave đang mở (Session locked).
+- Trả về mã HTML giả chứa `Just a moment` nếu bypass thất bại toàn diện.
+- API thay đổi ở thư viện Crawl4AI/Playwright làm gãy code khởi tạo trình duyệt.

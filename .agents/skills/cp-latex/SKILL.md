@@ -24,7 +24,7 @@ BẮT BUỘC khai báo:
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
 ```
-Tuyệt đối KHÔNG DÙNG `\usepackage{fontspec}` và `\setmainfont`. Compiler mặc định là `latexmk -pdf`.
+Tuyệt đối KHÔNG DÙNG `\usepackage{fontspec}` và `\setmainfont`. Compiler mặc định là `latexmk -pdf` hoặc `pdflatex`.
 
 ## Validation (STRICT LATEX CONTRACT)
 Tuyệt đối KHÔNG ĐƯỢC hallucinate các macro như `\exmp`, `\exmpin`, `\exmpout`, `\inputformat`, `\outputformat`, `\begin{exmpIn}`, v.v.
@@ -40,3 +40,17 @@ Nếu thiếu -> FAIL.
 
 Khi kết luận thành công ở bước biên dịch (Compile), PHẢI kiểm tra log `compile_error.log`.
 Nếu log chứa: `LaTeX Error`, `Fatal Error`, `Undefined` => FAIL. Không được báo PASS.
+
+## Lessons Learned
+1. **constraintbox undefined**: Lỗi sinh ra khi output sử dụng một environment hoặc macro chưa bao giờ được định nghĩa trong `template.tex`.
+2. **Template Bypass**: Lỗi sinh ra khi python script (combine) không dùng template.tex mà tự hardcode LaTeX header.
+3. **TOC Empty**: Lỗi do trình biên dịch pdflatex chỉ được gọi 1 lần (single pass). Mục lục yêu cầu 2 lần chạy.
+
+## Anti Regression Rules
+- **Rule 1**: Output TUYỆT ĐỐI KHÔNG ĐƯỢC sử dụng environment/macro lạ.
+- **Rule 2**: LUÔN COMPILE 2 pass khi dùng `\tableofcontents` để sinh mục lục động.
+- **Rule 3**: Single Source Of Truth duy nhất là `template.tex`. Không tự sinh hay hardcode header/footer ở file khác.
+
+## Known Failure Modes
+- Hallucination các lệnh `\exmp`, `\codebg`, `\example` gây vỡ layout và Too deeply nested.
+- Quên chèn `\addcontentsline` khiến TOC bị rỗng.

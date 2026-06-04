@@ -103,5 +103,26 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 
 ## Tiêu Chí Hoàn Thành (Completion Criteria)
 
-*   Pipeline chỉ được xác nhận **THÀNH CÔNG** khi và chỉ khi file **`outputs/output.pdf` tồn tại** và đọc được.
-*   Nếu PDF không được sinh ra, quy trình bị tính là THẤT BẠI. Phải in ra nguyên nhân cụ thể và kết thúc. Mọi bước ở giữa không được tính là thành công nếu chưa có PDF.
+*   Pipeline chỉ được xác nhận **THÀNH CÔNG** khi và chỉ khi file **`outputs/output.pdf` tồn tại** và biên dịch không lỗi.
+*   **BẮT BUỘC TUÂN THỦ 4 LUẬT SAU TRƯỚC KHI BÁO PASS:**
+    1. Không được kết luận PASS nếu chưa đọc compile log (compile_error.log).
+    2. Không được tự khẳng định PDF thành công chỉ vì tool không văng lỗi.
+    3. Phải xác minh file PDF tồn tại thực tế trên ổ cứng.
+    4. Phải xác minh lệnh compile (pdflatex/latexmk) có `return code = 0`.
+*   Nếu PDF không được sinh ra hoặc compile log chứa `LaTeX Error`/`Fatal error`, quy trình bị tính là THẤT BẠI. Mọi bước ở giữa không được tính là thành công nếu chưa có PDF.
+
+---
+
+## Lessons Learned
+1. **Gemini báo PASS dù compile fail**: LLM có xu hướng tự tin thái quá, báo cáo thành công chỉ vì thấy file có mặt trên đĩa (hoặc do file PDF cũ chưa bị xoá).
+2. **Subagent hallucinate macro**: Không thể tin tưởng hoàn toàn vào LLM trong việc sinh ra LaTeX macro chuẩn. Chúng thường tự bịa thêm các lệnh lạ.
+
+## Anti Regression Rules
+- **Rule 1**: BẮT BUỘC CHÉO KIỂM TRA (cross-verify). Không bao giờ tin tưởng mù quáng vào kết quả sinh file. Phải kiểm tra Return Code và Log file.
+- **Rule 2**: Phải tự động xóa artifact cũ trước khi khởi động quy trình compile (clean state).
+- **Rule 3**: Cấm việc subagent tự sáng tạo macro. Pipeline ở bước LaTeX phải có cơ chế validate/sanitize output LaTeX.
+
+## Known Failure Modes
+- Pipeline báo SUCCESS nhưng không có PDF (Fake Success).
+- Root directory bị ô nhiễm (Root Pollution) do quá trình debug.
+- Lỗi LaTeX không được catch và report chính xác cho user.
