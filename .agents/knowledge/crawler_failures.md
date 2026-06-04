@@ -23,3 +23,11 @@
 **PREVENTION RULE:**
 - Crawl4AI không được phép là single point of failure. Nếu Crawl4AI fail, hệ thống PHẢI tự động fallback sang crawler dự phòng.
 - KHÔNG BAO GIỜ để crash cả pipeline chỉ vì một công cụ crawl gặp lỗi.
+
+## 4. BRAVE PROFILE CONTENTION
+**BUG:** Trình duyệt Brave bị lock liên tục. Playwright báo lỗi "Opening in existing browser session" hoặc "Profile already in use".
+**ROOT CAUSE:** Multi-agent crawling. Pipeline spawn nhiều subagent, các subagent này đồng loạt gọi script `crawl_problem.py`, tạo ra tình trạng cạnh tranh tài nguyên (N agents -> N browsers -> N truy cập profile).
+**SOLUTION:** Crawler Queue + Single Browser Policy.
+**PREVENTION RULE:** 
+- KHÔNG BAO GIỜ cho phép subagent gọi độc lập script crawl. Mọi quá trình tải HTML phải được xử lý qua hàng đợi tập trung (`crawler_manager.py`).
+- Tại mọi thời điểm, chỉ cho phép 1 instance browser hoạt động.

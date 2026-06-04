@@ -31,6 +31,7 @@ Thực thi crawl:
 - **Rule 1**: LUÔN KIỂM TRA sự tồn tại của class bài toán (ví dụ `.problem-statement`) TRƯỚC KHI kết luận Cloudflare chặn bằng keyword.
 - **Rule 2**: Phải bắt exception khi khởi tạo Browser Context và in ra thông báo lỗi yêu cầu đóng trình duyệt thay vì retry vô nghĩa.
 - **Rule 3**: Mọi crawler module (đặc biệt là Crawl4AI) PHẢI được bọc trong `try-catch` và tự động fallback. Pipeline không được crash vì một crawler hỏng.
+- **Rule 4**: CẤM SUBAGENT CRAWL ĐỘC LẬP. Child agents are forbidden from calling `crawl_problem.py`. Mọi quá trình crawl phải được điều phối thông qua Queue bởi `crawler_manager.py`.
 
 ## Known Failure Modes
 - Playwright bị TimeoutError do Brave đang mở (Session locked).

@@ -34,29 +34,37 @@ Khi người dùng thực thi lệnh:
 
 Agent sẽ tự động chạy không ngừng nghỉ theo 5 giai đoạn sau:
 
-### Phase 1: Crawl
-*   **Thực thi:** Khởi chạy `cp-crawler` (gọi script `tools/crawl_problem.py`).
-*   **Mục tiêu:** Tải nội dung DOM/Markdown. Hệ thống sử dụng cơ chế Fallback chống Bot đa tầng (Brave Persistent Profile -> CloakBrowser -> Playwright Stealth -> Crawl4AI). Có tích hợp quét `cdn-cgi/challenge-platform` để phát hiện và Retry khi dính Cloudflare.
-*   **Expected Output:** Sinh ra file `cache/problem_raw.json` (hoặc báo lỗi nếu mọi nỗ lực đều bị chặn).
+### STEP 1: Enqueue URLs
+*   **Thực thi:** Gọi lệnh enqueue vào hàng đợi (vd: `python tools/crawler_manager.py enqueue <url>`).
+*   **Mục tiêu:** Ghi nhận URL cần xử lý vào `cache/queue/index.json`.
 
-### Phase 2: Parse
-*   **Thực thi:** Khởi chạy `cp-parser` trên dữ liệu raw.
-*   **Mục tiêu:** Chuẩn hóa cấu trúc (Normalize structure) và validate các trường bắt buộc.
-*   **Expected Output:** Dữ liệu chuẩn hóa `cache/problem_normalized.json`.
+### STEP 2: Crawler Manager
+*   **Thực thi:** Gọi `python tools/crawler_manager.py process`.
+*   **Mục tiêu:** Crawl tuần tự các bài trong queue, tuân thủ nghiêm ngặt **Single Browser Policy** (Chỉ mở 1 phiên làm việc để không dính lỗi Profile Lock).
+*   **Expected Output:** Lưu file thô vào `cache/problemset/<id>.json`.
 
-### Phase 3: Translation
+### STEP 3: Verify Cache
+*   **Thực thi:** Pipeline đọc queue state để xác nhận job `done` hay `failed`.
+*   **Mục tiêu:** Quyết định xem có nên spawn subagents cho các bước tiếp theo hay không. Nếu `failed` thì bỏ qua bài đó, không đập sập toàn pipeline.
+
+### STEP 4: Spawn Parse Agents
+*   **Thực thi:** Gọi `cp-parser` trên các file JSON hợp lệ trong `cache/problemset/`.
+*   **Expected Output:** `cache/clean/<id>.json` (hoặc `problem_normalized.json`).
+
+### STEP 5: Spawn Translate Agents
 *   **Thực thi:** Khởi chạy `cp-translator`.
-*   **Mục tiêu:** Dịch thuật sang tiếng Việt và sinh Explanation.
-*   **Expected Output:** Dữ liệu ngôn ngữ đích `cache/problem_vi.json`.
+*   **Expected Output:** Dữ liệu ngôn ngữ đích.
 
-### Phase 4: LaTeX Generation
+### STEP 6: Spawn LaTeX Agents
 *   **Thực thi:** Khởi chạy `cp-latex`.
-*   **Mục tiêu:** Gắn dữ liệu vào `template.tex`.
-*   **Expected Output:** Mã nguồn file tex từng bài tại `cache/build/<problem_id>.tex`. Sau đó `tools/combine_latex.py` sẽ gộp lại thành `outputs/output.tex`.
+*   **Expected Output:** Mã nguồn file tex từng bài tại `cache/build/<problem_id>.tex`.
 
-### Phase 5: PDF Compilation
-*   **Thực thi:** Gọi tool `compile_latex.py` (hoặc trực tiếp `pdflatex -interaction=nonstopmode`).
-*   **Mục tiêu:** Biên dịch ra file PDF hoàn thiện.
+### STEP 7: Combine
+*   **Thực thi:** Chạy `python tools/combine_latex.py`.
+*   **Expected Output:** Gộp tất cả thành file tổng `outputs/output.tex`.
+
+### STEP 8: Compile
+*   **Thực thi:** Gọi `python tools/compile_latex.py outputs/output.tex`.
 *   **Expected Output:** File tài liệu cuối cùng tại `outputs/output.pdf`.
 
 ---
@@ -121,6 +129,7 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 - **Rule 1**: BẮT BUỘC CHÉO KIỂM TRA (cross-verify). Không bao giờ tin tưởng mù quáng vào kết quả sinh file. Phải kiểm tra Return Code và Log file.
 - **Rule 2**: Phải tự động xóa artifact cũ trước khi khởi động quy trình compile (clean state).
 - **Rule 3**: Cấm việc subagent tự sáng tạo macro. Pipeline ở bước LaTeX phải có cơ chế validate/sanitize output LaTeX.
+- **Rule 4**: CẤM SUBAGENT CRAWL ĐỘC LẬP. Child agents are forbidden from calling `crawl_problem.py`. Mọi quá trình crawl phải thông qua `crawler_manager.py` theo kiến trúc Queue.
 
 ## Known Failure Modes
 - Pipeline báo SUCCESS nhưng không có PDF (Fake Success).
