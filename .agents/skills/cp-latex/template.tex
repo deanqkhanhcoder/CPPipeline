@@ -1,0 +1,174 @@
+% ============================================================
+% Tuyển tập bài tập Competitive Programming
+% Dịch sang tiếng Việt — chuẩn HSG / ICPC
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ─────────────────────────────────────────────────
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{parskip}
+
+% ── Colors ───────────────────────────────────────────────────
+\definecolor{sectioncolor}{RGB}{0,70,127}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{rulecolor}{RGB}{200,200,200}
+\definecolor{framecolor}{RGB}{0,100,180}
+\definecolor{inputbg}{RGB}{240,248,255}
+\definecolor{constraintbg}{RGB}{255,250,235}
+
+% ── Section styling ──────────────────────────────────────────
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}[{\color{sectioncolor}\titlerule[0.8pt]}]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sectioncolor!80}}
+  {\thesubsection}{1em}{}
+
+% ── Header / Footer ──────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{sectioncolor}{\small\textbf{Tuyển tập bài CP}}}
+\fancyhead[R]{\textcolor{sectioncolor}{\small\thepage}}
+\fancyfoot[C]{\textcolor{gray}{\small Dịch thuật: tiếng Việt — Chuẩn HSG/ICPC}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Listings (code blocks) ────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{rulecolor},
+  framesep=4pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% ── Macros ───────────────────────────────────────────────────
+\newcommand{\problem}[2]{%
+  \begin{mdframed}[
+    linecolor=framecolor,
+    linewidth=1.5pt,
+    backgroundcolor=white,
+    topline=true, bottomline=true,
+    leftline=true, rightline=true,
+    innerleftmargin=10pt, innerrightmargin=10pt,
+    innertopmargin=6pt, innerbottommargin=6pt,
+  ]
+  \textbf{\large #1} \hfill \textit{Nguồn: #2}
+  \end{mdframed}
+  \vspace{4pt}%
+}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{inputbox}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{outputbox}
+
+\newmdenv[
+  linecolor=orange!70,
+  linewidth=0.8pt,
+  backgroundcolor=constraintbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{constraintbox}
+
+\newcommand{\inputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu vào}}\par\vspace{2pt}%
+}
+\newcommand{\outputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu ra}}\par\vspace{2pt}%
+}
+\newcommand{\constraints}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giới hạn}}\par\vspace{2pt}%
+}
+\newcommand{\example}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Ví dụ}}\par\vspace{2pt}%
+}
+\newcommand{\explanation}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giải thích ví dụ}}\par\vspace{2pt}%
+}
+
+% ── Hyperref ─────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sectioncolor,
+  urlcolor=sectioncolor!80,
+  pdftitle={Tuyển tập bài CP},
+  pdfauthor={Dịch thuật chuẩn HSG/ICPC},
+}
+
+% ── Miscellaneous ────────────────────────────────────────────
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{sectioncolor} Tuyển tập Bài tập\\[0.4em]
+   Competitive Programming}\\[0.8em]
+  {\large\color{gray} Cấu trúc Dữ liệu \& Giải thuật}\\[2em]
+  \rule{\linewidth}{1pt}\\[1.5em]
+  {\large Nguồn: Tập hợp từ nhiều nền tảng}\\[0.5em]
+  {\large Ngôn ngữ: \textbf{Tiếng Việt} — Chuẩn HSG / ICPC}\\[2em]
+  \rule{\linewidth}{1pt}\\[3em]
+  {\normalsize\color{gray}
+    Tài liệu dịch thuật phục vụ học tập và luyện tập lập trình thi đấu.\\
+    Mọi nội dung được dịch sát nghĩa từ đề gốc, giữ nguyên cấu trúc logic.
+  }
+  \vfill
+  {\small\color{gray} Ngày biên soạn: \today}
+\end{titlepage}
+
+% ── Table of contents ────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% TODO: Nội dung bài toán được sinh từ LLM sẽ nằm tại đây
+
+\end{document}
