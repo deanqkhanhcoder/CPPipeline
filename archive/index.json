@@ -1,0 +1,78 @@
+[
+  {
+    "timestamp": "2026-06-04T14:17:34.621103",
+    "problem_count": 13,
+    "sources": [
+      "https://codeforces.com/contest/1777/problem/C",
+      "http://www.usaco.org/index.php?page=viewproblem2\\&cpid=643",
+      "http://www.usaco.org/index.php?page=viewproblem2\\&cpid=918",
+      "https://codeforces.com/problemset/problem/814/C",
+      "\\url{https://codeforces.com/contest/279/problem/B",
+      "https://codeforces.com/contest/1744/problem/F",
+      "https://cses.fi/problemset/task/1641",
+      "\\url{https://cses.fi/problemset/task/1660",
+      "https://codeforces.com/contest/702/problem/C",
+      "https://usaco.org/index.php?page=viewproblem2\\&cpid=1470",
+      "http://www.usaco.org/index.php?page=viewproblem2\\&cpid=738",
+      "https://codeforces.com/problemset/problem/701/C",
+      "https://cses.fi/problemset/task/1640"
+    ],
+    "pdf_file": "2026-06-04/output_001.pdf",
+    "tex_file": "2026-06-04/output_001.tex"
+  },
+  {
+    "timestamp": "2026-06-04T14:36:18.290844",
+    "problem_count": 10,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 10,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-04/output_002.pdf",
+    "tex_file": "2026-06-04/output_002.tex"
+  },
+  {
+    "timestamp": "2026-06-04T14:48:16.498876",
+    "problem_count": 10,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 10,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-04/output_003.pdf",
+    "tex_file": "2026-06-04/output_003.tex"
+  },
+  {
+    "timestamp": "2026-06-04T14:52:43.637361",
+    "problem_count": 10,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 10,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-04/output_004.pdf",
+    "tex_file": "2026-06-04/output_004.tex"
+  },
+  {
+    "timestamp": "2026-06-04T14:53:16.695326",
+    "problem_count": 10,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 10,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-04/output_005.pdf",
+    "tex_file": "2026-06-04/output_005.tex"
+  },
+  {
+    "timestamp": "2026-06-04T21:51:15.554084",
+    "problem_count": 10,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 0,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-04/output_006.pdf",
+    "tex_file": "2026-06-04/output_006.tex"
+  }
+]

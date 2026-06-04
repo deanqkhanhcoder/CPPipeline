@@ -52,7 +52,7 @@ Agent sẽ tự động chạy không ngừng nghỉ theo 5 giai đoạn sau:
 ### Phase 4: LaTeX Generation
 *   **Thực thi:** Khởi chạy `cp-latex`.
 *   **Mục tiêu:** Gắn dữ liệu vào `template.tex`.
-*   **Expected Output:** Mã nguồn file tex tại `outputs/output.tex`.
+*   **Expected Output:** Mã nguồn file tex từng bài tại `cache/build/<problem_id>.tex`. Sau đó `tools/combine_latex.py` sẽ gộp lại thành `outputs/output.tex`.
 
 ### Phase 5: PDF Compilation
 *   **Thực thi:** Gọi tool `compile_latex.py` (hoặc trực tiếp `pdflatex -interaction=nonstopmode`).

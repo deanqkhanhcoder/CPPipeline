@@ -17,7 +17,7 @@ Dây chuyền xử lý dữ liệu hoạt động không ngừng nghỉ theo 5 P
 1. **Phase 1 (Crawl)**: Tải DOM nguyên bản → `problem_raw.json`
 2. **Phase 2 (Parse)**: Nhận diện cấu trúc → `problem_normalized.json`
 3. **Phase 3 (Translate)**: Dịch thuật & giải thích → `problem_vi.json`
-4. **Phase 4 (LaTeX)**: Gắn vào template → `outputs/output.tex`
+4. **Phase 4 (LaTeX)**: Gắn vào template → `cache/build/*.tex` rồi gộp bằng `tools/combine_latex.py` → `outputs/output.tex`
 5. **Phase 5 (Compile)**: Biên dịch LaTeX → `outputs/output.pdf`
 
 ## Directory Structure
@@ -25,13 +25,9 @@ Dây chuyền xử lý dữ liệu hoạt động không ngừng nghỉ theo 5 P
 CPPipeline/
 ├── .agents/
 │   └── skills/           # Chứa não bộ AI và luật chơi cho từng skill
-│       ├── cp-pipeline/  # Orchestrator
-│       ├── cp-crawler/
-│       ├── cp-parser/
-│       ├── cp-translator/
-│       └── cp-latex/
-├── cache/                # Chứa các file trung gian (Raw/Parsed/Translated JSON)
-├── outputs/              # Chứa sản phẩm cuối cùng (output.tex, output.pdf)
+├── archive/              # Lưu trữ tự động các file PDF/TeX theo từng ngày
+├── cache/                # Chứa các file trung gian (Raw/Parsed JSON) và debug snapshots
+├── outputs/              # Chứa sản phẩm xuất bản cuối cùng của phiên chạy (output.tex, output.pdf)
 ├── reports/              # Chứa các báo cáo Audit, Lỗi, và Validation
 ├── tools/                # Chứa Python Scripts (Crawl I/O, Compile PDF)
 ├── README.md
@@ -61,3 +57,25 @@ Mở hệ thống Agent, chỉ cần đưa ra một dòng lệnh duy nhất kèm
 Agent sẽ tự động chuỗi hóa toàn bộ các tiến trình. Nhiệm vụ của bạn chỉ là chờ đợi và nhận thành quả tại thư mục:
 - `outputs/output.pdf`
 - `outputs/output.tex`
+
+---
+
+## Archive Workflow
+Mỗi khi hệ thống sinh ra file PDF thành công, file `.tex` và `.pdf` sẽ được tự động sao chép sang hệ thống lưu trữ dài hạn tại thư mục `archive/YYYY-MM-DD/`.
+Đồng thời, metadata như timestamp, số lượng bài, nguồn bài sẽ được ghi lại tự động vào `archive/index.json`. Không yêu cầu bất kỳ thao tác thủ công nào. Thư mục `outputs/` sẽ liên tục bị ghi đè, do đó hãy tìm lại lịch sử dịch thuật tại thư mục `archive/`.
+
+## Session Workflow (Vượt Cloudflare)
+Để vượt rào chống Bot mạnh mẽ (vd: Codeforces), Crawler ưu tiên tích hợp trực tiếp với **Brave Browser Profile** trên máy của bạn (sử dụng User Data, Cookie, và Session thật).
+- Nếu bạn đang kẹt ở Cloudflare, hãy mở Brave, truy cập trang web bằng tay và giải captcha.
+- **QUAN TRỌNG:** Phải đóng hoàn toàn trình duyệt Brave (thoát mọi tab) trước khi gõ lệnh `/cp-pipeline` để AI có quyền truy cập vào Session của bạn.
+
+## Crawler Diagnostics
+Nếu Crawl thất bại (bị block, rate limit, access denied, v.v), hệ thống sẽ:
+1. "Fail Fast" - dừng toàn bộ Pipeline, không tự động bịa ra file JSON giả.
+2. Sinh ra thư mục `cache/debug/` chứa các file log định dạng `fail_<engine>_<timestamp>.json`.
+3. Lưu lại bản sao mã HTML (Snapshot), URL, và engine đang chạy để bạn dễ dàng điều tra lỗi.
+
+## Troubleshooting
+- **Lỗi `Profile locked by an active session`:** Bạn chưa đóng trình duyệt Brave. Vui lòng đóng hẳn Brave và thử lại.
+- **Lỗi PDF không xuất hiện:** Vào `reports/latest_run.md` hoặc nhìn log console để xác định pipeline đứt ở Parse, Translate hay Compile.
+- **Lỗi `Cloudflare challenge detected` trên mọi engine:** Bạn bị khoá IP. Hãy mở Brave, giải captcha tay, thoát Brave và gọi lại pipeline.

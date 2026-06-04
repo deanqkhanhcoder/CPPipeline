@@ -90,6 +90,17 @@ def compile_latex(tex_file: str, hits=0, misses=0):
             if res2.returncode == 0:
                 print(f"Compilation successful using {engine}.")
                 archive_files(tex_file, pdf_path, hits, misses)
+                
+                # Cleanup auxiliary files
+                base_no_ext = os.path.splitext(tex_file)[0]
+                for ext in [".aux", ".out", ".toc", ".log"]:
+                    aux_file = base_no_ext + ext
+                    if os.path.exists(aux_file):
+                        try:
+                            os.remove(aux_file)
+                        except Exception as e:
+                            print(f"Warning: could not remove {aux_file}: {e}")
+                            
                 return
             else:
                 print(f"{engine} (pass 2) failed with return code {res2.returncode}.")

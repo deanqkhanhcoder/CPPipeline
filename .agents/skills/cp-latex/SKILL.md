@@ -24,7 +24,7 @@ BẮT BUỘC khai báo:
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
 ```
-Tuyệt đối KHÔNG DÙNG `\usepackage{fontspec}` và `\setmainfont`. Compiler mặc định là `latexmk -pdf` hoặc `pdflatex`.
+Tuyệt đối KHÔNG DÙNG `\usepackage{fontspec}` và `\setmainfont`. Compiler mặc định là `pdflatex` (2 pass).
 
 ## Validation (STRICT LATEX CONTRACT)
 Tuyệt đối KHÔNG ĐƯỢC hallucinate các macro như `\exmp`, `\exmpin`, `\exmpout`, `\inputformat`, `\outputformat`, `\begin{exmpIn}`, v.v.

@@ -4,21 +4,71 @@ import traceback
 import sys
 import asyncio
 import time
+import os
+from datetime import datetime
 
-def check_cloudflare(html):
-    if not html:
-        return False
-    if "cdn-cgi/challenge-platform" in html or "Just a moment" in html or "__CF$cv$params" in html:
-        return True
-    return False
+def save_debug_snapshot(url, title, html, crawler_name):
+    try:
+        os.makedirs("cache/debug", exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_name = crawler_name.replace(" ", "_").lower()
+        filename = f"cache/debug/fail_{safe_name}_{timestamp}.json"
+        
+        snapshot = {
+            "url": url,
+            "title": title,
+            "timestamp": timestamp,
+            "crawler_backend": crawler_name,
+            "html_preview": html[:2000] if html else ""
+        }
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(snapshot, f, ensure_ascii=False, indent=2)
+        print(f"[{crawler_name}] Debug snapshot saved to {filename}", file=sys.stderr)
+    except Exception as e:
+        print(f"Failed to save debug snapshot: {e}", file=sys.stderr)
+
+def check_challenge(html):
+    if not html or len(html.strip()) < 50:
+        return True, "Empty content"
+    if "class=\"problem-statement\"" in html or "class='problem-statement'" in html or "problem-statement" in html:
+        return False, "" # Valid problem page
+    if "<title>Just a moment...</title>" in html or "Enable JavaScript and cookies to continue" in html:
+        return True, "Cloudflare challenge detected"
+    if "Access denied" in html or "403 Forbidden" in html:
+        return True, "Access denied"
+    if "Too many requests" in html or "Rate limit" in html:
+        return True, "Rate limit exceeded"
+    if "Login required" in html or "Please login" in html:
+        return True, "Login required"
+    return False, ""
 
 def crawl_with_brave(url, retries=2):
     for attempt in range(retries):
         print(f"[Brave] Attempt {attempt+1}/{retries}...", file=sys.stderr)
         try:
             from playwright.sync_api import sync_playwright
-            BRAVE_PATH = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-            USER_DATA = r"C:\Users\toanpq\AppData\Local\BraveSoftware\Brave-Browser\User Data"
+            # Auto-discovery for Windows, Linux, MacOS
+            BRAVE_PATH = os.environ.get("BRAVE_PATH")
+            if not BRAVE_PATH:
+                if sys.platform == "win32":
+                    BRAVE_PATH = os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"), "BraveSoftware", "Brave-Browser", "Application", "brave.exe")
+                elif sys.platform == "darwin":
+                    BRAVE_PATH = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+                else:
+                    BRAVE_PATH = "/usr/bin/brave-browser"
+            
+            USER_DATA = os.environ.get("BRAVE_USER_DATA")
+            if not USER_DATA:
+                if sys.platform == "win32":
+                    USER_DATA = os.path.join(os.environ.get("LOCALAPPDATA", os.path.expanduser("~\\AppData\\Local")), "BraveSoftware", "Brave-Browser", "User Data")
+                elif sys.platform == "darwin":
+                    USER_DATA = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser")
+                else:
+                    USER_DATA = os.path.expanduser("~/.config/BraveSoftware/Brave-Browser")
+            
+            if not os.path.exists(BRAVE_PATH):
+                print(f"[Brave] Executable not found at {BRAVE_PATH}. Disabling Brave backend.", file=sys.stderr)
+                return None
             
             with sync_playwright() as p:
                 try:
@@ -31,7 +81,7 @@ def crawl_with_brave(url, retries=2):
                 except Exception as e:
                     if "Opening in existing browser session" in str(e):
                         print("[Brave] Profile locked by an active session.", file=sys.stderr)
-                        return None # No need to retry if it's locked
+                        return None
                     raise e
                     
                 page = browser.pages[0] if browser.pages else browser.new_page()
@@ -44,8 +94,10 @@ def crawl_with_brave(url, retries=2):
                 title = page.title()
                 browser.close()
                 
-                if check_cloudflare(html):
-                    print("[Brave] Cloudflare detected.", file=sys.stderr)
+                is_chal, reason = check_challenge(html)
+                if is_chal:
+                    print(f"[Brave] Challenge: {reason}", file=sys.stderr)
+                    save_debug_snapshot(url, title, html, "Brave")
                     time.sleep(2)
                     continue
                     
@@ -64,7 +116,6 @@ def crawl_with_cloakbrowser(url, retries=3):
             page = browser.new_page()
             page.goto(url, wait_until="domcontentloaded", timeout=20000)
             try:
-                # Wait longer for cloudflare to resolve if it's a challenge page
                 page.wait_for_selector(".problem-statement", timeout=10000)
             except:
                 pass
@@ -72,8 +123,10 @@ def crawl_with_cloakbrowser(url, retries=3):
             html = page.content()
             browser.close()
             
-            if check_cloudflare(html):
-                print("[CloakBrowser] Cloudflare detected.", file=sys.stderr)
+            is_chal, reason = check_challenge(html)
+            if is_chal:
+                print(f"[CloakBrowser] Challenge: {reason}", file=sys.stderr)
+                save_debug_snapshot(url, title, html, "CloakBrowser")
                 time.sleep(3)
                 continue
                 
@@ -107,8 +160,10 @@ def crawl_with_playwright_stealth(url, retries=2):
                 title = page.title()
                 browser.close()
                 
-                if check_cloudflare(html):
-                    print("[Playwright Stealth] Cloudflare detected.", file=sys.stderr)
+                is_chal, reason = check_challenge(html)
+                if is_chal:
+                    print(f"[Playwright Stealth] Challenge: {reason}", file=sys.stderr)
+                    save_debug_snapshot(url, title, html, "Playwright Stealth")
                     time.sleep(2)
                     continue
                     
@@ -127,8 +182,10 @@ def crawl_with_crawl4ai(url, retries=2):
                 async with AsyncWebCrawler() as crawler:
                     res = await crawler.arun(url)
                     if res and res.html:
-                        if check_cloudflare(res.html):
-                            print("[Crawl4AI] Cloudflare detected.", file=sys.stderr)
+                        is_chal, reason = check_challenge(res.html)
+                        if is_chal:
+                            print(f"[Crawl4AI] Challenge: {reason}", file=sys.stderr)
+                            save_debug_snapshot(url, "", res.html, "Crawl4AI")
                             await asyncio.sleep(2)
                             continue
                         return {"url": url, "html": res.html, "markdown": res.markdown, "title": ""}
@@ -139,19 +196,29 @@ def crawl_with_crawl4ai(url, retries=2):
     return asyncio.run(run())
 
 def crawl_problem(url: str) -> dict:
+    from cache_manager import lookup_cache, save_cache
+    
+    # PHASE 2: CACHE LOOKUP LAYER
+    cached_data = lookup_cache(url)
+    if cached_data:
+        print("[Cache] HIT - Returning cached content", file=sys.stderr)
+        return cached_data
+        
+    print("[Cache] MISS - Starting Smart Crawler Flow", file=sys.stderr)
+    
+    # PHASE 3: SMART CRAWLER FLOW
     res = crawl_with_brave(url)
-    if res: return res
+    if not res: res = crawl_with_cloakbrowser(url)
+    if not res: res = crawl_with_playwright_stealth(url)
+    if not res: res = crawl_with_crawl4ai(url)
     
-    res = crawl_with_cloakbrowser(url)
-    if res: return res
+    if res and not res["html"].startswith("Error:"):
+        # PHASE 7: AUTO CACHE AFTER SUCCESS
+        save_cache(res["url"], res["title"], res["html"], res["markdown"])
+        res["_cached"] = True
+        return res
     
-    res = crawl_with_playwright_stealth(url)
-    if res: return res
-    
-    res = crawl_with_crawl4ai(url)
-    if res: return res
-    
-    return {"url": url, "html": "Error: All crawling engines failed. Brave profile locked, and fallbacks hit Cloudflare.", "markdown": ""}
+    return {"url": url, "html": "Error: All crawling engines failed. Target is actively blocking requests.", "markdown": ""}
 
 if __name__ == "__main__":
     if hasattr(sys.stdout, 'reconfigure'):
