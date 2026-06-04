@@ -6,7 +6,7 @@ Nhiệm vụ của dự án là lấy dữ liệu từ bất kỳ Online Judge n
 ## Architecture
 Hệ thống sử dụng mô hình **Chain-of-Skills** dựa trên sức mạnh của AI (Gemini Agent):
 - **cp-pipeline (Orchestrator)**: "Nhạc trưởng" điều phối luồng dữ liệu tự động.
-- **cp-crawler**: Module thu thập dữ liệu thô. Sử dụng 4 tầng Fallback (CloakBrowser → Crawl4AI → Playwright → Requests) để xuyên thủng các hàng rào chống Bot như Cloudflare.
+- **cp-crawler**: Module thu thập dữ liệu thô. Chống lại Cloudflare bằng cơ chế "Stealth & Retry" 4 tầng (Ưu tiên Brave Persistent Profile → CloakBrowser → Playwright Stealth → Crawl4AI). Có nhận diện Cloudflare Challenge tự động để Fail-fast.
 - **cp-parser**: Module AI phân tích cấu trúc DOM/Markdown để trích xuất Title, Statement, Input/Output, và Samples mà không phụ thuộc vào Regex tĩnh.
 - **cp-translator**: Module AI dịch thuật và sinh tư duy logic. Đảm bảo bảo toàn 100% công thức Toán Học (Mathematics) và tự động chạy tay thuật toán để giải thích ví dụ.
 - **cp-latex**: Module AI render dữ liệu vào "Golden Template", tạo ra file `.tex` chuẩn tiếng Việt.

@@ -36,8 +36,8 @@ Agent sẽ tự động chạy không ngừng nghỉ theo 5 giai đoạn sau:
 
 ### Phase 1: Crawl
 *   **Thực thi:** Khởi chạy `cp-crawler` (gọi script `tools/crawl_problem.py`).
-*   **Mục tiêu:** Vượt rào Cloudflare, tải nội dung DOM/Markdown.
-*   **Expected Output:** Sinh ra file `cache/problem_raw.json` (hoặc JSON log trong bộ nhớ).
+*   **Mục tiêu:** Tải nội dung DOM/Markdown. Hệ thống sử dụng cơ chế Fallback chống Bot đa tầng (Brave Persistent Profile -> CloakBrowser -> Playwright Stealth -> Crawl4AI). Có tích hợp quét `cdn-cgi/challenge-platform` để phát hiện và Retry khi dính Cloudflare.
+*   **Expected Output:** Sinh ra file `cache/problem_raw.json` (hoặc báo lỗi nếu mọi nỗ lực đều bị chặn).
 
 ### Phase 2: Parse
 *   **Thực thi:** Khởi chạy `cp-parser` trên dữ liệu raw.
