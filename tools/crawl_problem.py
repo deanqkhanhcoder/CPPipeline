@@ -80,8 +80,13 @@ def crawl_with_brave(url, retries=2):
                     )
                 except Exception as e:
                     if "Opening in existing browser session" in str(e):
-                        print("[Brave] Profile locked by an active session.", file=sys.stderr)
-                        return None
+                        print("\n[CẢNH BÁO] Brave Profile đang bị khóa bởi một phiên làm việc khác!", file=sys.stderr)
+                        print("[CẢNH BÁO] Vui lòng ĐÓNG TRÌNH DUYỆT BRAVE trong vòng 60 giây để tiếp tục...", file=sys.stderr)
+                        for i in range(60, 0, -5):
+                            print(f"... Đang chờ {i} giây", file=sys.stderr)
+                            time.sleep(5)
+                        print("[Brave] Thử lại sau khi chờ...", file=sys.stderr)
+                        continue
                     raise e
                     
                 page = browser.pages[0] if browser.pages else browser.new_page()

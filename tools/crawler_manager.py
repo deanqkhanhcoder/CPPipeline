@@ -131,5 +131,15 @@ if __name__ == "__main__":
         elif sys.argv[1] == "process":
             process_queue()
             print("Queue processing finished.")
+        elif sys.argv[1] == "flush":
+            init_queue()
+            with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+                json.dump({
+                    "pending": [],
+                    "running": [],
+                    "done": [],
+                    "failed": []
+                }, f, indent=2)
+            print("Queue flushed successfully. All stale jobs removed.")
     else:
-        print("Usage: python crawler_manager.py enqueue <url1> <url2>... | process")
+        print("Usage: python crawler_manager.py enqueue <url1> <url2>... | process | flush")

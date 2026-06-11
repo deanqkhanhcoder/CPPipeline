@@ -31,3 +31,11 @@
 **PREVENTION RULE:** 
 - KHÔNG BAO GIỜ cho phép subagent gọi độc lập script crawl. Mọi quá trình tải HTML phải được xử lý qua hàng đợi tập trung (`crawler_manager.py`).
 - Tại mọi thời điểm, chỉ cho phép 1 instance browser hoạt động.
+
+## 5. Queue Backup (Stale Queue State)
+**BUG:** Người dùng cung cấp URL mới nhưng hệ thống lại mở URL cũ (ví dụ: liên tục mở Codeforces dù người dùng đưa link CSES). Người dùng lầm tưởng hệ thống bị "hardcode" vào Codeforces.
+**ROOT CAUSE:** Hàng đợi tập trung (`cache/queue/index.json`) bị kẹt các jobs cũ (từ quá trình Crash, Stress Test, hoặc Daemon ngừng đột ngột). Khi có URL mới được đưa vào, URL này bị xếp cuối hàng đợi. Crawler Manager khi bật lên sẽ lấy job ở đầu hàng đợi (các link Codeforces cũ) ra xử lý trước.
+**SOLUTION:** Cung cấp lệnh dọn dẹp hàng đợi. Đã thêm `python tools/crawler_manager.py flush`.
+**PREVENTION RULE:** 
+- Khi người dùng phàn nàn về việc crawler đi lạc hướng so với URL cung cấp, phải nghĩ ngay đến việc Queue đang bị kẹt các stale jobs.
+- Thực hiện `flush` queue trước khi chạy debug để đảm bảo Clean State.
