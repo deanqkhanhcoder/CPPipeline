@@ -81,25 +81,31 @@ def compile_latex(tex_file: str, hits=0, misses=0):
         if os.path.exists(pdf_path):
             os.remove(pdf_path)
             
-        res = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, text=True, timeout=60)
+        res = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
         
         if res.returncode == 0 and os.path.exists(pdf_path):
             # Run second time for TOC
             print(f"Running {engine} a second time for Table of Contents...")
-            res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, text=True, timeout=60)
+            res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
             if res2.returncode == 0:
                 print(f"Compilation successful using {engine}.")
                 archive_files(tex_file, pdf_path, hits, misses)
                 
-                # Cleanup auxiliary files
+                # Cleanup auxiliary files from outputs/ (Output Contract)
+                # pdflatex runs in cwd=outputs/, so files are created there
                 base_no_ext = os.path.splitext(tex_file)[0]
                 for ext in [".aux", ".out", ".toc", ".log"]:
-                    aux_file = base_no_ext + ext
-                    if os.path.exists(aux_file):
-                        try:
-                            os.remove(aux_file)
-                        except Exception as e:
-                            print(f"Warning: could not remove {aux_file}: {e}")
+                    # Try both the full path and the cwd-based path
+                    for candidate in [
+                        base_no_ext + ext,
+                        os.path.join(cwd, os.path.splitext(basename)[0] + ext)
+                    ]:
+                        if os.path.exists(candidate):
+                            try:
+                                os.remove(candidate)
+                            except Exception as e:
+                                print(f"Warning: could not remove {candidate}: {e}")
+                            break
                             
                 return
             else:
@@ -108,8 +114,10 @@ def compile_latex(tex_file: str, hits=0, misses=0):
         else:
             print(f"{engine} failed with return code {res.returncode}.")
             
+        stdout = res.stdout or ''
+        stderr = res.stderr or ''
         with open("compile_error.log", "w", encoding="utf-8") as f:
-            f.write(res.stdout + "\n" + res.stderr)
+            f.write(stdout + "\n" + stderr)
         print("Check compile_error.log for details.")
     except Exception as e:
         print(f"{engine} execution failed: {e}")

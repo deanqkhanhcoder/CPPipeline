@@ -61,22 +61,6 @@
   belowskip=6pt,
 }
 
-% ── lstlisting inside inputbox/outputbox: remove double spacing ──
-% When lstlisting is placed inside mdframed, the list environment
-% adds \topsep + \partopsep ON TOP of mdframed innertopmargin.
-% Override: zero out spacing when inside sample boxes.
-\lstnewenvironment{samplecode}{%
-  \lstset{
-    backgroundcolor=\color{white},
-    frame=none,
-    aboveskip=0pt,
-    belowskip=0pt,
-    xleftmargin=0pt,
-    xrightmargin=0pt,
-    framesep=0pt,
-  }%
-}{}
-
 % ── Macros ───────────────────────────────────────────────────
 \newcommand{\problem}[2]{%
   \addcontentsline{toc}{section}{#1}%
@@ -186,6 +170,68 @@
 \tableofcontents
 \newpage
 
-% TODO: Nội dung bài toán được sinh từ LLM sẽ nằm tại đây
+\problem{Một Tháp Khổng Lồ}{CEOI 2010}
+
+Người Babylon cổ đại quyết định xây dựng một tòa tháp khổng lồ. Tòa tháp bao gồm $N$ khối xây dựng hình lập phương được xếp chồng lên nhau. Người Babylon đã thu thập nhiều khối xây dựng có kích thước khác nhau từ khắp nơi trên cả nước. Từ lần thử nghiệm thất bại trước đó, họ đã rút ra bài học rằng nếu họ đặt một khối lớn trực tiếp lên một khối nhỏ hơn nhiều, tháp sẽ đổ.
+
+Hai khối xây dựng bất kỳ luôn khác nhau, ngay cả khi chúng có cùng kích thước. Với mỗi khối xây dựng, bạn được cho độ dài cạnh của nó. Bạn cũng được cho một số nguyên $D$ với ý nghĩa như sau: bạn không được phép đặt khối A trực tiếp lên khối B nếu độ dài cạnh của A lớn hơn nghiêm ngặt tổng của $D$ và độ dài cạnh của B.
+
+Tính số cách khác nhau để có thể xây dựng tháp bằng cách sử dụng tất cả các khối xây dựng. Vì con số này có thể rất lớn, in ra kết quả theo modulo $10^9 + 9$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên của dữ liệu vào chứa hai số nguyên dương $N$ và $D$: lần lượt là số lượng khối xây dựng và độ dung sai.
+
+Dòng thứ hai chứa $N$ số nguyên cách nhau bởi dấu cách; mỗi số đại diện cho kích thước của một khối xây dựng.
+
+\section*{Dữ liệu ra}
+In ra một dòng duy nhất chứa một số nguyên duy nhất: số lượng tháp có thể được xây dựng, theo modulo $10^9 + 9$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item Tất cả các số trong file dữ liệu vào đều là số nguyên dương không vượt quá $10^9$.
+    \item $N$ luôn lớn hơn hoặc bằng $2$.
+    \item Trong các test có giá trị 70 điểm, $N$ sẽ tối đa là $70$.
+    \item Trong số đó, trong các test có giá trị 45 điểm, $N$ sẽ tối đa là $20$.
+    \item Trong số đó, trong các test có giá trị 10 điểm, $N$ sẽ tối đa là $10$.
+    \item Trong một số test, tổng số tháp hợp lệ sẽ không vượt quá $1\ 000\ 000$. Các test này có tổng giá trị là 30 điểm.
+    \item Đối với sáu test cuối cùng (trị giá 30 điểm), giá trị của $N$ lớn hơn $70$. Không có giới hạn trên cho $N$ trong các test này.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4 1
+1 2 3 100
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+4
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Chúng ta có thể sắp xếp 3 khối đầu tiên theo bất kỳ thứ tự nào, ngoại trừ 2, 1, 3 hoặc 1, 3, 2. Khối cuối cùng bắt buộc phải nằm ở dưới cùng.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+6 9
+10 20 20 10 10 20
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+36
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Chúng ta không được phép đặt một khối có kích thước 20 lên một khối có kích thước 10. Có 6 cách để sắp xếp các khối có kích thước 10, và 6 cách để sắp xếp các khối có kích thước 20. Do đó, có tổng cộng $6 \times 6 = 36$ cách.
+
+\newpage
+
 
 \end{document}

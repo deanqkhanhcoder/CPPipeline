@@ -46,12 +46,15 @@ Nếu log chứa: `LaTeX Error`, `Fatal Error`, `Undefined` => FAIL. Không đư
 1. **constraintbox undefined**: Lỗi sinh ra khi output sử dụng một environment hoặc macro chưa bao giờ được định nghĩa trong `template.tex`.
 2. **Template Bypass**: Lỗi sinh ra khi python script (combine) không dùng template.tex mà tự hardcode LaTeX header.
 3. **TOC Empty**: Lỗi do trình biên dịch pdflatex chỉ được gọi 1 lần (single pass). Mục lục yêu cầu 2 lần chạy.
+4. **inputbox/outputbox whitespace bug**: Khi `lstlisting` nằm trong `mdframed` (inputbox/outputbox), LaTeX thêm spacing kép: mdframed `innertopmargin`/`innerbottommargin` + lstlisting `aboveskip`/`belowskip` + list environment `\topsep`/`\partopsep`. Kết quả là khoảng trắng rất lớn phía trên và dưới code block.
 
 ## Anti Regression Rules
 - **Rule 1**: Output TUYỆT ĐỐI KHÔNG ĐƯỢC sử dụng environment/macro lạ.
 - **Rule 2**: LUÔN COMPILE 2 pass khi dùng `\tableofcontents` để sinh mục lục động.
 - **Rule 3**: Single Source Of Truth duy nhất là `template.tex`. Không tự sinh hay hardcode header/footer ở file khác.
+- **Rule 4 (NEW)**: Khi viết sample input/output trong `inputbox`/`outputbox`, phải dùng `\begin{samplecode}...\end{samplecode}` thay vì `\begin{lstlisting}...\end{lstlisting}`. `samplecode` đã được định nghĩa trong template với `aboveskip=0pt, belowskip=0pt, frame=none` để tránh double-padding.
 
 ## Known Failure Modes
 - Hallucination các lệnh `\exmp`, `\codebg`, `\example` gây vỡ layout và Too deeply nested.
 - Quên chèn `\addcontentsline` khiến TOC bị rỗng.
+- Dùng `lstlisting` trong inputbox/outputbox gây khoảng trắng lớn phía dưới → dùng `samplecode` thay thế.

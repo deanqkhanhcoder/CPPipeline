@@ -1,10 +1,7 @@
 import os
 import re
 
-files = [
-    "2219D.tex", "895C.tex", "2232F.tex", "2232E.tex", "2232D.tex",
-    "2232C2.tex", "2232C1.tex", "2232B.tex", "2232A.tex", "2231F.tex"
-]
+files = [f for f in os.listdir(os.path.join("cache", "build")) if f.endswith(".tex")]
 
 template_path = os.path.join(".agents", "skills", "cp-latex", "template.tex")
 with open(template_path, "r", encoding="utf-8") as tf:

@@ -3,7 +3,9 @@ name: cp-parser
 description: Hướng dẫn Gemini cách parse raw HTML/Markdown thành Structured JSON.
 ---
 ## Nhiệm vụ
-Gemini phải đọc nội dung raw HTML/Markdown từ công cụ crawl và tự suy luận để xuất ra cấu trúc JSON chuẩn. KHÔNG dùng Python script.
+Gemini phải đọc nội dung HTML fragment từ `cache/normalized/<id>.json` (trường `content`) và tự suy luận để xuất ra cấu trúc JSON chuẩn. KHÔNG dùng Python script.
+
+**QUAN TRỌNG**: Đọc `cache/normalized/<id>.json`, KHÔNG đọc `cache/problemset/<id>.json`. File normalized đã được extract chỉ còn phần `.problem-statement` (~5-50KB thay vì 100-270KB raw HTML). Đọc raw sẽ lãng phí 97% token.
 
 ## Hướng dẫn nhận diện
 - **Statement (Đề bài)**: Nhận diện nội dung mô tả cốt truyện và yêu cầu thuật toán.
@@ -28,6 +30,12 @@ Nếu bài toán được cung cấp dưới dạng PDF:
 - **Rule 1**: Bắt buộc giữ nguyên vẹn 100% công thức toán học (`$$`, `\(\)`).
 - **Rule 2**: Nếu không tìm thấy I/O hoặc Samples, phải gán bằng mảng rỗng `[]` hoặc báo cáo lỗi, không được điền dữ liệu ảo giác.
 
+## Token Optimization Rules
+- PHẢI đọc từ `cache/normalized/<id>.json` field `content` (html fragment đã được extract)
+- KHÔNG ĐƯỢC đọc `cache/problemset/<id>.json` (raw HTML - quá lớn, lãng phí token)
+- Nếu `cache/normalized/<id>.json` chưa tồn tại, yêu cầu orchestrator chạy: `python tools/html_extractor.py <id>`
+
 ## Known Failure Modes
 - Parser bị lừa bởi các trang web có cấu trúc lạ không theo chuẩn Codeforces/CSES.
 - Thất bại trong việc trích xuất bảng Sample Input/Output nếu nó sử dụng cấu trúc `div` lồng nhau phức tạp thay vì `pre` hoặc `table`.
+- Parser đọc raw HTML 100KB+ từ cache/problemset → token overflow, chi phí tăng 100x.

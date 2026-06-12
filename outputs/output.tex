@@ -170,791 +170,1840 @@
 \tableofcontents
 \newpage
 
-\problem{MEX Replacement on Tree}{Codeforces - 2219D}
 
-\section*{Đề bài}
-Cho một cây có gốc tại đỉnh $1$ gồm $n$ đỉnh và một hoán vị $p$ có độ dài $n$ gồm các số nguyên $0, 1, \ldots, n - 1$, trong đó $p_v$ là trọng số của đỉnh $v$.
+% ============================================================
 
-Gọi $S_v$ là tập các trọng số của các đỉnh nằm trên đường đi từ $1$ đến $v$. Định nghĩa hàm $f$ là $f(v) = \text{MEX}(S_v)$, tức là $\text{MEX}$ của tập hợp gồm các trọng số của các đỉnh trên đường đi đơn từ gốc đến $v$ (bao gồm cả gốc và $v$). Hàm $\text{MEX}$ của một tập hợp các số nguyên $c_1, c_2, \ldots, c_k$ được định nghĩa là số nguyên không âm nhỏ nhất $x$ không xuất hiện trong tập $c$.
+% ── Title page ───────────────────────────────────────────────
 
-Hơn nữa, bạn có thể thực hiện thao tác sau:
-\begin{itemize}
-    \item Chọn một số nguyên $v$ ($1 \le v \le n$) và gán $f(v)$ cho $p_v$.
-\end{itemize}
 
-Mục tiêu của bạn là tìm giá trị lớn nhất của $\sum_{v = 1}^n f(v)$ sau khi thực hiện thao tác trên không quá một lần (có thể là không lần nào).
+% ── Table of contents ────────────────────────────────────────
 
-\begin{inputbox}
-Mỗi test gồm nhiều test cases. Dòng đầu tiên chứa số lượng test cases $t$ ($1 \le t \le 2 \cdot 10^4$). Mô tả của các test cases như sau.
 
-Dòng đầu tiên của mỗi test case chứa một số nguyên $n$ ($1 \le n \le 2 \cdot 10^5$) — số lượng đỉnh của cây.
 
-Dòng thứ hai của mỗi test case chứa $n$ số nguyên $p_1, p_2, \ldots, p_n$ ($0 \le p_i \le n - 1$) — các phần tử của mảng $p$. Đảm bảo rằng mỗi số nguyên từ $0$ đến $n - 1$ xuất hiện chính xác một lần trong $p$.
+\problem{Mobile}{Baltic Olympiad in Informatics 2012}
 
-$n - 1$ dòng tiếp theo, mỗi dòng chứa hai số nguyên $x_i$ và $y_i$ ($1 \le x_i, y_i \le n$), biểu diễn một cạnh giữa đỉnh $x_i$ và $y_i$. Đảm bảo rằng các cạnh này tạo thành một cây.
+Nhà mạng Totalphone nổi tiếng vừa lắp đặt một số trạm thu phát sóng gốc (base transceiver stations) mới nhằm phủ sóng cho một đường cao tốc mới được xây dựng. Nhưng như thường lệ, các lập trình viên của Totalphone lại làm việc cẩu thả; kết quả là, công suất phát sóng không thể được cài đặt riêng lẻ cho từng trạm, mà chỉ có thể cài đặt một mức công suất chung cố định cho tất cả các trạm. Để tối thiểu hóa lượng điện năng tiêu thụ, công ty muốn biết khoảng cách lớn nhất từ một điểm bất kỳ trên đường cao tốc đến trạm thu phát sóng gần nhất.
 
-Đảm bảo rằng tổng của $n$ qua tất cả các test cases không vượt quá $2 \cdot 10^5$.
-\end{inputbox}
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $N$ ($1 \le N \le 10^6$) và $L$ ($1 \le L \le 10^9$) lần lượt là số lượng trạm thu phát sóng và chiều dài của đường cao tốc.
 
-\begin{outputbox}
-Đối với mỗi test case, in ra một dòng chứa một số nguyên: giá trị lớn nhất của $\sum_{v = 1}^n f(v)$ sau khi thực hiện thao tác trên không quá một lần (có thể là không lần nào).
-\end{outputbox}
+$N$ dòng tiếp theo, mỗi dòng chứa một cặp số nguyên $x_i$, $y_i$ ($-10^9 \le x_i, y_i \le 10^9$) mô tả tọa độ của một trạm thu phát sóng. Tất cả các điểm đều phân biệt. Tọa độ các điểm được sắp xếp theo thứ tự không giảm của hoành độ $x_i$. Nếu có hai trạm cùng hoành độ $x_i$, chúng sẽ được sắp xếp tăng dần theo tung độ $y_i$.
 
+Đường cao tốc là một đoạn thẳng nằm trên trục $Ox$, kéo dài từ điểm $(0, 0)$ đến điểm $(L, 0)$.
+
+\section*{Dữ liệu ra}
+In ra một dòng duy nhất chứa một số thực — khoảng cách lớn nhất từ một điểm trên đường cao tốc đến trạm thu phát sóng gần nhất. Kết quả của bạn được xem là chính xác nếu chênh lệch không quá $10^{-3}$ so với đáp án chính xác.
+
+\section*{Giới hạn}
 \begin{constraintbox}
 \begin{itemize}
-    \item $1 \le t \le 2 \cdot 10^4$
-    \item $1 \le n \le 2 \cdot 10^5$
-    \item $0 \le p_i \le n - 1$
-    \item $1 \le x_i, y_i \le n$
-    \item Tổng của $n$ qua tất cả các test cases $\le 2 \cdot 10^5$
+    \item $1 \le N \le 10^6$
+    \item $1 \le L \le 10^9$
+    \item $-10^9 \le x_i, y_i \le 10^9$
+    \item \textbf{Subtask 1} (25 điểm): $N \le 5000$
+    \item \textbf{Subtask 2} (50 điểm): $N \le 100000$
+    \item \textbf{Cảnh báo}: Hãy sử dụng kiểu số thực với độ chính xác kép (double precision, ví dụ \texttt{double} trong C++) cho các tính toán của bạn, vì các kiểu dữ liệu có độ chính xác thấp hơn có thể dẫn đến sai số.
 \end{itemize}
 \end{constraintbox}
 
 \section*{Ví dụ}
-
-\textbf{Input}
-
+\begin{inputbox}
 \begin{lstlisting}
-7
-1
-0
-3
-1 0 2
-1 2
-1 3
-6
-1 4 5 2 0 3
-1 4
-1 5
-6 2
-2 5
-2 3
-5
-1 2 3 0 4
-1 2
-2 3
-3 4
-4 5
-10
-9 8 7 1 3 2 5 4 6 0
-6 10
-3 1
-8 7
-4 2
-2 8
-7 5
-10 9
-3 9
-6 4
-9
-8 4 0 6 5 7 3 1 2
-8 3
-4 2
-4 6
-9 3
-7 6
-1 5
-8 5
-9 2
-7
-1 5 2 3 6 0 4
-7 6
-4 3
+2 10
+0 0
+11 1
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+5.545455
+\end{lstlisting}
+\end{outputbox}
+
+\section*{Giải thích ví dụ}
+Đường cao tốc là đoạn thẳng nằm trên trục $Ox$ từ $x = 0$ đến $x = 10$.
+Có $2$ trạm phát sóng: $P_1 = (0, 0)$ và $P_2 = (11, 1)$.
+
+Gọi $d(X, P)$ là khoảng cách từ điểm $X$ trên đường cao tốc đến trạm $P$.
+Tại mỗi điểm $X = (x, 0)$ với $0 \le x \le 10$, khoảng cách từ $X$ đến trạm gần nhất là $\min(d(X, P_1), d(X, P_2))$.
+\begin{itemize}
+    \item Khoảng cách tới $P_1$: $d(X, P_1) = \sqrt{(x - 0)^2 + (0 - 0)^2} = x$.
+    \item Khoảng cách tới $P_2$: $d(X, P_2) = \sqrt{(x - 11)^2 + (0 - 1)^2} = \sqrt{(x - 11)^2 + 1}$.
+\end{itemize}
+
+Điểm trên đường cao tốc có khoảng cách lớn nhất tới trạm gần nhất sẽ nằm ở vị trí mà khoảng cách tới hai trạm $P_1$ và $P_2$ là bằng nhau. Ta giải phương trình:
+$$d(X, P_1) = d(X, P_2) \implies x^2 = (x - 11)^2 + 1$$
+$$x^2 = x^2 - 22x + 121 + 1 \implies 22x = 122 \implies x = \frac{122}{22} = \frac{61}{11} \approx 5.545455$$
+
+Vì $0 \le x \approx 5.545455 \le 10$ nên điểm $X$ này thực sự nằm trên đường cao tốc.
+Tại điểm $X$ này, khoảng cách tới trạm gần nhất đạt cực đại và bằng:
+$$d(X, P_1) = \frac{61}{11} \approx 5.545455$$
+Đây chính là khoảng cách lớn nhất cần tìm để mọi điểm trên đường cao tốc đều được phủ sóng.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Những Chú Bò Nổi Giận}{USACO}
+
+Bessie đang thiết kế một trò chơi điện tử mà cô tin rằng sẽ là một cú hit lớn tiếp theo: ``Những Chú Bò Nổi Giận'' (Angry Cows). Ý tưởng của trò chơi (hoàn toàn do cô tự nghĩ ra) là người chơi sẽ dùng súng cao su bắn những chú bò vào một bối cảnh một chiều, nơi có các cuộn cỏ khô nằm ở các vị trí khác nhau trên một trục tọa độ. Mỗi chú bò khi tiếp đất sẽ phát nổ, phá hủy các cuộn cỏ khô ở gần vị trí tiếp đất. Mục tiêu của trò chơi là dùng một số chú bò để phá hủy toàn bộ các cuộn cỏ khô.
+
+Có $N$ cuộn cỏ khô nằm ở các vị trí nguyên phân biệt $x_1, x_2, \dots, x_N$ trên trục tọa độ. Nếu một chú bò được bắn với sức mạnh $R$ và tiếp đất tại vị trí $x$, nó sẽ tạo ra một vụ nổ có ``bán kính $R$'', phá hủy tất cả các cuộn cỏ khô nằm trong đoạn $[x-R, x+R]$.
+
+Người chơi có tổng cộng $K$ chú bò để bắn, mỗi chú bò đều có cùng sức mạnh $R$. Hãy xác định giá trị nguyên nhỏ nhất của $R$ sao cho có thể sử dụng $K$ chú bò này để phá hủy mọi cuộn cỏ khô trong bối cảnh.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $N$ và $K$.
+
+$N$ dòng tiếp theo, mỗi dòng chứa một số nguyên biểu diễn tọa độ của một cuộn cỏ khô $x_i$.
+
+\section*{Dữ liệu ra}
+In ra giá trị nguyên nhỏ nhất của $R$ để có thể bắn $K$ chú bò và phá hủy tất cả các cuộn cỏ khô.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le N \le 50,000$
+    \item $1 \le K \le 10$
+    \item $0 \le x_i \le 1,000,000,000$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
 7 2
-5 1
-2 4
-6 5
-\end{lstlisting}
-
-
-\textbf{Output}
-
-\begin{lstlisting}
-1
-4
-12
-9
-30
-26
-17
-\end{lstlisting}
-
-
-\explanation
-Trong ví dụ thứ nhất, việc không thực hiện thao tác nào là tối ưu, do đó đáp án là $1$.
-
-Trong ví dụ thứ hai, chúng ta có:
-\begin{itemize}
-    \item $f(1) = \text{MEX}(\{p_1\}) = \text{MEX}(\{1\}) = 0$
-    \item $f(2) = \text{MEX}(\{p_1, p_2\}) = \text{MEX}(\{1, 0\}) = 2$
-    \item $f(3) = \text{MEX}(\{p_1, p_3\}) = \text{MEX}(\{1, 2\}) = 0$
-\end{itemize}
-
-Và chúng ta có các lựa chọn sau:
-\begin{enumerate}
-    \item Không thực hiện thao tác nào, tổng $\sum_{v = 1}^n f(v) = 2$.
-    \item Thực hiện thao tác trên đỉnh $1$ sẽ gán $f(1) = 0$ cho $p_1$, làm thay đổi $f(1), f(2), f(3)$ thành $1$, dẫn đến $\sum_{v = 1}^n f(v) = 3$.
-    \item Thực hiện thao tác trên đỉnh $2$ sẽ gán $f(2) = 2$ cho $p_2$, làm thay đổi $f(2)$ thành $0$, dẫn đến $\sum_{v = 1}^n f(v) = 0$.
-    \item Thực hiện thao tác trên đỉnh $3$ sẽ gán $f(3) = 0$ cho $p_3$, làm thay đổi $f(3)$ thành $2$, dẫn đến $\sum_{v = 1}^n f(v) = 4$.
-\end{enumerate}
-
-Vậy đáp án lớn nhất là $4$, thu được bằng cách thực hiện thao tác trên đỉnh $3$.
-
-\newpage
-\problem{C. Square Subsets}{Codeforces - 895C}
-
-\section*{Đề bài}
-Petya lại đi học muộn. Thầy giáo đã giao cho cậu ấy một bài tập thêm. Cho một mảng $a$, Petya cần tìm số cách khác nhau để chọn ra một tập con khác rỗng gồm các phần tử từ mảng sao cho tích của chúng bằng với bình phương của một số nguyên nào đó.
-
-Hai cách chọn được coi là khác nhau nếu tập hợp các chỉ số của các phần tử được chọn ở những cách này là khác nhau.
-
-Vì đáp số có thể rất lớn, bạn nên tìm đáp án theo modulo $10^9+7$.
-
-\section*{Dữ liệu vào}
-- Dòng đầu tiên chứa một số nguyên $n$ ($1 \le n \le 10^5$) — số lượng phần tử của mảng.
-- Dòng thứ hai chứa $n$ số nguyên $a_i$ ($1 \le a_i \le 70$) — các phần tử của mảng.
-
-\section*{Kết quả}
-- In ra một số nguyên duy nhất — số cách khác nhau để chọn một số phần tử sao cho tích của chúng là một số chính phương, lấy modulo $10^9+7$.
-
-\section*{Ví dụ}
-
-
-\begin{inputbox}4
-1 1 1 1
-\end{inputbox}
-\begin{outputbox}15
-\end{outputbox}
-
-
-\begin{inputbox}4
-2 2 2 2
-\end{inputbox}
-\begin{outputbox}7
-\end{outputbox}
-
-
-\begin{inputbox}5
-1 2 4 5 8
-\end{inputbox}
-\begin{outputbox}7
-\end{outputbox}
-
-
-
-\section*{Giải thích}
-\begin{itemize}
-    \item \textbf{Ví dụ 1:} Mảng $a = [1, 1, 1, 1]$. Tích của bất kỳ tập con khác rỗng nào cũng đều bằng $1 = 1^2$.
-Số lượng tập con khác rỗng có thể chọn là $2^4 - 1 = 16 - 1 = 15$.
-Do đó, có $15$ cách chọn thoả mãn.
-
-    \item \textbf{Ví dụ 2:} Mảng $a = [2, 2, 2, 2]$. Để tích là một số chính phương, ta cần chọn một số lượng chẵn các số $2$.
-    \begin{itemize}
-        \item Số cách chọn 2 phần tử $2$: $\binom{4}{2} = 6$. Tích là $4 = 2^2$.
-        \item Số cách chọn 4 phần tử $2$: $\binom{4}{4} = 1$. Tích là $16 = 4^2$.
-    \end{itemize}
-    Tổng cộng có $6 + 1 = 7$ cách.
-
-    \item \textbf{Ví dụ 3:} Mảng $a = [1, 2, 4, 5, 8]$. Ta có thể phân tích các phần tử ra thừa số nguyên tố:
-    \begin{itemize}
-        \item $1 = 1$
-        \item $2 = 2^1$
-        \item $4 = 2^2$
-        \item $5 = 5^1$
-        \item $8 = 2^3$
-    \end{itemize}
-    Để tích là một số chính phương, số mũ của các thừa số nguyên tố trong tích phải là số chẵn.
-    Các tập con có tích là số chính phương bao gồm:
-    \begin{itemize}
-        \item $\{1\}$ (tích $1 = 1^2$)
-        \item $\{4\}$ (tích $4 = 2^2$)
-        \item $\{1, 4\}$ (tích $4 = 2^2$)
-        \item $\{2, 8\}$ (tích $16 = 4^2$)
-        \item $\{1, 2, 8\}$ (tích $16 = 4^2$)
-        \item $\{4, 2, 8\}$ (tích $64 = 8^2$)
-        \item $\{1, 4, 2, 8\}$ (tích $64 = 8^2$)
-    \end{itemize}
-    Tổng cộng có $7$ tập con thỏa mãn. (Phần tử $5$ có bậc lẻ nên bất kỳ tập con nào chứa $5$ sẽ không thể có tích là số chính phương).
-\end{itemize}
-
-\newpage
-\problem{F. The Cake Is a Lie}{Codeforces - 2232F}
-
-\section*{Đề bài}
-Để kết thúc bữa tiệc, Alice quyết định nấu một số chiếc bánh kếp cho bạn bè của mình.
-
-Alice có $n$ chiếc bánh kếp chưa nấu chín nhưng chỉ có $2$ cái chảo. Ban đầu, $\min(n, 2)$ chiếc bánh kếp đầu tiên được đặt trên chảo và tất cả các chiếc bánh kếp đều có độ chín bằng $0$.
-
-Để nấu bánh kếp, Alice có thể thực hiện $2$ thao tác sau với số lần tùy ý:
-\begin{itemize}
-    \item Nấu hai chiếc bánh trên chảo trong $1$ phút. Độ chín của chiếc bánh trên chảo thứ nhất tăng thêm $a$, và độ chín của chiếc bánh trên chảo thứ hai tăng thêm $b$.
-    \item Dọn (lấy ra) chiếc bánh thứ nhất, di chuyển chiếc bánh thứ hai sang chảo thứ nhất, và thêm một chiếc bánh kếp mới chưa nấu vào chảo thứ hai (nếu còn chiếc bánh nào hoàn toàn chưa nấu). Lưu ý rằng thao tác này không tốn thời gian, và có thể được thực hiện nhiều lần liên tiếp.
-\end{itemize}
-
-Lưu ý rằng nếu chỉ còn lại một chiếc bánh, nó sẽ nằm ở chảo thứ nhất, nhận thêm $a$ độ chín mỗi phút cho đến khi Alice quyết định dọn nó.
-
-Một chiếc bánh kếp được nấu chín hoàn hảo khi và chỉ khi độ chín của nó bằng chính xác $k$.
-
-Giúp Alice tìm số lượng bánh kếp chín hoàn hảo tối đa mà cô ấy có thể dọn.
-
-\section*{Dữ liệu vào}
-Mỗi test bao gồm nhiều test case. Dòng đầu tiên chứa số lượng test case $t$ ($1 \le t \le 1000$). Phần mô tả các test case theo sau.
-
-Dòng duy nhất trong mỗi test case chứa 4 số nguyên $n$, $a$, $b$, và $k$ ($1 \le n, a, b, k \le 10^9$) - số lượng bánh kếp Alice có, lượng độ chín chiếc bánh ở chảo thứ nhất tăng thêm sau mỗi phút, lượng độ chín chiếc bánh ở chảo thứ hai tăng thêm sau mỗi phút, và lượng độ chín cần thiết để một chiếc bánh được nấu chín hoàn hảo.
-
-\section*{Dữ liệu ra}
-Với mỗi test case, in ra số lượng bánh kếp chín hoàn hảo tối đa mà Alice có thể làm.
-
-\section*{Ví dụ}
-
-\begin{inputbox}
-7
-17 1 1 1
-123456789 987 654 321
-3 11 37 111111
-987654321 1 2 123456789
-100 1 2 1
-100 1 2 2
-1 1 1 1
-\end{inputbox}
-\begin{outputbox}
-17
-0
-2
-987654320
-50
-67
-1
-\end{outputbox}
-
-
-\explanation
-Gọi $x_i$ là số phút chiếc bánh kếp thứ $i$ được nấu trên chảo thứ nhất.
-Khi đó, độ chín của chiếc bánh thứ $i$ (với $i \ge 2$) sẽ là:
-\[ C_i = b \cdot x_{i-1} + a \cdot x_i \]
-Riêng chiếc bánh đầu tiên: $C_1 = a \cdot x_1$.
-
-Chúng ta muốn tối đa hóa số lượng bánh kếp có $C_i = k$.
-Mỗi chiếc bánh đạt độ chín hoàn hảo tương đương với một phương trình:
-$b \cdot x_{i-1} + a \cdot x_i = k$ (với điều kiện $x_{i-1}, x_i \ge 0$).
-
-Nếu xem mỗi giá trị $x \ge 0$ là một đỉnh của đồ thị, và có cung có hướng $u \to v$ nếu $b \cdot u + a \cdot v = k$, đồ thị này sẽ bao gồm các đường đi rời rạc hoặc các chu trình, vì mỗi đỉnh có bậc vào và bậc ra tối đa là 1. Một chuỗi các chiếc bánh liên tiếp đạt độ chín hoàn hảo sẽ tương ứng với một đường đi trên đồ thị này. 
-
-Giả sử chúng ta tìm được đường đi dài nhất trên đồ thị có số đỉnh là $L_{max}$. Mỗi khi sử dụng đường đi này, chúng ta tiêu tốn $L_{max}$ chiếc bánh kếp và thu được $L_{max} - 1$ chiếc bánh hoàn hảo. Riêng chiếc bánh đầu tiên có thể cho thêm 1 chiếc bánh hoàn hảo nếu chúng ta bắt đầu tại $x_1 = k/a$ (khi $k$ chia hết cho $a$). Gọi $L_0$ là độ dài của đường đi bắt đầu từ đỉnh $k/a$ ($L_0 = 0$ nếu $k$ không chia hết cho $a$).
-
-Công thức tính số lượng bánh hoàn hảo tối đa là:
-\[ \text{Ans} = n - \left\lceil \frac{\max(0, n - L_0)}{L_{max}} \right\rceil \]
-(Lưu ý: Nếu $L_{max} = \infty$, nghĩa là có chu trình, $\text{Ans} = n$ nếu $L_0 = \infty$, ngược lại $\text{Ans} = n - 1$).
-
-Đặc điểm của đồ thị trong bài:
-\begin{itemize}
-    \item Nếu $a = b$: Nếu $k$ chia hết cho $a$, ta có chu trình $0 \leftrightarrow k/a$, do đó $L_{max} = \infty$ và $L_0 = \infty$. Ngược lại, đồ thị không có cung nào, $L_{max} = 0, L_0 = 0$.
-    \item Nếu $a \neq b$: Đồ thị không có chu trình. Độ dài đường đi lớn nhất $L_{max}$ rất nhỏ ($L_{max} \le \log k \le 40$). Ta có thể tính $L_0$ bằng cách mô phỏng trực tiếp từ đỉnh $k/a$. Để tìm $L_{max}$, ta có thể thử duyệt qua mọi độ dài $L \ge 1$ để kiểm tra sự tồn tại đường đi hợp lệ.
-\end{itemize}
-
-\textbf{Phân tích từng bước cho các Test Cases:}
-\begin{itemize}
-    \item \textbf{Test case 1:} $n=17, a=1, b=1, k=1$. Có $a=b=1$ và $k$ chia hết cho $a$. Chu trình tạo ra là $x_i = 1, 0, 1, 0 \dots$ lặp lại vô hạn $\implies L_0 = \infty, L_{max} = \infty$. Kết quả: $17 - \lceil \max(0, 17-\infty)/\infty \rceil = 17 - 0 = 17$.
-    \item \textbf{Test case 2:} $n=123456789, a=987, b=654, k=321$. Phương trình $654 x_{i-1} + 987 x_i = 321$ vô nghiệm với số tự nhiên $\implies L_0 = 0, L_{max} = 0$. Kết quả: 0.
-    \item \textbf{Test case 3:} $n=3, a=11, b=37, k=111111$. Tính $L_0$: bắt đầu tại $k/a = 10101$, đỉnh tiếp theo là $(111111 - 37 \times 10101) / 11 < 0 \implies L_0 = 1$. Đường đi dài nhất trên đồ thị là $3003 \to 0 \to 10101 \implies L_{max} = 3$. Kết quả: $3 - \lceil (3 - 1)/3 \rceil = 2$.
-    \item \textbf{Test case 4:} $n=987654321, a=1, b=2, k=123456789$. $k$ chia hết cho $a+b = 3$, điểm bất động $x^* = 123456789 / 3 = 41152263$. Đồ thị có một tự vòng (chu trình) tại đỉnh $x^* \implies L_{max} = \infty$. Bắt đầu từ $k/a$ có $L_0 = 1$. Kết quả: $n - \lceil (n-1)/\infty \rceil = n - 1 = 987654320$.
-    \item \textbf{Test case 5:} $n=100, a=1, b=2, k=1$. Bắt đầu từ $k/a = 1 \implies L_0 = 1$. Cạnh hợp lệ duy nhất là $0 \to 1 \implies L_{max} = 2$. Kết quả: $100 - \lceil (100 - 1)/2 \rceil = 50$.
-    \item \textbf{Test case 6:} $n=100, a=1, b=2, k=2$. Bắt đầu từ $k/a = 2 \implies L_0 = 1$. Đường đi dài nhất là $1 \to 0 \to 2 \implies L_{max} = 3$. Kết quả: $100 - \lceil 99/3 \rceil = 67$.
-\end{itemize}
-
-\newpage
-\problem{E. Snaking Arrangement}{Codeforces - 2232E}
-
-\section*{Đề bài}
-Đã đến lúc cho ngôi sao của buổi tiệc: một chiếc bánh kem khổng lồ có kích thước $n \times n$.
-
-Alice và các bạn muốn trang trí chiếc bánh bằng kem tươi có hình dạng những con rắn. Một con rắn có kích thước $k$ được định nghĩa là một đường đi có độ dài $k$ bắt đầu từ một ô của chiếc bánh và chỉ đi xuống dưới hoặc sang phải.
-
-Nhờ việc nghiên cứu kỹ lưỡng về bánh kem, Alice biết rằng cách tốt nhất để trang trí chiếc bánh này là đặt $n$ con rắn sao cho con rắn thứ $i$ có kích thước là $2 \cdot i - 1$. Cô ấy đã chuẩn bị sẵn tất cả kem tươi; tuy nhiên, một vài người bạn của cô quá hào hứng và đã bắt đầu đặt vài con rắn lên chiếc bánh trước khi Alice kịp lên kế hoạch trang trí cụ thể.
-
-May mắn thay, Alice nhận ra rằng việc trang trí chiếc bánh vẫn có thể thực hiện được. Hãy giúp cô ấy tìm số cách trang trí chiếc bánh mà không cần di chuyển bất kỳ con rắn nào các bạn của cô đã đặt. Vì số cách có thể rất lớn, hãy in ra đáp án theo modulo $10^9 + 7$.
-
-Hai cấu hình được coi là khác nhau nếu có ít nhất một ô vuông bị chiếm bởi một con rắn khác.
-
-\section*{Dữ liệu vào}
-Mỗi test bao gồm nhiều test cases. Dòng đầu tiên chứa số lượng test cases $t$ ($1 \le t \le 1000$). Mô tả của các test cases như sau.
-
-Dòng đầu tiên của mỗi test case chứa hai số nguyên $n$ và $k$ ($1 \le n \le 5000$, $0 \le k \le n$) — kích thước của chiếc bánh và số lượng con rắn mà các bạn của cô đã đặt.
-
-$2 \cdot k$ dòng tiếp theo chứa thông tin về $k$ con rắn đã được đặt. Mỗi cặp dòng liên tiếp chứa thông tin về một con rắn được đặt theo định dạng sau:
-\begin{itemize}
-    \item Dòng thứ nhất chứa số nguyên $s$ ($1 \le s \le 2n-1$, $s$ là số lẻ) — kích thước của con rắn.
-    \item Dòng thứ hai chứa $r$, $c$ ($1 \le r, c \le n$) — hàng và cột bắt đầu của con rắn. Tiếp theo là một xâu độ dài $s-1$ chỉ chứa các chữ cái \texttt{R} và \texttt{D}, trong đó \texttt{R} có nghĩa là ô tiếp theo nằm bên phải ô hiện tại, và \texttt{D} có nghĩa là ô tiếp theo nằm bên dưới ô hiện tại. Lưu ý rằng nếu $s = 1$, xâu này sẽ rỗng.
-\end{itemize}
-
-Đảm bảo rằng không có hai con rắn nào đè lên nhau, không có hai con rắn nào có cùng kích thước và mọi con rắn đều nằm gọn trong phạm vi của chiếc bánh.
-
-Đảm bảo rằng đáp án cho mỗi test case luôn lớn hơn không.
-
-Đảm bảo rằng tổng của $n$ qua tất cả các test cases không vượt quá $5000$, và tổng của $s$ qua tất cả các test cases không vượt quá $4 \cdot 10^5$.
-
-\section*{Kết quả}
-Đối với mỗi test case, in ra một số nguyên: số cách mà Alice có thể trang trí chiếc bánh theo modulo $10^9 + 7$.
-
-\section*{Ví dụ}
-
-\begin{inputbox}
-5
-3 1
-5
-1 1 RDRD
-4 1
-1
-3 2
-3 1
-5
-1 1 RRDD
-3 1
-3
-2 1 DR
-4567 0
-\end{inputbox}
-\begin{outputbox}
-1
-6
-2
-2
-833729690
-\end{outputbox}
-
-
-\section*{Giải thích}
-\begin{itemize}
-    \item \textbf{Test case 1:} $n = 3, k = 1$. Có $n=3$ con rắn cần đặt với kích thước lần lượt là $1, 3, 5$. Con rắn đã được đặt có kích thước $s=5$, xuất phát tại $(1, 1)$ và di chuyển theo đường \texttt{RDRD} qua các ô $(1, 1) \to (1, 2) \to (2, 2) \to (2, 3) \to (3, 3)$. Các ô còn trống là $(1, 3), (2, 1), (3, 1), (3, 2)$. Con rắn kích thước 3 bắt buộc phải điền vào $(2, 1) \to (3, 1) \to (3, 2)$. Con rắn kích thước 1 điền vào ô $(1, 3)$. Chỉ có duy nhất $1$ cách sắp xếp.
-    \item \textbf{Test case 2:} $n = 4, k = 1$. Con rắn đã đặt có kích thước $s=1$ nằm ở vị trí $(3, 2)$. Các con rắn cần đặt có kích thước $3, 5, 7$. Có tổng cộng $6$ cách hợp lệ để xếp các con rắn này vào phần còn lại của chiếc bánh.
-    \item \textbf{Test case 3:} $n = 3, k = 1$. Con rắn kích thước $5$ bắt đầu tại $(1, 1)$ và đi theo đường \texttt{RRDD} qua $(1, 1) \to (1, 2) \to (1, 3) \to (2, 3) \to (3, 3)$. Các ô trống còn lại tạo thành hình vuông $2 \times 2$ ở góc dưới bên trái gồm các ô $(2, 1), (2, 2), (3, 1), (3, 2)$. Con rắn kích thước $3$ có thể đi $(2, 1) \to (3, 1) \to (3, 2)$ và con rắn kích thước $1$ nằm ở $(2, 2)$, hoặc con rắn kích thước $3$ đi $(2, 1) \to (2, 2) \to (3, 2)$ và kích thước $1$ nằm ở $(3, 1)$. Có $2$ cách sắp xếp.
-    \item \textbf{Test case 4:} $n = 3, k = 1$. Con rắn kích thước $3$ xuất phát tại $(2, 1)$, đi theo đường \texttt{DR} qua $(2, 1) \to (3, 1) \to (3, 2)$. Các con rắn cần đặt có kích thước $1$ và $5$. Con rắn kích thước $5$ có độ dài lớn nhất nên bắt buộc phải nằm trên đường đi từ $(1, 1)$ đến $(3, 3)$. Nó có thể đi theo đường $(1, 1) \to (1, 2) \to (1, 3) \to (2, 3) \to (3, 3)$ (để lại $(2, 2)$ cho rắn kích thước $1$), hoặc $(1, 1) \to (1, 2) \to (2, 2) \to (2, 3) \to (3, 3)$ (để lại $(1, 3)$ cho rắn kích thước $1$). Có $2$ cách sắp xếp.
-    \item \textbf{Test case 5:} Chiếc bánh có kích thước lớn ($n = 4567$) và không có con rắn nào được đặt trước. Số lượng cách trang trí chiếc bánh là rất lớn, và kết quả được in ra là phần dư sau khi chia cho $10^9 + 7$.
-\end{itemize}
-
-\newpage
-\problem{D. Chiếc Bánh Tầng Ma Thuật}{Codeforces - 2232D}
-
-\section*{Đề bài}
-Alice đã hoàn thành một chiếc bánh tầng ma thuật với $n$ tầng ma thuật, trong đó mỗi tầng nhỏ hơn tất cả các tầng bên dưới nó (tức là tầng thứ nhất là nhỏ nhất, tầng thứ $n$ là lớn nhất). Bây giờ, cô ấy cần bạn giúp vận chuyển nó từ nhà bếp của cô ấy đến địa điểm tổ chức tiệc. Vì không thể di chuyển toàn bộ chiếc bánh cùng một lúc, cô ấy cũng chuẩn bị một nhà kho cho bạn để tạo điều kiện thuận lợi cho quá trình vận chuyển.
-
-Vì chiếc bánh là ma thuật, tầng bánh thứ $i$ có thể di chuyển được khi và chỉ khi có chính xác $a_i$ tầng bánh ở phía trên nó.
-
-Trong mỗi lần di chuyển, bạn có thể chọn \textbf{chính xác một} tầng bánh có thể di chuyển được từ bất kỳ vị trí nào và di chuyển nó lên trên chiếc bánh tầng ở bất kỳ vị trí nào khác. Tuy nhiên, để bảo tồn cấu trúc của chiếc bánh, tầng được di chuyển phải nằm trên tầng lớn hơn nó một cách nghiêm ngặt nếu có một chiếc bánh tầng ở điểm đến. Ví dụ, bạn không thể di chuyển một tầng có kích thước $4$ lên trên một vị trí đã có một tầng có kích thước $3$.
-
-Bữa tiệc sắp bắt đầu, vì vậy chúng ta cần di chuyển nhanh chóng. Hãy giúp Alice vận chuyển chiếc bánh đến bữa tiệc trong vòng $2^n$ lần di chuyển hoặc thông báo rằng điều đó là không thể.
-
-\section*{Dữ liệu vào}
-Mỗi bài kiểm tra chứa nhiều test case. Dòng đầu tiên chứa số lượng test case $t$ ($1 \le t \le 10000$). Mô tả của các test case theo sau.
-
-Dòng đầu tiên của mỗi test case chứa một số nguyên $n$ ($1 \le n \le 20$) — số tầng trong chiếc bánh tầng ma thuật.
-
-Dòng thứ hai của mỗi test case chứa $n$ số nguyên $a_1, a_2, \ldots, a_n$ ($0 \le a_i \le n$), biểu thị có bao nhiêu tầng bánh cần phải ở trên tầng thứ $i$ để nó có thể di chuyển được.
-
-Đảm bảo rằng tổng của $2^n$ trên tất cả các test case không vượt quá $2^{20}$.
-
-\section*{Dữ liệu ra}
-Đối với mỗi test case, nếu không thể di chuyển chiếc bánh tầng ma thuật đến địa điểm tổ chức tiệc, in ra \texttt{NO}.
-
-Nếu không, trên dòng đầu tiên, in ra \texttt{YES}.
-
-Sau đó, trên dòng tiếp theo, in ra một số nguyên $k$ ($0 \le k \le 2^n$) — số lần di chuyển bạn thực hiện để vận chuyển chiếc bánh.
-
-Trong $k$ dòng tiếp theo, in ra các số nguyên $\mathrm{id}$, $\mathrm{from}$, $\mathrm{to}$ ($1 \le \mathrm{id} \le n$, $1 \le \mathrm{from}, \mathrm{to} \le 3$): tầng bánh bạn muốn di chuyển, vị trí hiện tại của nó, và điểm đến của nó, trong đó $1$ đại diện cho nhà bếp của Alice, $2$ đại diện cho nhà kho của Alice, và $3$ đại diện cho địa điểm tổ chức tiệc.
-
-\section*{Ví dụ}
-
-\begin{inputbox}
-3
-3
-0 0 0
-3
-0 1 2
-3
-2 2 2
-\end{inputbox}\begin{outputbox}
-YES
-7
-1 1 3
-2 1 2
-1 3 2
-3 1 3
-1 2 1
-2 2 3
-1 1 3
-YES
-3
-3 1 3
-2 1 3
-1 1 3
-NO
-\end{outputbox}%
-
-
-\section*{Giải thích}
-\begin{itemize}
-    \item \textbf{Test case 1:} $n = 3$, $a = [0, 0, 0]$. Mỗi tầng yêu cầu $0$ tầng ở trên mới di chuyển được (nghĩa là nó phải nằm trên cùng). Đây chính là bài toán Tháp Hà Nội cổ điển. Các thao tác di chuyển lần lượt như sau (tốn $2^3 - 1 = 7$ bước):
-    \begin{enumerate}
-        \item Chuyển tầng 1 từ nhà bếp (1) sang địa điểm tiệc (3).
-        \item Chuyển tầng 2 từ nhà bếp (1) sang nhà kho (2).
-        \item Chuyển tầng 1 từ địa điểm tiệc (3) sang nhà kho (2).
-        \item Chuyển tầng 3 từ nhà bếp (1) sang địa điểm tiệc (3).
-        \item Chuyển tầng 1 từ nhà kho (2) sang nhà bếp (1).
-        \item Chuyển tầng 2 từ nhà kho (2) sang địa điểm tiệc (3).
-        \item Chuyển tầng 1 từ nhà bếp (1) sang địa điểm tiệc (3).
-    \end{enumerate}
-
-    \item \textbf{Test case 2:} $n = 3$, $a = [0, 1, 2]$. Ban đầu ở vị trí 1, chiếc bánh có tầng 1 trên cùng, tầng 2 ở giữa, tầng 3 dưới cùng.
-    \begin{itemize}
-        \item Tầng 3 có chính xác 2 tầng ở trên nó (tầng 1 và 2), thoả mãn $a_3=2$, nên tầng 3 có thể di chuyển ngay. Chuyển tầng 3 từ nhà bếp (1) sang địa điểm tiệc (3). Kích thước 3 là lớn nhất, đặt tại vị trí trống là hợp lệ.
-        \item Ở vị trí 1 còn lại tầng 1 trên tầng 2. Tầng 2 có chính xác 1 tầng ở trên nó, thoả mãn $a_2=1$. Chuyển tầng 2 từ nhà bếp (1) sang địa điểm tiệc (3). Đặt tầng 2 lên tầng 3 là hợp lệ.
-        \item Ở vị trí 1 còn lại tầng 1. Tầng 1 có 0 tầng ở trên, thoả mãn $a_1=0$. Chuyển tầng 1 từ nhà bếp (1) sang địa điểm tiệc (3). Đặt tầng 1 lên tầng 2 là hợp lệ.
-    \end{itemize}
-    Toàn bộ quá trình tốn 3 bước di chuyển.
-
-    \item \textbf{Test case 3:} $n = 3$, $a = [2, 2, 2]$. Ở trạng thái ban đầu, chỉ có tầng 3 là có đủ 2 tầng ở trên và có thể di chuyển. Nếu ta di chuyển tầng 3, ở vị trí 1 sẽ chỉ còn 2 tầng (tầng 1 và 2), cả hai đều không thể thỏa mãn điều kiện có 2 tầng ở trên nó. Do đó, không thể vận chuyển toàn bộ chiếc bánh, và kết quả là \texttt{NO}.
-\end{itemize}
-
-\newpage
-\problem{C2. Sắp Xếp Chỗ Ngồi (Bản Khó)}{Codeforces - 2232C2}
-
-\section*{Đề bài}
-Đây là phiên bản Khó của bài toán. Sự khác biệt giữa các phiên bản là ở phiên bản này, giới hạn của $n$, $x$, $s$, $t$ lớn hơn. Bạn chỉ có thể hack nếu bạn đã giải được tất cả các phiên bản của bài toán này.
-
-Bạn bè của Alice đã đến bữa tiệc, và bây giờ họ đang xếp hàng để vào bữa tiệc.
-
-Có $x$ cái bàn tại bữa tiệc, mỗi bàn có $s$ chỗ ngồi. Mỗi chỗ ngồi chỉ có thể chứa một người.
-
-Mỗi người bạn có một trong ba tính cách sau:
-\begin{itemize}
-    \item Người hướng nội (\texttt{I}) phải ngồi ở một bàn trống.
-    \item Người hướng ngoại (\texttt{E}) phải ngồi ở một bàn không trống.
-    \item Người hướng trung (\texttt{A}) có thể ngồi ở bất kỳ bàn nào.
-\end{itemize}
-
-Ban đầu, mọi chỗ ngồi đều trống. Tuy nhiên, do Alice mải ăn bánh, bạn bè của cô ấy đã tự động xếp thành một hàng và Alice không thể thay đổi thứ tự của họ. Đối với mỗi người trong hàng, Alice phải xếp họ vào một bàn hoặc đuổi họ ra khỏi bữa tiệc. Mỗi người được xếp chỗ trước khi người tiếp theo được phân bàn.
-
-Muốn có thật nhiều niềm vui tại bữa tiệc, Alice cần xếp chỗ cho càng nhiều người càng tốt. Hãy giúp cô ấy tìm số lượng bạn bè tối đa mà cô ấy có thể xếp chỗ tại bữa tiệc.
-
-Lưu ý rằng một khi một người bạn đã được xếp chỗ, họ không được phép di chuyển ngay cả khi họ không còn ngồi theo đúng tính cách của họ nữa.
-
-\section*{Dữ liệu vào}
-Mỗi test bao gồm nhiều test cases. Dòng đầu tiên chứa số lượng test cases $t$ ($1 \le t \le 10^4$). Theo sau là mô tả của các test cases.
-
-Dòng đầu tiên của mỗi test case chứa ba số nguyên $n$, $x$, và $s$ ($1 \le n, x, s \le 2\cdot 10^5$) — lần lượt là số lượng bạn bè của Alice, số lượng bàn, và số chỗ ngồi mỗi bàn. 
-
-Dòng thứ hai chứa một chuỗi $u$ độ dài $n$ chỉ bao gồm các chữ cái \texttt{A}, \texttt{E}, và \texttt{I}, lần lượt đại diện cho người hướng trung, người hướng ngoại và người hướng nội.
-
-Dữ liệu đảm bảo tổng của $n$ trên tất cả các test cases không vượt quá $2 \cdot 10^5$.
-
-\section*{Dữ liệu ra}
-Đối với mỗi test case, in ra một số nguyên: số người tối đa được xếp chỗ.
-
-\section*{Ví dụ}
-
-
-\begin{inputbox}6
-5 2 2
-EIAIE
-20 5 5
-AEIEEEEIEAAEIEEEEIEA
-8 2 4
-AAAAAIEE
-8 4 2
-AIEAEAAI
-8 3 3
-AIEAEAAI
-4 2 2
-IAEE
-\end{inputbox}
-\begin{outputbox}4
 20
-7
-7
-7
-4
+25
+18
+8
+10
+3
+1
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+5
+\end{lstlisting}
 \end{outputbox}
 
+\explanation
+Chúng ta có 7 cuộn cỏ khô tại các vị trí $20, 25, 18, 8, 10, 3, 1$. Có 2 chú bò để bắn ($K=2$).
 
-
-\section*{Giải thích}
-Trong test case đầu tiên, có $2$ bàn, mỗi bàn có $2$ chỗ ngồi. Dưới đây là một trong những cách để đạt được số người ngồi tối đa:
+Nếu chúng ta chọn sức mạnh $R = 5$, ta có thể bắn 2 chú bò vào các vị trí 5 và 23.
 \begin{itemize}
-    \item Người thứ nhất là người hướng ngoại. Vì tất cả các bàn đều trống, họ đành phải rời bữa tiệc.
-    \item Người thứ hai là người hướng nội. Alice có thể xếp họ vào bàn thứ nhất, hiện đang trống.
-    \item Người thứ ba là người hướng trung. Alice có thể xếp họ vào bàn thứ nhất.
-    \item Người thứ tư là người hướng nội. Alice có thể xếp họ vào bàn thứ hai, hiện đang trống.
-    \item Người thứ năm là người hướng ngoại. Alice có thể xếp họ vào bàn thứ hai, hiện không trống.
+    \item Chú bò tiếp đất ở vị trí 5 sẽ phá hủy các cuộn cỏ trong đoạn $[5-5, 5+5] = [0, 10]$. Các cuộn cỏ bị phá hủy: $1, 3, 8, 10$.
+    \item Chú bò tiếp đất ở vị trí 23 sẽ phá hủy các cuộn cỏ trong đoạn $[23-5, 23+5] = [18, 28]$. Các cuộn cỏ bị phá hủy: $18, 20, 25$.
 \end{itemize}
-Như vậy, có $4$ người được ngồi tại bữa tiệc. Con số này là tối đa vì bữa tiệc chỉ có tổng cộng $4$ chỗ ngồi.
+Như vậy tất cả 7 cuộn cỏ đều bị phá hủy. Đây là giá trị $R$ nhỏ nhất có thể.
+
 
 \newpage
-\problem{C1. Sắp Xếp Chỗ Ngồi (Phiên bản Dễ)}{Codeforces - 2232C1}
 
-\section*{Đề bài}
-Đây là phiên bản Dễ của bài toán. Điểm khác biệt giữa các phiên bản là ở phiên bản này, giới hạn của $n$, $x$, $s$, $t$ nhỏ hơn. Bạn chỉ có thể hack nếu bạn đã giải được tất cả các phiên bản của bài toán này.
+% ============================================================
 
-Các bạn của Alice đã đến bữa tiệc, và bây giờ họ đang xếp hàng để vào dự tiệc.
+% ── Title page ───────────────────────────────────────────────
 
-Có $x$ cái bàn ở bữa tiệc, mỗi bàn có $s$ chỗ ngồi. Mỗi chỗ ngồi chỉ có thể chứa một người.
 
-Mỗi người bạn có một trong ba tính cách sau:
-\begin{itemize}
-    \item Người hướng nội (\texttt{I}) phải ngồi vào một chiếc bàn trống.
-    \item Người hướng ngoại (\texttt{E}) phải ngồi vào một chiếc bàn không trống.
-    \item Người hướng trung (\texttt{A}) có thể ngồi ở bất kỳ bàn nào.
-\end{itemize}
+% ── Table of contents ────────────────────────────────────────
 
-Ban đầu, mọi chỗ ngồi đều trống. Tuy nhiên, vì Alice đang ăn bánh, các bạn của cô ấy đã xếp thành một hàng, và Alice không thể thay đổi thứ tự của họ. Đối với mỗi người trong hàng, Alice phải xếp họ vào một cái bàn hoặc đuổi họ ra khỏi bữa tiệc. Mỗi người được xếp chỗ trước khi người tiếp theo được phân bàn.
 
-Muốn bữa tiệc thật vui vẻ, Alice cần xếp chỗ cho càng nhiều người càng tốt. Hãy giúp cô ấy tìm số lượng bạn bè tối đa mà cô ấy có thể xếp chỗ trong bữa tiệc.
 
-Lưu ý rằng một khi một người bạn đã ngồi xuống, họ không được phép di chuyển ngay cả khi chỗ ngồi hiện tại không còn phù hợp với tính cách của họ nữa.
+\problem{Problem 1. Load Balancing}{USACO 2016 February Contest, Platinum}
+
+Nông dân John có $N$ con bò, mỗi con đứng ở những vị trí phân biệt $(x_1, y_1) \ldots (x_n, y_n)$ trên một nông trại hai chiều của anh ấy. FJ muốn chia cánh đồng của mình bằng cách xây dựng một hàng rào dài (có thể coi là dài vô tận) theo hướng Bắc - Nam có phương trình $x=a$ ($a$ sẽ là một số chẵn, qua đó đảm bảo anh ấy không xây hàng rào xuyên qua vị trí của bất kỳ con bò nào). Anh ấy cũng muốn xây dựng một hàng rào dài (có thể coi là dài vô tận) theo hướng Đông - Tây có phương trình $y=b$, trong đó $b$ là một số chẵn. Hai hàng rào này cắt nhau tại điểm $(a,b)$, và cùng nhau chia cánh đồng thành bốn khu vực.
+
+FJ muốn chọn $a$ và $b$ sao cho số lượng bò xuất hiện ở bốn khu vực tạo thành tương đối "cân bằng", với không có khu vực nào chứa quá nhiều bò. Gọi $M$ là số lượng bò lớn nhất xuất hiện ở một trong bốn khu vực, FJ muốn làm cho $M$ nhỏ nhất có thể. Hãy giúp anh ấy xác định giá trị nhỏ nhất có thể của $M$.
 
 \section*{Dữ liệu vào}
 \begin{inputbox}
-Mỗi test bao gồm nhiều test case. Dòng đầu tiên chứa số lượng test case $t$. Mô tả của các test case như sau.
+Dòng đầu tiên của dữ liệu vào chứa một số nguyên $N$. 
 
-Dòng đầu tiên của mỗi test case chứa ba số nguyên $n$, $x$, và $s$ – số lượng bạn bè của Alice, số lượng bàn, và số chỗ ngồi trên mỗi bàn.
-
-Dòng thứ hai chứa một xâu $u$ có độ dài $n$ chỉ bao gồm các chữ cái \texttt{A}, \texttt{E}, và \texttt{I}, tương ứng đại diện cho người hướng trung, người hướng ngoại và người hướng nội.
+$N$ dòng tiếp theo, mỗi dòng chứa vị trí của một con bò, xác định bởi các tọa độ $x$ và $y$ của nó.
 \end{inputbox}
 
 \section*{Dữ liệu ra}
 \begin{outputbox}
-Đối với mỗi test case, in ra một số nguyên: số người tối đa được xếp chỗ.
+Bạn cần in ra giá trị nhỏ nhất có thể của $M$ mà FJ có thể đạt được bằng cách định vị các hàng rào của mình một cách tối ưu.
 \end{outputbox}
 
 \section*{Giới hạn}
 \begin{constraintbox}
 \begin{itemize}
-    \item $1 \le t \le 500$
-    \item $1 \le n, x, s \le 3000$
-    \item Tổng của $n$ trong tất cả các test case không vượt quá $3000$.
+    \item $1 \leq N \leq 100,000$
+    \item Các tọa độ $x_i$ và $y_i$ là các số nguyên dương lẻ có giá trị không vượt quá $1,000,000$.
 \end{itemize}
 \end{constraintbox}
-
-\section*{Ví dụ}
-\textbf{Input:}
-\begin{lstlisting}
-6
-5 2 2
-EIAIE
-20 5 5
-AEIEEEEIEAAEIEEEEIEA
-8 2 4
-AAAAAIEE
-8 4 2
-AIEAEAAI
-8 3 3
-AIEAEAAI
-4 2 2
-IAEE
-\end{lstlisting}
-
-\textbf{Output:}
-\begin{lstlisting}
-4
-20
-7
-7
-7
-4
-\end{lstlisting}
-
-\explanation
-Trong test case đầu tiên, có $2$ bàn, mỗi bàn có $2$ chỗ ngồi. Dưới đây là một trong những cách để đạt được số người tối đa được xếp chỗ:
-
-\begin{itemize}
-    \item Người đầu tiên là người hướng ngoại (\texttt{E}). Vì tất cả các bàn đều trống, họ phải rời khỏi bữa tiệc.
-    \item Người thứ hai là người hướng nội (\texttt{I}). Alice có thể xếp họ vào bàn đầu tiên, đang trống.
-    \item Người thứ ba là người hướng trung (\texttt{A}). Alice có thể xếp họ vào bàn đầu tiên.
-    \item Người thứ tư là người hướng nội (\texttt{I}). Alice có thể xếp họ vào bàn thứ hai, đang trống.
-    \item Người thứ năm là người hướng ngoại (\texttt{E}). Alice có thể xếp họ vào bàn thứ hai, lúc này đã không còn trống.
-\end{itemize}
-
-Như vậy, có bốn người được xếp chỗ trong bữa tiệc. Đây là số lượng tối đa vì bữa tiệc chỉ có bốn chỗ ngồi.
-
-\newpage
-\problem{B. Cake Leveling}{Codeforces - 2232B}
-
-\section*{Đề bài}
-Alice đang chuẩn bị một chiếc bánh cho bữa tiệc của mình. Tuy nhiên, cô ấy đang vội nên lớp kem trên mặt bánh không đều. Để giải quyết nhanh vấn đề này, Alice sẽ đặt dao ở một độ cao \textbf{nguyên} nào đó rồi gạt kem từ trái sang phải để làm phẳng mặt kem.
-
-Cụ thể, gọi $a_i$ là độ cao của kem ở vị trí thứ $i$. Giả sử Alice đặt dao ở một độ cao \textbf{nguyên} $h$. Nếu độ cao của kem ở vị trí $i$ lớn hơn $h$, phần kem thừa sẽ bị đẩy sang vị trí $i+1$. Phần kem thừa ở vị trí $n$ sẽ bị đẩy ra khỏi bánh hoàn toàn.
-
-Alice và bạn bè rất thích kem trên bánh. Vì Alice có thể quyết định chỉ phục vụ một phần tiền tố của chiếc bánh thay vì cả chiếc bánh, hãy giúp cô ấy tìm độ cao tối đa của kem có thể đạt được sao cho mặt kem phẳng đối với $i$ vị trí đầu tiên, với mọi $i = 1, 2, \ldots, n$.
-
-\section*{Dữ liệu}
-Mỗi test gồm nhiều test cases. Dòng đầu tiên chứa số lượng test cases $t$ ($1 \le t \le 10^4$). Mô tả của các test cases như sau.
-
-Dòng đầu tiên của mỗi test case chứa một số nguyên $n$ ($2 \le n \le 2\cdot 10^5$) — độ dài của chiếc bánh của Alice.
-
-Dòng thứ hai của mỗi test case chứa $n$ số nguyên $a_1, a_2, \ldots, a_n$ ($1 \le a_i \le 10^9$) — độ cao của kem ở vị trí thứ $i$.
-
-Tổng của $n$ trên tất cả các test cases không vượt quá $2 \cdot 10^5$.
-
-\section*{Kết quả}
-Với mỗi test case, in ra $n$ số nguyên, trong đó số thứ $i$ thể hiện độ cao tối đa của kem có thể đạt được sao cho mặt kem phẳng đối với $i$ vị trí đầu tiên.
-
-\section*{Ví dụ}
-
-\begin{inputbox}5
-3
-4 2 3
-5
-2 3 4 3 2
-5
-3 3 3 1 1
-3
-913764826 346182673 764382516
-8
-6 7 6 7 6 7 6 7
-\end{inputbox}\begin{outputbox}4 3 3 
-2 2 2 2 2 
-3 3 3 2 2 
-913764826 629973749 629973749 
-6 6 6 6 6 6 6 6 
-\end{outputbox}%
-
-
-\section*{Giải thích}
-Giải thích cho test case thứ nhất:
-\begin{itemize}
-    \item Khi $i = 1$, Alice quan tâm đến phần bánh được biểu diễn bằng mảng $[4]$. Vì bánh đã phẳng sẵn, độ cao tối đa của kem là $4$.
-    \item Khi $i = 2$, Alice quan tâm đến phần bánh được biểu diễn bằng mảng $[4, 2]$. Nếu Alice đặt dao ở độ cao $4$, bánh thu được sẽ có độ cao kem là $[4, 2]$, làm cho bánh không phẳng. Tuy nhiên, nếu Alice đặt dao ở độ cao $3$, một đơn vị kem sẽ bị đẩy từ vị trí thứ nhất sang vị trí thứ hai, làm cho bánh thu được có độ cao kem là $[3, 3]$, tức là đã phẳng. Do đó, độ cao tối đa của kem trong khi vẫn giữ phẳng là $3$.
-    \item Khi $i = 3$, nếu Alice đặt dao ở độ cao $4$, độ cao kem thu được sẽ là $[4, 2, 3]$. Tuy nhiên, nếu Alice đặt dao ở độ cao $3$, độ cao kem thu được sẽ là $[3, 3, 3]$. Do đó, độ cao tối đa của kem trong khi vẫn giữ phẳng là $3$.
-\end{itemize}
-
-\newpage
-\problem{Convergence}{Codeforces - 2232A}
-
-\section*{Đề bài}
-Alice đang mời bạn bè đến một bữa tiệc để ăn bánh. Tuy nhiên, mỗi người bạn có thể không ở cùng một địa điểm, do đó mọi người cần phải tập trung tại cùng một địa điểm trước.
-
-Alice có $n$ người bạn, trong đó người bạn thứ $i$ đang ở vị trí $a_i$. Để tập hợp mọi người về cùng một chỗ, Alice phải thực hiện nhiều cuộc gọi nhóm. Thật không may, tín hiệu điện thoại rất yếu, do đó Alice chỉ có thể gọi cho $2$ người khác cùng một lúc.
-
-Là một người tốt, Alice không muốn bạn bè của mình phải đi bộ quá xa. Vì vậy, với mỗi cuộc gọi nhóm gồm người bạn thứ $i$ và người bạn thứ $j$, Alice sẽ bảo cả hai người gặp nhau tại một vị trí nguyên nào đó nằm trong khoảng từ $\min(a_i, a_j)$ đến $\max(a_i, a_j)$ (bao gồm cả hai đầu mút). Sau đó, cả hai sẽ di chuyển đến vị trí đó với tốc độ cực nhanh, đến mức Alice không thể thực hiện bất kỳ cuộc gọi nhóm nào trong lúc họ đang di chuyển. Lưu ý rằng Alice có thể gọi lại cho những người bạn này sau khi họ đã đến vị trí đó.
-
-Bữa tiệc sắp bắt đầu, nên Alice cần thực hiện các cuộc gọi nhóm thật nhanh. Hãy giúp cô ấy tìm số lượng cuộc gọi nhóm tối thiểu cần thực hiện.
-
-\section*{Dữ liệu vào}
-Mỗi test gồm nhiều test cases. Dòng đầu tiên chứa số lượng test cases $t$ ($1 \le t \le 500$). Phần mô tả các test cases theo sau.
-
-Dòng đầu tiên của mỗi test case chứa một số nguyên $n$ ($2 \le n \le 100$) — số lượng bạn bè của Alice.
-
-Dòng thứ hai của mỗi test case chứa $n$ số nguyên $a_1, a_2, \ldots, a_n$ ($1 \le a_i \le 10^9$) — vị trí của những người bạn.
-
-\section*{Dữ liệu ra}
-Với mỗi test case, in ra số lượng cuộc gọi nhóm tối thiểu mà Alice cần thực hiện để tất cả bạn bè của cô ấy tập trung tại cùng một địa điểm.
-
-\section*{Ví dụ}
-
-
-\begin{inputbox}4
-5
-1 2 3 4 5
-5
-1 1 1 2 2
-11
-3 1 4 1 5 9 2 6 5 3 5
-5
-1 2 2 2 2
-\end{inputbox}
-\begin{outputbox}2
-2
-5
-1
-\end{outputbox}
-
-
-
-\section*{Giải thích}
-Trong test case đầu tiên, số lượng cuộc gọi nhóm tối thiểu là $2$. Một cách để tập hợp mọi người tại cùng một vị trí như sau:
-\begin{itemize}
-    \item Gọi cho người bạn thứ $1$ và thứ $4$ và bảo họ di chuyển đến vị trí $3$. Vị trí của họ bây giờ là $[3, 2, 3, 3, 5]$.
-    \item Gọi cho người bạn thứ $2$ và thứ $5$ và bảo họ di chuyển đến vị trí $3$. Vị trí của họ bây giờ là $[3, 3, 3, 3, 3]$.
-\end{itemize}
-
-Trong test case thứ hai, số lượng cuộc gọi nhóm tối thiểu là $2$. Một cách để tập hợp mọi người tại cùng một vị trí như sau:
-\begin{itemize}
-    \item Gọi cho người bạn thứ $1$ và thứ $4$ và bảo họ di chuyển đến vị trí $1$. Vị trí của họ bây giờ là $[1, 1, 1, 1, 2]$.
-    \item Gọi cho người bạn thứ $4$ và thứ $5$ và bảo họ di chuyển đến vị trí $1$. Vị trí của họ bây giờ là $[1, 1, 1, 1, 1]$.
-\end{itemize}
-
-\newpage
-\problem{F. Quadratic Jumps}{Codeforces - 2231F}
-
-\section*{Đề bài}
-Cho hai số nguyên $n$ và $q$. Xét một đồ thị có $n$ đỉnh, trong đó đỉnh $i$ và $j$ được nối với nhau bằng một cạnh khi và chỉ khi khoảng cách giữa chúng $|j - i|$ là một số chính phương$^*$.
-
-Bạn được cho $q$ cặp số $a_i, b_i$. Với mỗi cặp trong số $q$ cặp này, bạn cần tìm khoảng cách ngắn nhất giữa đỉnh $a_i$ và $b_i$ trong đồ thị này. Có thể chứng minh được rằng đồ thị luôn liên thông, do đó khoảng cách giữa $a_i$ và $b_i$ không bao giờ là vô hạn.
-
-$^*$Một số nguyên $x$ được gọi là số chính phương nếu tồn tại một số nguyên $y$ sao cho $x = y^2$.
-
-\section*{Dữ liệu vào}
-Mỗi test gồm nhiều test case. Dòng đầu tiên chứa số lượng test case $t$ ($1 \le t \le 1000$). Tiếp theo là phần mô tả của các test case.
-
-Dòng đầu tiên của mỗi test case chứa hai số nguyên $n$ và $q$ ($2 \le n \le 2 \cdot 10^5$, $1 \le q \le 10^5$) — số đỉnh của đồ thị và số lượng cặp đỉnh cần tìm khoảng cách.
-
-Sau đó, $q$ dòng tiếp theo mô tả các cặp đỉnh cần tìm khoảng cách ngắn nhất. Mỗi cặp được biểu diễn bởi hai số $a, b$ ($1 \leq a < b \leq n$) — số thứ tự của các đỉnh cần tính khoảng cách ngắn nhất giữa chúng.
-
-\begin{constraintbox}
-Tổng của $n$ qua tất cả các test case không vượt quá $2 \cdot 10^5$, và tổng của $q$ qua tất cả các test case không vượt quá $10^5$.
-\end{constraintbox}
-
-\section*{Dữ liệu ra}
-Với mỗi test case, in ra khoảng cách ngắn nhất cho từng cặp đỉnh trong số $q$ truy vấn trên các dòng riêng biệt.
 
 \section*{Ví dụ}
 \begin{inputbox}
-2
-5 4
-1 2
-1 3
-1 4
-1 5
-8 3
-3 7
-2 5
-1 7
+\begin{lstlisting}
+7
+7 3
+5 5
+7 13
+3 1
+11 7
+5 3
+9 1
+\end{lstlisting}
 \end{inputbox}
+
 \begin{outputbox}
-1
+\begin{lstlisting}
 2
-2
-1
-1
-2
-3
+\end{lstlisting}
 \end{outputbox}
 
 \explanation
+Với $N=7$ con bò ở các vị trí: $(7, 3)$, $(5, 5)$, $(7, 13)$, $(3, 1)$, $(11, 7)$, $(5, 3)$ và $(9, 1)$.
 
-\textbf{Test case 1}: Với $n = 5$, các cạnh được tạo ra giữa các đỉnh có chênh lệch là số chính phương (1 hoặc 4):
-\begin{itemize}
-    \item Chênh lệch 1: $(1, 2), (2, 3), (3, 4), (4, 5)$.
-    \item Chênh lệch 4: $(1, 5)$.
-\end{itemize}
-Xét $q=4$ truy vấn:
-\begin{enumerate}
-    \item $1 \to 2$: Có cạnh nối trực tiếp vì $|2 - 1| = 1 = 1^2$. Khoảng cách là 1.
-    \item $1 \to 3$: Đi qua đường đi $1 \to 2 \to 3$. Khoảng cách là 2.
-    \item $1 \to 4$: Đi qua đường đi $1 \to 5 \to 4$ (vì $1 \to 5$ có khoảng cách là 4, $5 \to 4$ có khoảng cách là 1). Khoảng cách là 2.
-    \item $1 \to 5$: Có cạnh nối trực tiếp vì $|5 - 1| = 4 = 2^2$. Khoảng cách là 1.
-\end{enumerate}
+Nếu FJ chọn xây dựng hàng rào dọc với phương trình $x=6$ và hàng rào ngang với phương trình $y=4$. Hai hàng rào này chia mặt phẳng thành 4 khu vực. Ta phân bổ số bò vào 4 khu vực như sau:
 
-\textbf{Test case 2}: Với $n = 8$, các cạnh được tạo ra giữa các đỉnh có chênh lệch là 1 hoặc 4:
 \begin{itemize}
-    \item Chênh lệch 1: $(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8)$.
-    \item Chênh lệch 4: $(1, 5), (2, 6), (3, 7), (4, 8)$.
+    \item Khu vực góc dưới bên trái ($x < 6$ và $y < 4$): Chứa các điểm $(3, 1)$ và $(5, 3)$. Có tổng cộng $2$ con bò.
+    \item Khu vực góc trên bên trái ($x < 6$ và $y > 4$): Chứa điểm $(5, 5)$. Có tổng cộng $1$ con bò.
+    \item Khu vực góc dưới bên phải ($x > 6$ và $y < 4$): Chứa các điểm $(7, 3)$ và $(9, 1)$. Có tổng cộng $2$ con bò.
+    \item Khu vực góc trên bên phải ($x > 6$ và $y > 4$): Chứa các điểm $(7, 13)$ và $(11, 7)$. Có tổng cộng $2$ con bò.
 \end{itemize}
-Xét $q=3$ truy vấn:
-\begin{enumerate}
-    \item $3 \to 7$: Có cạnh nối trực tiếp vì $|7 - 3| = 4 = 2^2$. Khoảng cách là 1.
-    \item $2 \to 5$: Đường đi ngắn nhất là $2 \to 6 \to 5$ hoặc $2 \to 1 \to 5$. Khoảng cách là 2.
-    \item $1 \to 7$: Đường đi ngắn nhất có thể là $1 \to 2 \to 6 \to 7$. Khoảng cách là 3.
-\end{enumerate}
+
+Số lượng bò lớn nhất ở một trong bốn khu vực là $\max(2, 1, 2, 2) = 2$. Do đó, giá trị nhỏ nhất của $M$ có thể đạt được là $2$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Cowdependence}{USACO 2024 December Contest, Gold}
+
+Có $N$ ($1 \leq N \leq 10^5$) con bò của Farmer John đang xếp thành một hàng. Con bò thứ $i$ có nhãn là $a_i$ ($1 \leq a_i \leq N$). Một nhóm bò có thể tạo thành một nhóm bạn nếu chúng đều có cùng một nhãn và mỗi con bò đều cách tất cả các con bò khác trong cùng nhóm tối đa $x$ con bò, trong đó $x$ là một số nguyên trong đoạn $[1, N]$. Mỗi con bò phải thuộc chính xác một nhóm bạn.
+
+Với mỗi $x$ từ $1$ đến $N$, hãy tính số lượng nhóm bạn ít nhất có thể được tạo thành.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa một số nguyên $N$.
+
+Dòng tiếp theo chứa $a_1 \dots a_N$, là nhãn của các con bò.
+
+\section*{Dữ liệu ra}
+Với mỗi $x$ từ $1$ đến $N$, in ra số lượng nhóm bạn ít nhất tương ứng với $x$ đó trên một dòng mới.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item Test 2-3: $N \le 5000$
+    \item Test 4-7: $a_i \le 10$ với mọi $i$
+    \item Test 8-11: Không có nhãn nào xuất hiện quá $10$ lần.
+    \item Test 12-20: Không có ràng buộc gì thêm.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+9
+1 1 1 9 2 1 2 1 1
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+7
+5
+4
+4
+4
+4
+4
+3
+3
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Dưới đây là một số ví dụ về cách phân công các con bò vào các nhóm bạn khi $x=1$ và $x=2$ sao cho số nhóm là nhỏ nhất. Mỗi chữ cái đại diện cho một nhóm khác nhau.
+
+Ví dụ:
+\begin{lstlisting}
+       1 1 1 9 2 1 2 1 1
+x = 1: A B B C D E F G G (7 groups)
+x = 1: A A B C D E F G G (7 groups, alternative grouping)
+x = 2: A A A B C D C E E (5 groups)
+x = 2: A A A B C D C D E (5 groups, alternative grouping)
+\end{lstlisting}
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{D. Max Median}{Codeforces}
+
+Bạn được cho một mảng $a$ có độ dài $n$. Hãy tìm một mảng con $a[l..r]$ có độ dài ít nhất $k$ với phần tử trung vị lớn nhất.
+
+Phần tử trung vị trong một mảng độ dài $n$ là phần tử nằm ở vị trí thứ $\lfloor \frac{n + 1}{2} \rfloor$ sau khi ta sắp xếp các phần tử theo thứ tự không giảm. Ví dụ: $median([1, 2, 3, 4]) = 2$, $median([3, 2, 1]) = 2$, $median([2, 1, 2, 1]) = 1$.
+
+Mảng con $a[l..r]$ là một phần liên tiếp của mảng $a$, tức là dãy $a_l, a_{l+1}, \ldots, a_r$ với $1 \leq l \leq r \leq n$, và độ dài của nó là $r - l + 1$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $n$ và $k$ ($1 \leq k \leq n \leq 2 \cdot 10^5$).
+
+Dòng thứ hai chứa $n$ số nguyên $a_1, a_2, \ldots, a_n$ ($1 \leq a_i \leq n$).
+
+\section*{Dữ liệu ra}
+In ra một số nguyên $m$ — phần tử trung vị lớn nhất bạn có thể đạt được.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=*]
+    \item $1 \leq k \leq n \leq 2 \cdot 10^5$
+    \item $1 \leq a_i \leq n$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\textbf{Sample 1}
+\begin{inputbox}
+\begin{verbatim}
+5 3
+1 2 3 2 1
+\end{verbatim}
+\end{inputbox}
+\begin{outputbox}
+\begin{verbatim}
+2
+\end{verbatim}
+\end{outputbox}
+
+\textbf{Sample 2}
+\begin{inputbox}
+\begin{verbatim}
+4 2
+1 2 3 4
+\end{verbatim}
+\end{inputbox}
+\begin{outputbox}
+\begin{verbatim}
+3
+\end{verbatim}
+\end{outputbox}
+
+\explanation
+Trong ví dụ đầu tiên, tất cả các mảng con có thể là $[1..3]$, $[1..4]$, $[1..5]$, $[2..4]$, $[2..5]$ và $[3..5]$. Trung vị của tất cả chúng đều là $2$, vì vậy trung vị lớn nhất có thể đạt được cũng là $2$.
+
+Trong ví dụ thứ hai, $median([3..4]) = 3$.
+
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Social Distancing}{USACO 2020 US Open Contest, Silver}
+
+Nông dân John đang lo lắng cho sức khỏe của bầy bò sau sự bùng phát của căn bệnh truyền nhiễm cao ở bò mang tên COWVID-19.
+
+Để hạn chế sự lây lan của dịch bệnh, $N$ con bò của Nông dân John ($2 \le N \le 10^5$) đã quyết định thực hiện "giãn cách xã hội" và tản ra khắp trang trại. Trang trại có hình dạng giống như một trục số 1 chiều, với $M$ khoảng rời rạc nhau ($1 \le M \le 10^5$) có cỏ để gặm. Các con bò muốn tìm vị trí cho mình tại các điểm nguyên phân biệt, mỗi điểm đều nằm trên các khoảng có cỏ, sao cho giá trị của $D$ lớn nhất có thể, trong đó $D$ là khoảng cách giữa hai con bò gần nhau nhất. Hãy giúp các con bò xác định giá trị lớn nhất có thể của $D$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa $N$ và $M$.
+
+$M$ dòng tiếp theo, mỗi dòng mô tả một khoảng bằng hai số nguyên $a$ và $b$, trong đó $0 \le a \le b \le 10^{18}$. Không có hai khoảng nào giao nhau hoặc chạm nhau tại các điểm đầu mút. Một con bò đứng ở điểm đầu mút của một khoảng vẫn được tính là đứng trên cỏ.
+
+\section*{Dữ liệu ra}
+In ra giá trị lớn nhất có thể của $D$ sao cho tất cả các cặp bò cách nhau ít nhất $D$ đơn vị. Đảm bảo luôn tồn tại một giải pháp với $D > 0$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=1.5em]
+    \item Các test 2-3 thỏa mãn $b \le 10^5$.
+    \item Các test 4-10 không có ràng buộc gì thêm.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+5 3
+0 2
+4 7
+9 9
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+2
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Một cách để đạt được $D=2$ là xếp các con bò tại các vị trí $0, 2, 4, 6$ và $9$. Tất cả các vị trí này đều nằm trong các khoảng $[0, 2]$, $[4, 7]$ và $[9, 9]$. Khoảng cách giữa các con bò liền kề là $2-0=2$, $4-2=2$, $6-4=2$, $9-6=3$. Khoảng cách nhỏ nhất giữa hai con bò bất kỳ là $2$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Loan Repayment}{USACO}
+
+Nông dân John nợ Bessie $N$ gallon sữa ($1 \le N \le 10^{12}$). Anh ấy phải trả cho cô ấy số sữa đó trong vòng $K$ ngày. Tuy nhiên, anh ấy không muốn trả lại sữa quá nhanh. Mặt khác, anh ấy cũng phải đảm bảo tiến độ trả nợ, vì vậy anh ấy phải trả cho Bessie ít nhất $M$ gallon sữa mỗi ngày ($1 \le M \le 10^{12}$).
+
+Đây là cách nông dân John quyết định trả nợ cho Bessie. Đầu tiên, anh ấy chọn một số nguyên dương $X$. Sau đó, anh lặp lại quy trình sau mỗi ngày:
+Giả sử rằng Nông dân John đã trả cho Bessie $G$ gallon, anh sẽ tính $\lfloor \frac{N-G}{X} \rfloor$. Gọi số này là $Y$. Nếu $Y$ nhỏ hơn $M$, anh sẽ đặt $Y$ thành $M$. Sau đó, trả cho Bessie $Y$ gallon sữa.
+
+Hãy xác định giá trị lớn nhất của $X$ sao cho nếu Nông dân John làm theo quy trình trên, anh ấy có thể trả cho Bessie ít nhất $N$ gallon sữa sau $K$ ngày ($1 \le K \le 10^{12}$).
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item Các test 2-4 thoả mãn $K \le 10^5$.
+    \item Các test 5-11 không có giới hạn gì thêm.
+\end{itemize}
+Lưu ý rằng giới hạn của các biến trong bài toán này rất lớn, nên sử dụng kiểu dữ liệu số nguyên 64-bit (ví dụ: \texttt{long long} trong C/C++).
+\end{constraintbox}
+
+\section*{Dữ liệu vào}
+\begin{inputbox}
+Dòng duy nhất chứa 3 số nguyên dương cách nhau bởi khoảng trắng $N$, $K$, và $M$ thoả mãn $K \cdot M < N$.
+\end{inputbox}
+
+\section*{Dữ liệu ra}
+\begin{outputbox}
+In ra số nguyên dương $X$ lớn nhất sao cho Nông dân John có thể trả Bessie ít nhất $N$ gallon sữa bằng cách làm theo quy trình trên.
+\end{outputbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+10 3 3
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+2
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong test ví dụ đầu tiên, khi $X=2$, Nông dân John trả Bessie 5 gallon sữa vào ngày đầu tiên và $M=3$ gallon sữa vào mỗi ngày trong hai ngày tiếp theo. (Tổng cộng $5+3+3 = 11 \ge 10$ gallon, trong vòng $3$ ngày).
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+
+\problem{E - Handshake}{AtCoder ABC149}
+
+Takahashi đến tham dự một bữa tiệc với tư cách là khách mời đặc biệt.
+
+Có $N$ vị khách bình thường tại bữa tiệc. Vị khách thứ $i$ có sức mạnh là $A_i$.
+
+Takahashi quyết định thực hiện $M$ cái bắt tay để tăng mức độ hạnh phúc của bữa tiệc (giả sử mức độ hạnh phúc ban đầu là $0$).
+
+Một cái bắt tay sẽ được thực hiện như sau:
+\begin{itemize}
+    \item Takahashi chọn một vị khách (bình thường) $x$ cho tay trái của mình và một vị khách $y$ khác cho tay phải của mình ($x$ và $y$ có thể là cùng một người).
+    \item Sau đó, anh ấy đồng thời bắt tay trái của vị khách $x$ và tay phải của vị khách $y$ để tăng mức độ hạnh phúc lên $A_x + A_y$.
+\end{itemize}
+
+Tuy nhiên, Takahashi không được thực hiện cùng một cái bắt tay nhiều hơn một lần. Nói một cách trang trọng, điều kiện sau phải được thỏa mãn:
+\begin{itemize}
+    \item Giả sử rằng, trong lần bắt tay thứ $k$, Takahashi bắt tay trái của vị khách $x_k$ và tay phải của vị khách $y_k$. Khi đó, không có cặp $p, q$ ($1 \le p < q \le M$) nào sao cho $(x_p, y_p) = (x_q, y_q)$.
+\end{itemize}
+
+Hỏi mức độ hạnh phúc tối đa có thể đạt được sau $M$ lần bắt tay là bao nhiêu?
+
+\section*{Dữ liệu vào}
+Dữ liệu vào được cung cấp từ Standard Input theo định dạng sau:
+\begin{lstlisting}
+N M
+A_1 A_2 ... A_N
+\end{lstlisting}
+
+\section*{Dữ liệu ra}
+In ra mức độ hạnh phúc tối đa có thể đạt được sau $M$ lần bắt tay.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le N \le 10^5$
+    \item $1 \le M \le N^2$
+    \item $1 \le A_i \le 10^5$
+    \item Tất cả các giá trị trong đầu vào đều là số nguyên.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+5 3
+10 14 19 34 33
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+202
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Giả sử Takahashi thực hiện các lần bắt tay sau:
+\begin{itemize}
+    \item Trong lần bắt tay đầu tiên, Takahashi bắt tay trái của vị khách $4$ và tay phải của vị khách $4$.
+    \item Trong lần bắt tay thứ hai, Takahashi bắt tay trái của vị khách $4$ và tay phải của vị khách $5$.
+    \item Trong lần bắt tay thứ ba, Takahashi bắt tay trái của vị khách $5$ và tay phải của vị khách $4$.
+\end{itemize}
+
+Khi đó, ta sẽ có mức độ hạnh phúc là $(34+34)+(34+33)+(33+34)=202$.
+
+Ta không thể đạt được mức độ hạnh phúc từ $203$ trở lên, vì vậy kết quả là $202$.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+9 14
+1 3 5 110 24 21 34 5 3
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+1837
+\end{lstlisting}
+\end{outputbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+9 73
+67597 52981 5828 66249 75177 64141 40773 79105 16076
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+8128170
+\end{lstlisting}
+\end{outputbox}
+
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{H. Ammar-utiful Array}{Codeforces}
+
+Ammar không biết cách ra đề. Do đó, huấn luyện viên Khaled cảm thấy tội nghiệp cho Ammar và quyết định đặt tên cậu ấy vào một trong những bài toán của mình, đó chính là bài toán này.
+
+Chúng ta định nghĩa một mảng gồm $M$ số nguyên được gọi là \textbf{Mảng Ammar tuyệt đẹp với độ tuyệt đẹp $X$} (Ammar-utiful Array of Ammar-uty $X$) nếu \textbf{tổng} của \textbf{tất cả} các phần tử trong mảng \textbf{nhỏ hơn hoặc bằng} $X$.
+
+Ammar sẽ cho bạn $N$ \textbf{phần tử}, trong đó mỗi \textbf{phần tử} $i$ được liên kết với một \textbf{giá trị} $A_i$ và một \textbf{màu sắc} $C_i$. Bạn cần xử lý $Q$ \textbf{truy vấn} có các dạng sau:
+
+\begin{itemize}
+    \item $1 \; Col \; X$: Với mỗi phần tử $i$ $(1 \le i \le N)$ sao cho $C_i \ne Col$, \textbf{tăng} $A_i$ thêm $X$.
+    \item $2 \; Col \; Y$: Xét một \textbf{mảng} $B$ bao gồm các phần tử có màu \textbf{bằng} $Col$, theo \textbf{cùng thứ tự ban đầu mà chúng xuất hiện trong} mảng $A$. Độ dài của \textbf{tiền tố} $P$ (tiền tố có thể \textbf{rỗng}) dài nhất của $B$ sao cho $P$ là một \textbf{Mảng Ammar tuyệt đẹp với độ tuyệt đẹp $Y$} là bao nhiêu? (Đảm bảo rằng có \textbf{ít nhất một} phần tử có màu bằng $Col$).
+\end{itemize}
+
+\section*{Dữ liệu vào}
+\begin{inputbox}
+Dòng đầu tiên chứa một số nguyên $N$ $(1 \le N \le 2\cdot 10^5)$.
+
+Dòng thứ hai chứa $N$ số nguyên phân biệt bằng khoảng trắng $A_1, A_2, \dots, A_N$ $(1 \le A_i \le 2 \cdot 10^5)$ — các giá trị liên kết với các phần tử.
+
+Dòng thứ ba chứa $N$ số nguyên phân biệt bằng khoảng trắng $C_1, C_2, \dots, C_N$ $(1 \le C_i \le 2 \cdot 10^5)$ — các màu sắc liên kết với các phần tử.
+
+Dòng tiếp theo chứa một số nguyên $Q$ $(1 \le Q \le 2\cdot 10^5)$.
+
+Mỗi dòng trong số $Q$ dòng tiếp theo chứa ba số nguyên mô tả các truy vấn:
+\begin{itemize}
+    \item $1 \; Col \; X$: $(1 \le Col \le 2\cdot 10^5)$, $(1 \le X \le 10^5)$ — truy vấn loại thứ nhất.
+    \item $2 \; Col \; Y$: $(1 \le Col \le 2\cdot 10^5)$, $(1 \le Y \le 10^{15})$ — truy vấn loại thứ hai (Đảm bảo rằng có \textbf{ít nhất một} phần tử có màu bằng $Col$).
+\end{itemize}
+\end{inputbox}
+
+\section*{Dữ liệu ra}
+\begin{outputbox}
+Với mỗi truy vấn loại thứ hai, in ra trên một dòng duy nhất độ dài của \textbf{tiền tố} $P$ dài nhất của $B$ sao cho $P$ là một \textbf{Mảng Ammar tuyệt đẹp với độ tuyệt đẹp $Y$}.
+\end{outputbox}
+
+\section*{Ví dụ}
+\begin{lstlisting}[language=]
+5
+1 2 3 4 5
+2 1 2 1 2
+3
+1 1 2
+2 2 8
+2 1 5
+\end{lstlisting}
+
+\begin{lstlisting}[language=]
+2
+1
+\end{lstlisting}
+
+\begin{lstlisting}[language=]
+5
+1 2 3 4 5
+2 1 2 1 2
+3
+2 2 9
+1 1 2
+2 2 9
+\end{lstlisting}
+
+\begin{lstlisting}[language=]
+3
+2
+\end{lstlisting}
+
+\explanation
+\textbf{Giải thích ví dụ 1:} \\
+Ban đầu: $A = [1, 2, 3, 4, 5]$, $C = [2, 1, 2, 1, 2]$.
+\begin{itemize}
+    \item \textbf{Truy vấn 1:} \texttt{1 1 2}. $Col = 1, X = 2$. Các phần tử có màu khác 1 là các phần tử thứ 1, 3, 5 (màu 2). Tăng $A_1, A_3, A_5$ thêm 2. \\
+    $A$ trở thành $[3, 2, 5, 4, 7]$.
+    \item \textbf{Truy vấn 2:} \texttt{2 2 8}. $Col = 2, Y = 8$. Mảng $B$ gồm các phần tử có màu 2: $A_1=3, A_3=5, A_5=7$. $B = [3, 5, 7]$. \\
+    Các tiền tố của $B$ và tổng của chúng là:
+    \begin{itemize}
+        \item Rỗng: tổng $0 \le 8$ (độ dài 0)
+        \item $[3]$: tổng $3 \le 8$ (độ dài 1)
+        \item $[3, 5]$: tổng $8 \le 8$ (độ dài 2)
+        \item $[3, 5, 7]$: tổng $15 > 8$
+    \end{itemize}
+    Tiền tố dài nhất có tổng $\le 8$ có độ dài 2. In ra 2.
+    \item \textbf{Truy vấn 3:} \texttt{2 1 5}. $Col = 1, Y = 5$. Mảng $B$ gồm các phần tử có màu 1: $A_2=2, A_4=4$. $B = [2, 4]$. \\
+    Các tiền tố của $B$ và tổng của chúng là:
+    \begin{itemize}
+        \item Rỗng: tổng $0 \le 5$ (độ dài 0)
+        \item $[2]$: tổng $2 \le 5$ (độ dài 1)
+        \item $[2, 4]$: tổng $6 > 5$
+    \end{itemize}
+    Tiền tố dài nhất có tổng $\le 5$ có độ dài 1. In ra 1.
+\end{itemize}
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{F. Khởi tạo màn chơi}{Codeforces 818F}
+
+Ivan đang phát triển một trò chơi máy tính của riêng mình. Bây giờ anh ấy đang cố gắng tạo ra một số màn chơi cho trò chơi của mình. Nhưng đầu tiên, đối với mỗi màn chơi, anh ấy cần vẽ một đồ thị thể hiện cấu trúc của màn chơi đó.
+
+Ivan quyết định rằng sẽ có chính xác $n_i$ đỉnh trong đồ thị thể hiện màn chơi $i$, và các cạnh phải là cạnh vô hướng. Khi xây dựng đồ thị, Ivan quan tâm đến các cạnh đặc biệt gọi là \textit{cầu}. Một cạnh nối giữa hai đỉnh $u$ và $v$ được gọi là một \textit{cầu} nếu cạnh này thuộc mọi đường đi giữa $u$ và $v$ (và các đỉnh này sẽ thuộc về các thành phần liên thông khác nhau nếu ta xóa cạnh này). Với mỗi màn chơi, Ivan muốn xây dựng một đồ thị mà trong đó ít nhất một nửa số cạnh là các \textit{cầu}. Anh ấy cũng muốn tối đa hóa số lượng cạnh trong mỗi đồ thị được xây dựng.
+
+Vậy nhiệm vụ Ivan giao cho bạn là: cho $q$ số $n_1, n_2, \dots, n_q$, với mỗi $i$ hãy cho biết số lượng cạnh tối đa trong một đồ thị có $n_i$ đỉnh, nếu ít nhất một nửa số cạnh là \textit{cầu}. Chú ý rằng các đồ thị không được chứa đa cạnh hoặc khuyên.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên của dữ liệu vào chứa một số nguyên dương $q$ ($1 \le q \le 100\,000$) — số lượng đồ thị Ivan cần xây dựng.
+
+$q$ dòng tiếp theo, dòng thứ $i$ chứa một số nguyên dương $n_i$ ($1 \le n_i \le 2 \cdot 10^9$) — số lượng đỉnh trong đồ thị thứ $i$.
+
+Chú ý rằng trong các bài test hack, bạn phải sử dụng $q = 1$.
+
+\section*{Dữ liệu ra}
+In ra $q$ số, số thứ $i$ phải bằng số lượng cạnh tối đa trong đồ thị thứ $i$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=*]
+  \item $1 \le q \le 100\,000$
+  \item $1 \le n_i \le 2 \cdot 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+3
+3
+4
+6
+\end{inputbox}
+\begin{outputbox}
+2
+3
+6
+\end{outputbox}
+
+\explanation
+Trong ví dụ đầu tiên, có thể xây dựng các đồ thị sau:
+\begin{itemize}
+    \item $1-2$, $1-3$;
+    \item $1-2$, $1-3$, $2-4$;
+    \item $1-2$, $1-3$, $2-3$, $1-4$, $2-5$, $3-6$.
+\end{itemize}
+
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{G. Grouped Carriages}{Codeforces - 1866G}
+
+Pak Chanek nhận thấy rằng các toa của một đoàn tàu luôn chật kín vào giờ khởi hành buổi sáng và buổi chiều. Do đó, cần có sự cân bằng giữa các toa để không có vài toa quá đông đúc.
+
+Một đoàn tàu gồm $N$ toa được đánh số từ $1$ đến $N$ từ trái sang phải. Toa thứ $i$ ban đầu chứa $A_i$ hành khách. Tất cả các toa được kết nối với nhau bằng cửa toa, cụ thể với mỗi $i$ ($1\leq i\leq N-1$), toa $i$ và toa $i+1$ được nối với nhau bằng một cửa hai chiều.
+
+Mỗi hành khách có thể di chuyển giữa các toa, nhưng quy định của tàu yêu cầu rằng với mỗi $i$, một hành khách xuất phát từ toa $i$ không thể đi qua nhiều hơn $D_i$ cửa.
+
+Định nghĩa $Z$ là số lượng hành khách nhiều nhất trong cùng một toa sau khi di chuyển. Pak Chanek muốn hỏi, giá trị nhỏ nhất có thể của $Z$ là bao nhiêu?
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa một số nguyên $N$ ($1 \leq N \leq 2\cdot10^5$) — số lượng toa tàu.
+
+Dòng thứ hai chứa $N$ số nguyên $A_1, A_2, A_3, \ldots, A_N$ ($0 \leq A_i \leq 10^9$) — số lượng hành khách ban đầu ở mỗi toa.
+
+Dòng thứ ba chứa $N$ số nguyên $D_1, D_2, D_3, \ldots, D_N$ ($0 \leq D_i \leq N-1$) — giới hạn tối đa số lượng cửa mà một hành khách xuất phát từ mỗi toa có thể đi qua.
+
+\section*{Dữ liệu ra}
+Một số nguyên biểu diễn giá trị nhỏ nhất có thể của $Z$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=1.5em]
+    \item Thời gian giới hạn: 3 giây
+    \item Bộ nhớ giới hạn: 512 megabytes
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+7
+7 4 2 0 5 8 3
+4 0 0 1 3 1 3
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+5
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Một chiến lược di chuyển tối ưu như sau:
+\begin{itemize}[leftmargin=1.5em]
+    \item 5 hành khách ở toa 1 di chuyển đến toa 4 (đi qua 3 cửa).
+    \item 3 hành khách ở toa 5 di chuyển đến toa 3 (đi qua 2 cửa).
+    \item 2 hành khách ở toa 6 di chuyển đến toa 5 (đi qua 1 cửa).
+    \item 1 hành khách ở toa 6 di chuyển đến toa 7 (đi qua 1 cửa).
+\end{itemize}
+Số lượng hành khách ở mỗi toa sẽ trở thành $[2, 4, 5, 5, 4, 5, 4]$. Giá trị lớn nhất trong các toa là $5$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{TripTastic}{CodeChef}
+
+Một trường học muốn tổ chức một chuyến đi cho một nhóm gồm $K$ học sinh và một giáo viên hướng dẫn (mentor).
+
+Họ đã đặt khách sạn cho chuyến đi, trong đó các phòng được sắp xếp dưới dạng một ma trận $A$ gồm $N$ hàng và $M$ cột. Có tổng cộng $N \times M$ phòng, trong đó phòng $(i, j)$ có sức chứa $A_{i,j}$ người.
+
+Khoảng cách giữa hai phòng $(i_1, j_1)$ và $(i_2, j_2)$ được tính bằng $\max(|i_1 - i_2|, |j_1 - j_2|)$, trong đó $|X|$ là giá trị tuyệt đối của $X$.
+
+Để đảm bảo chuyến đi diễn ra suôn sẻ, các phòng cần được đặt sao cho khoảng cách giữa phòng của giáo viên hướng dẫn và phòng xa nhất của một học sinh là nhỏ nhất có thể. Lưu ý rằng giáo viên hướng dẫn và các học sinh có thể ở chung một phòng.
+
+Nhiệm vụ của bạn là tìm khoảng cách nhỏ nhất giữa phòng của giáo viên hướng dẫn và phòng xa nhất của học sinh. Trong trường hợp tổng sức chứa của khách sạn nhỏ hơn $K + 1$, in ra $-1$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa một số nguyên $T$, biểu thị số lượng test case.
+Dòng đầu tiên của mỗi test case chứa ba số nguyên cách nhau bởi dấu cách $N$, $M$, và $K$ — lần lượt là số lượng hàng, cột và số học sinh.
+$N$ dòng tiếp theo, mỗi dòng chứa $M$ số nguyên cách nhau bởi khoảng trắng, thể hiện sức chứa của từng phòng.
+
+\section*{Dữ liệu ra}
+Với mỗi test case, in ra trên một dòng mới khoảng cách nhỏ nhất giữa phòng của giáo viên hướng dẫn và phòng xa nhất của học sinh.
+Trong trường hợp tổng sức chứa của khách sạn nhỏ hơn $K + 1$, in ra $-1$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \leq T \leq 500$
+    \item $1 \leq N, M \leq 10^6$
+    \item $1 \leq K \leq 10^9$
+    \item $0 \leq A_{i,j} \leq 10^5$
+    \item Tổng $N \cdot M$ trong tất cả các test case không vượt quá $10^6$.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4
+1 7 5
+2 1 0 1 3 0 1
+2 4 3
+1 0 4 0
+0 2 0 3
+2 2 7
+1 0
+4 1
+3 2 3
+0 2
+1 0
+1 0
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+3
+0
+-1
+1
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+\textbf{Test case 1:} Giáo viên có thể ở phòng $(1, 2)$, hai học sinh ở phòng $(1, 1)$, một học sinh ở phòng $(1, 4)$ và hai học sinh ở phòng $(1, 5)$. Phòng xa nhất của học sinh so với giáo viên sẽ là phòng $(1, 5)$ với khoảng cách là $\max(|1-1|, |2-5|) = 3$. Ta có thể chứng minh rằng không có cách sắp xếp nào khác đạt được khoảng cách nhỏ hơn $3$.
+
+\textbf{Test case 2:} Giáo viên và cả $3$ học sinh đều có thể ở chung trong phòng $(1, 3)$. Do đó, khoảng cách là $0$.
+
+\textbf{Test case 3:} Khách sạn không có đủ sức chứa cho tất cả mọi người.
+
+\textbf{Test case 4:} Tổng sức chứa của khách sạn: $2 + 1 + 1 = 4$, đủ cho $4$ người ($1$ giáo viên + $3$ học sinh). Nếu giáo viên ở phòng $(2,1)$ (sức chứa $1$), khoảng cách đến phòng $(1,2)$ (sức chứa $2$) là $\max(|2-1|, |1-2|) = 1$ và đến phòng $(3,1)$ (sức chứa $1$) là $\max(|2-3|, |1-1|) = 1$. Khoảng cách lớn nhất là $1$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Convention}{USACO}
+
+Nông dân John đang tổ chức một hội nghị ăn cỏ mới dành cho bò tại trang trại của mình!
+
+Những con bò từ khắp nơi trên thế giới đang đến sân bay địa phương để tham dự hội nghị và ăn cỏ. Cụ thể, có $N$ con bò đến sân bay ($1 \le N \le 10^5$) và con bò thứ $i$ đến vào thời điểm $t_i$ ($0 \le t_i \le 10^9$). Nông dân John đã sắp xếp $M$ ($1 \le M \le 10^5$) chiếc xe buýt để vận chuyển những con bò từ sân bay. Mỗi chiếc xe buýt có thể chở tối đa $C$ con bò ($1 \le C \le N$). Nông dân John đang đợi cùng với những chiếc xe buýt tại sân bay và muốn xếp những con bò mới đến vào các xe buýt. Một chiếc xe buýt có thể khởi hành vào thời điểm con bò cuối cùng trên xe đó đến. Nông dân John muốn trở thành một người chủ nhà tốt và do đó không muốn bắt những con bò phải chờ đợi quá lâu tại sân bay. Hãy tìm giá trị nhỏ nhất có thể của thời gian chờ đợi lớn nhất của một con bò bất kỳ, biết rằng Nông dân John điều phối xe buýt một cách tối ưu? Thời gian chờ của một con bò là chênh lệch giữa thời gian nó đến và thời gian chiếc xe buýt chở nó khởi hành.
+
+Dữ liệu đảm bảo rằng $MC \ge N$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa ba số nguyên $N$, $M$, và $C$.
+
+Dòng tiếp theo chứa $N$ số nguyên biểu diễn thời gian đến của mỗi con bò.
+
+\section*{Dữ liệu ra}
+In ra một số nguyên duy nhất là thời gian chờ lớn nhất nhỏ nhất có thể của bất kỳ con bò nào.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le N \le 10^5$
+    \item $0 \le t_i \le 10^9$
+    \item $1 \le M \le 10^5$
+    \item $1 \le C \le N$
+    \item $MC \ge N$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+6 3 2
+1 1 10 14 4 3
+\end{inputbox}
+\begin{outputbox}
+4
+\end{outputbox}
+
+\explanation
+Nếu hai con bò đến vào thời điểm 1 đi chung một chiếc xe buýt, những con bò đến vào các thời điểm 3 và 4 đi xe buýt thứ hai, và những con bò đến vào các thời điểm 10 và 14 đi xe buýt thứ ba, thì thời gian chờ đợi lâu nhất mà một con bò phải trải qua là 4 đơn vị thời gian (con bò đến vào thời điểm 10 phải đợi từ thời điểm 10 đến thời điểm 14).
+
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Cow Dance Show}{USACO}
+
+Sau vài tháng tập duyệt, những chú bò đã sẵn sàng cho buổi biểu diễn khiêu vũ hàng năm; năm nay chúng sẽ biểu diễn vở ba-lê nổi tiếng "Cowpelia".
+
+Khía cạnh duy nhất của buổi biểu diễn vẫn chưa được quyết định là kích thước của sân khấu. Một sân khấu có kích thước $K$ có thể hỗ trợ $K$ chú bò khiêu vũ cùng lúc. Có $N$ chú bò trong đàn ($1 \le N \le 10,000$) được đánh số từ $1 \dots N$ theo thứ tự mà chúng phải xuất hiện trong buổi khiêu vũ. Mỗi chú bò $i$ dự định khiêu vũ trong một khoảng thời gian $d(i)$. Ban đầu, các chú bò từ $1 \dots K$ xuất hiện trên sân khấu và bắt đầu khiêu vũ. Khi chú bò đầu tiên trong số này hoàn thành phần của mình, nó rời khỏi sân khấu và chú bò $K+1$ ngay lập tức bắt đầu khiêu vũ, và cứ tiếp tục như vậy, do đó luôn có $K$ chú bò khiêu vũ (cho đến khi gần kết thúc buổi biểu diễn, khi số bò bắt đầu cạn dần). Buổi biểu diễn kết thúc khi chú bò cuối cùng hoàn thành phần khiêu vũ của nó, tại thời điểm $T$.
+
+Rõ ràng, giá trị của $K$ càng lớn thì giá trị của $T$ càng nhỏ. Vì buổi biểu diễn không thể kéo dài quá lâu, bạn được cho một giới hạn trên $T_{max}$ xác định giá trị lớn nhất có thể của $T$. Tuân theo giới hạn này, hãy xác định giá trị nhỏ nhất có thể của $K$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa $N$ và $T_{max}$, trong đó $T_{max}$ là một số nguyên có giá trị tối đa là $1,000,000$.
+
+$N$ dòng tiếp theo cho thời gian $d(1) \dots d(N)$ của các phần khiêu vũ của các chú bò từ $1 \dots N$. Mỗi giá trị $d(i)$ là một số nguyên trong phạm vi $1 \dots 100,000$.
+
+Dữ liệu đảm bảo rằng nếu $K=N$, buổi biểu diễn sẽ kết thúc đúng thời hạn.
+
+\section*{Dữ liệu ra}
+In ra giá trị nhỏ nhất có thể của $K$ sao cho buổi biểu diễn khiêu vũ mất không quá $T_{max}$ đơn vị thời gian.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le N \le 10,000$
+    \item $1 \le T_{max} \le 1,000,000$
+    \item $1 \le d(i) \le 100,000$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+\begin{inputbox}
+\begin{lstlisting}
+5 8
+4
+7
+8
+6
+4
+\end{lstlisting}
+\end{inputbox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{outputbox}
+\begin{lstlisting}
+4
+\end{lstlisting}
+\end{outputbox}
+\end{minipage}
+
+\explanation
+Với $K = 4$, $4$ chú bò đầu tiên sẽ lên sân khấu.
+\begin{itemize}
+    \item Tại thời điểm $0$, các chú bò $1, 2, 3, 4$ bắt đầu khiêu vũ với thời gian lần lượt là $4, 7, 8, 6$.
+    \item Tại thời điểm $4$, chú bò thứ $1$ (thời gian $4$) hoàn thành và rời sân khấu. Chú bò thứ $5$ (thời gian $4$) lên sân khấu bắt đầu khiêu vũ.
+    \item Các chú bò còn lại trên sân khấu sẽ hoàn thành tại các thời điểm: chú bò $2$ tại $7$, chú bò $3$ tại $8$, chú bò $4$ tại $6$, và chú bò $5$ tại $4 + 4 = 8$.
+    \item Thời điểm muộn nhất mà một chú bò hoàn thành là $8$. Vì vậy, buổi biểu diễn kết thúc tại $T = 8$.
+\end{itemize}
+Vì $8 \le T_{max}$ (với $T_{max} = 8$), $K = 4$ là một giá trị hợp lệ. Nếu $K = 3$, thời gian biểu diễn sẽ lớn hơn $8$, nên $K = 4$ là kích thước sân khấu nhỏ nhất cần thiết.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Máy Trong Nhà Máy (Factory Machines)}{CSES - 1620}
+
+Một nhà máy có $n$ chiếc máy có thể được sử dụng để làm ra các sản phẩm. Mục tiêu của bạn là làm ra tổng cộng $t$ sản phẩm.
+
+Đối với mỗi chiếc máy, bạn biết số giây nó cần để làm ra một sản phẩm. Các máy có thể hoạt động đồng thời và bạn có thể tự do quyết định lịch trình của chúng.
+
+Thời gian ngắn nhất cần thiết để làm ra $t$ sản phẩm là bao nhiêu?
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $n$ và $t$: số lượng máy và số lượng sản phẩm.
+
+Dòng tiếp theo chứa $n$ số nguyên $k_1, k_2, \dots, k_n$: thời gian cần thiết để làm ra một sản phẩm của từng máy.
+
+\section*{Dữ liệu ra}
+In ra một số nguyên: thời gian tối thiểu cần thiết để làm ra $t$ sản phẩm.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 2 \cdot 10^5$
+    \item $1 \le t \le 10^9$
+    \item $1 \le k_i \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+3 7
+3 2 5
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+8
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Máy 1 làm ra hai sản phẩm (mất $2 \times 3 = 6$ giây), máy 2 làm ra bốn sản phẩm (mất $4 \times 2 = 8$ giây) và máy 3 làm ra một sản phẩm (mất $1 \times 5 = 5$ giây). Tổng số sản phẩm là $2 + 4 + 1 = 7$. Thời gian tối đa cần thiết để tất cả các máy hoàn thành công việc là $\max(6, 8, 5) = 8$ giây. Vậy $8$ giây là thời gian ngắn nhất.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{B. The Meeting Place Cannot Be Changed}{Codeforces}
+
+Trục đường chính của thành phố Bytecity là một đường thẳng đi từ Nam lên Bắc. Để thuận tiện, tọa độ được tính bằng mét bắt đầu từ tòa nhà nằm ở cực Nam theo hướng Bắc.
+
+Có $n$ người bạn đang đứng trên con đường này. Người bạn thứ $i$ đứng ở tọa độ $x_i$ mét và có thể di chuyển với vận tốc tối đa $v_i$ mét trên giây theo bất kỳ hướng nào: Nam hoặc Bắc.
+
+Nhiệm vụ của bạn là tính thời gian tối thiểu để tất cả $n$ người bạn có thể tập trung lại tại cùng một điểm trên đường. Lưu ý rằng điểm gặp nhau không nhất thiết phải có tọa độ là một số nguyên.
+
+\section*{Dữ liệu vào}
+\begin{inputbox}
+Dòng đầu tiên chứa một số nguyên duy nhất $n$ ($2 \le n \le 60\,000$) — số lượng người bạn.
+
+Dòng thứ hai chứa $n$ số nguyên $x_1, x_2, \dots, x_n$ ($1 \le x_i \le 10^9$) — tọa độ hiện tại của những người bạn, tính bằng mét.
+
+Dòng thứ ba chứa $n$ số nguyên $v_1, v_2, \dots, v_n$ ($1 \le v_i \le 10^9$) — vận tốc tối đa của những người bạn, tính bằng mét trên giây.
+\end{inputbox}
+
+\section*{Dữ liệu ra}
+\begin{outputbox}
+In ra thời gian tối thiểu (tính bằng giây) để cả $n$ người bạn gặp nhau tại một điểm trên đường.
+
+Câu trả lời của bạn sẽ được coi là chính xác nếu sai số tuyệt đối hoặc tương đối không vượt quá $10^{-6}$. Cụ thể hơn, giả sử câu trả lời của bạn là $a$ và của ban giám khảo là $b$. Câu trả lời của bạn được tính là đúng nếu $\frac{|a - b|}{\max(1, |b|)} \le 10^{-6}$.
+\end{outputbox}
+
+\section*{Giới hạn}
+\begin{constraintbox}
+Giới hạn thời gian: 5 giây \\
+Giới hạn bộ nhớ: 256 megabytes
+\end{constraintbox}
+
+\section*{Ví dụ}
+\textbf{Input 1}
+\begin{lstlisting}
+3
+7 1 3
+1 2 1
+\end{lstlisting}
+
+\textbf{Output 1}
+\begin{lstlisting}
+2.000000000000
+\end{lstlisting}
+
+\explanation
+\textit{Giải thích ví dụ 1:} 
+Trong ví dụ thứ nhất, cả ba người bạn có thể tập trung tại tọa độ $5$ trong vòng $2$ giây. Để đạt được điều này, người bạn đầu tiên cần liên tục đi về hướng Nam với vận tốc tối đa, trong khi người thứ hai và thứ ba đi về hướng Bắc với vận tốc tối đa của họ. 
+\begin{itemize}
+    \item Người 1: Vị trí ban đầu $x_1 = 7$, vận tốc $v_1 = 1$. Sau $2$ giây đi về phía Nam: $7 - 1 \times 2 = 5$.
+    \item Người 2: Vị trí ban đầu $x_2 = 1$, vận tốc $v_2 = 2$. Sau $2$ giây đi về phía Bắc: $1 + 2 \times 2 = 5$.
+    \item Người 3: Vị trí ban đầu $x_3 = 3$, vận tốc $v_3 = 1$. Sau $2$ giây đi về phía Bắc: $3 + 1 \times 2 = 5$.
+\end{itemize}
+
+\textbf{Input 2}
+\begin{lstlisting}
+4
+5 10 3 2
+2 3 2 4
+\end{lstlisting}
+
+\textbf{Output 2}
+\begin{lstlisting}
+1.400000000000
+\end{lstlisting}
+
+\explanation
+\textit{Giải thích ví dụ 2:}
+Tại thời điểm $1.4$ giây:
+\begin{itemize}
+    \item Người 1: $x_1 = 5, v_1 = 2$. Có thể di chuyển trong đoạn $[5 - 2 \times 1.4, 5 + 2 \times 1.4] = [2.2, 7.8]$.
+    \item Người 2: $x_2 = 10, v_2 = 3$. Có thể di chuyển trong đoạn $[10 - 3 \times 1.4, 10 + 3 \times 1.4] = [5.8, 14.2]$.
+    \item Người 3: $x_3 = 3, v_3 = 2$. Có thể di chuyển trong đoạn $[3 - 2 \times 1.4, 3 + 2 \times 1.4] = [0.2, 5.8]$.
+    \item Người 4: $x_4 = 2, v_4 = 4$. Có thể di chuyển trong đoạn $[2 - 4 \times 1.4, 2 + 4 \times 1.4] = [-3.6, 7.6]$.
+\end{itemize}
+Giao của tất cả các đoạn có thể đến được của cả 4 người sau $1.4$ giây là đoạn $[5.8, 5.8]$. Vậy cả nhóm có thể gặp nhau tại tọa độ $5.8$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Cow-libi}{USACO 2023 February Contest, Silver}
+
+Ai đó đã ăn cỏ trong $G$ $(1 \le G \le 10^5)$ khu vườn tư nhân của Nông dân John! Dùng kiến thức pháp y chuyên sâu của mình, FJ đã xác định được thời điểm chính xác mỗi khu vườn bị ăn cỏ. Ông cũng xác định rằng chỉ có một con bò duy nhất là thủ phạm của tất cả các vụ ăn cỏ này.
+
+Để đáp lại cáo buộc về những tội ác này, mỗi con trong số $N$ $(1 \le N \le 10^5)$ con bò của FJ đã cung cấp một bằng chứng ngoại phạm, chứng minh rằng nó đang ở một địa điểm cụ thể vào một thời điểm cụ thể. Hãy giúp FJ kiểm tra xem mỗi bằng chứng ngoại phạm này có chứng minh được sự vô tội của con bò tương ứng hay không.
+
+Một con bò được xác định là vô tội nếu việc nó di chuyển qua lại giữa tất cả các địa điểm ăn cỏ và địa điểm ngoại phạm của nó là điều không thể. Các con bò di chuyển với tốc độ $1$ đơn vị khoảng cách trên mỗi đơn vị thời gian.
+
+\section*{Dữ liệu vào}
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên $G$ và $N$.
+
+$G$ dòng tiếp theo, mỗi dòng chứa ba số nguyên $x$, $y$, và $t$ $(-10^9 \le x, y \le 10^9; 0 \le t \le 10^9)$ mô tả vị trí và thời gian của một vụ ăn cỏ. Đề bài đảm bảo rằng một con bò luôn có thể di chuyển qua lại giữa tất cả các điểm ăn cỏ (tức là lịch sử các vụ ăn cỏ hợp lệ với tốc độ của bò).
+
+$N$ dòng tiếp theo, mỗi dòng chứa ba số nguyên $x$, $y$, và $t$ $(-10^9 \le x, y \le 10^9; 0 \le t \le 10^9)$ mô tả vị trí và thời gian của bằng chứng ngoại phạm của từng con bò.
+\end{inputbox}
+
+\section*{Dữ liệu ra}
+\begin{outputbox}
+In ra một số nguyên duy nhất: số lượng bò có bằng chứng ngoại phạm chứng minh được sự vô tội của chúng.
+\end{outputbox}
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Các test 2-4:} $1 \le G, N \le 10^3$. Ngoài ra, với cả điểm ăn cỏ và địa điểm ngoại phạm, $-10^6 \le x, y \le 10^6$ và $0 \le t \le 10^6$.
+    \item \textbf{Các test 5-11:} Không có ràng buộc gì thêm.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{lstlisting}
+2 4
+0 0 100
+50 0 200
+0 50 50
+1000 1000 0
+50 0 200
+10 0 170
+\end{lstlisting}
+
+\textbf{\textcolor{sectioncolor}{Output mẫu}}
+\begin{lstlisting}
+2
+\end{lstlisting}
+
+\explanation
+Có hai vụ ăn cỏ; vụ thứ nhất tại $(0, 0)$ lúc thời điểm $100$ và vụ thứ hai tại $(50, 0)$ lúc thời điểm $200$.
+
+\begin{itemize}[leftmargin=*]
+    \item Bằng chứng ngoại phạm của con bò đầu tiên (tại $(0, 50)$ ở thời điểm $50$) không chứng minh được sự vô tội của nó. Nó có vừa đủ thời gian để đến vị trí của vụ ăn cỏ đầu tiên.
+    \item Bằng chứng ngoại phạm của con bò thứ hai (tại $(1000, 1000)$ ở thời điểm $0$) chứng minh được sự vô tội. Nó ở quá xa so với bất kỳ điểm ăn cỏ nào.
+    \item Thật không may cho con bò thứ ba (tại $(50, 0)$ ở thời điểm $200$), việc có mặt ngay tại hiện trường vụ án không chứng minh được sự vô tội.
+    \item Cuối cùng, con bò thứ tư (tại $(10, 0)$ ở thời điểm $170$) vô tội vì nó không thể đi kịp từ điểm ngoại phạm của mình đến điểm ăn cỏ cuối cùng (khoảng cách là $40$, nhưng thời gian chênh lệch chỉ là $30$).
+\end{itemize}
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Chia mảng}{CSES - 1085}
+
+Bạn được cho một mảng gồm $n$ số nguyên dương.
+
+Nhiệm vụ của bạn là chia mảng thành $k$ mảng con liên tiếp sao cho tổng lớn nhất trong một mảng con là nhỏ nhất có thể.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $n$ và $k$: kích thước của mảng và số lượng mảng con được chia.
+
+Dòng tiếp theo chứa $n$ số nguyên $x_1,x_2,\ldots,x_n$: các phần tử của mảng.
+
+\section*{Dữ liệu ra}
+In ra một số nguyên: tổng lớn nhất trong một mảng con trong cách chia tối ưu.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 2 \cdot 10^5$
+    \item $1 \le k \le n$
+    \item $1 \le x_i \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+5 3
+2 4 7 3 5
+\end{lstlisting}
+\end{inputbox}
+
+\begin{outputbox}
+\begin{lstlisting}
+8
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Cách chia tối ưu là $[2,4],[7],[3,5]$, khi đó tổng của các mảng con lần lượt là $6,7,8$. Tổng lớn nhất là tổng cuối cùng $8$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+% TODO: Nội dung bài toán được sinh từ LLM sẽ nằm tại đây
+\problem{B. Chuẩn bị cho thuật toán Sắp xếp trộn}{Codeforces - 847B}
+
+Ivan có một mảng gồm $n$ số nguyên phân biệt. Anh ấy quyết định sắp xếp lại tất cả các phần tử theo thứ tự tăng dần. Ivan rất thích thuật toán Merge Sort (Sắp xếp trộn) nên anh ấy quyết định biểu diễn mảng của mình bằng một hoặc nhiều dãy con tăng dần, sau đó anh dự định gộp chúng lại thành một mảng đã được sắp xếp.
+
+Ivan biểu diễn mảng của mình bằng các dãy con tăng dần thông qua thuật toán sau. Chừng nào trong mảng vẫn còn ít nhất một số chưa được sử dụng, Ivan sẽ lặp lại quy trình sau:
+\begin{itemize}
+    \item Duyệt qua mảng từ trái sang phải;
+    \item Ivan chỉ xét những số chưa được sử dụng trong lượt duyệt hiện tại;
+    \item Nếu số hiện tại là số chưa được sử dụng đầu tiên trong lượt duyệt này hoặc lớn hơn số chưa được sử dụng trước đó (đã được chọn) trong cùng lượt duyệt, thì Ivan đánh dấu số đó là đã sử dụng và ghi nó ra.
+\end{itemize}
+
+Ví dụ, nếu mảng của Ivan là $[1, 3, 2, 5, 4]$ thì anh ấy sẽ thực hiện $2$ lượt duyệt. Trong lượt duyệt đầu tiên, Ivan sẽ chọn và ghi ra các số $[1, 3, 5]$, và trong lượt duyệt thứ hai là $[2, 4]$.
+
+Hãy viết một chương trình giúp Ivan tìm cách biểu diễn mảng đã cho dưới dạng một hoặc nhiều dãy con tăng dần theo thuật toán được mô tả ở trên.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa một số nguyên đơn $n$ ($1 \le n \le 2 \cdot 10^5$) — số lượng phần tử trong mảng của Ivan.
+
+Dòng thứ hai chứa một dãy gồm các số nguyên phân biệt $a_1, a_2, \ldots, a_n$ ($1 \le a_i \le 10^9$) — mảng của Ivan.
+
+\section*{Dữ liệu ra}
+In ra cách biểu diễn mảng đã cho dưới dạng một hoặc nhiều dãy con tăng dần theo thuật toán được mô tả ở trên. Mỗi dãy con phải được in trên một dòng mới.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+    \begin{itemize}
+        \item Giới hạn thời gian: 2 giây
+        \item Giới hạn bộ nhớ: 256 megabytes
+    \end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+5
+1 3 2 5 4
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+1 3 5 
+2 4 
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong lượt đầu, ta lấy $1$, rồi đến $3$ (vì $3 > 1$), sau đó bỏ qua $2$ (vì $2 < 3$), lấy $5$ (vì $5 > 3$), bỏ qua $4$ (vì $4 < 5$). Dãy thu được là $1\ 3\ 5$.
+Còn lại mảng chứa $[2, 4]$. Trong lượt thứ hai, ta lấy $2$, rồi lấy $4$. Dãy thu được là $2\ 4$.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4
+4 3 2 1
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+4 
+3 
+2 
+1 
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Các phần tử trong mảng giảm dần, do đó mỗi lượt duyệt chỉ có thể lấy được phần tử đầu tiên chưa được sử dụng (vì các phần tử phía sau đều nhỏ hơn nó). Do đó, mỗi lượt ta chọn đúng một phần tử, tạo thành 4 dãy con riêng biệt tương ứng.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4
+10 30 50 101
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+10 30 50 101 
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Mảng ban đầu đã được sắp xếp tăng dần, do đó ở lượt duyệt đầu tiên, mỗi phần tử đều lớn hơn phần tử trước đó. Vậy ta sẽ lấy tất cả các phần tử trong một lượt duy nhất, tạo thành một dãy con duy nhất.
+
+\newpage
+
+% ============================================================
+
+
+\problem{E. Minimizing Difference}{Codeforces}
+
+Cho một dãy số $a_1, a_2, \dots, a_n$ gồm $n$ số nguyên.
+
+Bạn có thể thực hiện thao tác sau trên dãy này: chọn bất kỳ phần tử nào và tăng hoặc giảm nó đi $1$.
+
+Hãy tính độ chênh lệch nhỏ nhất có thể giữa phần tử lớn nhất và phần tử nhỏ nhất trong dãy, nếu bạn có thể thực hiện thao tác trên không quá $k$ lần.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $n$ và $k$ ($2 \le n \le 10^{5}$, $1 \le k \le 10^{14}$) — lần lượt là số lượng phần tử của dãy và số lần tối đa bạn có thể thực hiện thao tác.
+
+Dòng thứ hai chứa dãy số nguyên $a_1, a_2, \dots, a_n$ ($1 \le a_i \le 10^{9}$).
+
+\section*{Dữ liệu ra}
+In ra độ chênh lệch nhỏ nhất có thể giữa phần tử lớn nhất và phần tử nhỏ nhất trong dãy, nếu bạn có thể thực hiện thao tác trên không quá $k$ lần.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=1.5em, nosep]
+    \item $2 \le n \le 10^5$
+    \item $1 \le k \le 10^{14}$
+    \item $1 \le a_i \le 10^9$
+    \item Thời gian giới hạn: 2 giây
+    \item Giới hạn bộ nhớ: 256 megabytes
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4 5
+3 1 7 5
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+2
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 1, bạn có thể tăng phần tử thứ hai ($1$) lên $2$ đơn vị (thành $3$) và giảm phần tử thứ ba ($7$) đi $2$ đơn vị (thành $5$). Tổng số thao tác đã dùng là $2 + 2 = 4 \le 5$. Dãy số trở thành $[3, 3, 5, 5]$, và chênh lệch giữa phần tử lớn nhất và nhỏ nhất là $5 - 3 = 2$. Bạn vẫn còn $1$ thao tác, nhưng không thể dùng nó để giảm kết quả xuống nhỏ hơn $2$.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+3 10
+100 100 100
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+0
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 2, tất cả các phần tử đã bằng nhau sẵn (đều là $100$), vì vậy chênh lệch giữa phần tử lớn nhất và nhỏ nhất là $0$. Ta không cần thực hiện bất kỳ thao tác nào (số thao tác là $0 \le 10$).
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+10 9
+4 5 5 7 5 4 5 2 4 3
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+1
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 3, ta có dãy gồm $10$ phần tử. Sau khi sắp xếp lại, dãy là $[2, 3, 4, 4, 4, 5, 5, 5, 5, 7]$.
+Ta có thể thực hiện các thao tác:
+\begin{itemize}[leftmargin=1.5em, nosep]
+    \item Tăng $2$ lên $4$ (cần $2$ thao tác).
+    \item Tăng $3$ lên $4$ (cần $1$ thao tác).
+    \item Giảm $7$ xuống $5$ (cần $2$ thao tác).
+\end{itemize}
+Tổng số thao tác đã sử dụng là $2 + 1 + 2 = 5 \le 9$.
+Sau các thao tác, dãy trở thành $[4, 4, 4, 4, 4, 5, 5, 5, 5, 5]$. Chênh lệch lúc này là $5 - 4 = 1$.
+Ta không thể làm cho tất cả các phần tử bằng nhau vì tổng chi phí để biến tất cả thành $4$ là $11$, hoặc thành $5$ là $10$, đều vượt quá số thao tác cho phép $k = 9$. Do đó, chênh lệch nhỏ nhất có thể là $1$.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{F1. Đoán số 0 thứ K (Bản dễ)}{Codeforces - 1520F1}
+
+\textbf{Đây là một bài toán tương tác.}
+
+Đây là phiên bản dễ của bài toán. Điểm khác biệt so với phiên bản khó là trong phiên bản dễ =1$ và số lượng truy vấn được giới hạn ở $.
+
+Polycarp đang chơi một trò chơi máy tính. Trong trò chơi này, một mảng gồm các số 0 và 1 bị giấu đi. Polycarp sẽ thắng nếu cậu đoán được vị trí của số 0 thứ $ từ trái sang $ lần.
+
+Polycarp có thể thực hiện không quá $ truy vấn với định dạng sau:
+\begin{itemize}
+    \item \texttt{? l r} — tìm tổng của tất cả các phần tử ở các vị trí từ $ đến $ ( \le l \le r \le n$).
+\end{itemize}
+
+Trong (phiên bản dễ) của bài toán này, đoạn văn sau không thực sự có ý nghĩa vì =1$ luôn luôn đúng. Để làm cho trò chơi thú vị hơn, mỗi số 0 sau khi được đoán đúng sẽ biến thành số 1 và trò chơi tiếp tục trên mảng đã thay đổi. Nói cách chính xác hơn, nếu vị trí của số 0 thứ $ là $, thì sau khi Polycarp đoán vị trí này, phần tử thứ $ của mảng sẽ được thay đổi từ $ thành $. Tất nhiên, tính năng này chỉ có tác dụng khi  \gt 1$.
+
+Hãy giúp Polycarp chiến thắng trò chơi này.
+
+\section*{Dữ liệu vào}
+\begin{inputbox}
+Đầu tiên, chương trình của bạn phải đọc hai số nguyên $ và $ ( \le n \le 2 \cdot 10^5$, =1$).
+
+Sau đó là $ dòng, mỗi dòng chứa một số nguyên $ ( \le k \le n$). Dữ liệu đảm bảo rằng tại thời điểm truy vấn, mảng chứa ít nhất $ số 0. Để nhận được giá trị tiếp theo của $, bạn phải in ra câu trả lời cho giá trị hiện tại của $.
+
+Sau đó, bạn có thể thực hiện không quá $ truy vấn.
+\end{inputbox}
+
+\section*{Dữ liệu ra}
+\begin{outputbox}
+Sử dụng định dạng sau để in ra câu trả lời (đây không phải là một truy vấn, nó không được tính vào giới hạn $ truy vấn):
+\begin{itemize}
+    \item \texttt{! x} — vị trí của số 0 thứ $.
+\end{itemize}
+
+Các vị trí trong mảng được đánh số từ trái sang phải từ $ đến $.
+
+Sau khi in ra $ câu trả lời, chương trình của bạn phải kết thúc ngay lập tức.
+
+Trong bài toán này, trình chấm là \textbf{không thích ứng} (not adaptive). Điều này có nghĩa là trong cùng một test, mảng bị giấu và các truy vấn không thay đổi.
+
+Trong trường hợp bạn in ra truy vấn không hợp lệ, hệ thống sẽ trả về \texttt{-1}. Khi nhận được giá trị này, chương trình của bạn phải kết thúc bình thường ngay lập tức (ví dụ: bằng cách gọi \texttt{exit(0)}), nếu không, hệ thống chấm có thể đưa ra một kết quả chấm (verdict) bất kỳ.
+
+Nếu số lượng truy vấn vượt quá giới hạn, hệ thống sẽ trả về kết quả \textit{wrong answer}.
+
+Giải pháp của bạn có thể nhận kết quả \textit{Idleness limit exceeded} nếu bạn không in ra gì hoặc quên flush (đẩy dữ liệu từ) bộ đệm đầu ra.
+
+Để flush bộ đệm đầu ra, bạn cần thực hiện các thao tác sau ngay sau khi in ra truy vấn và ký tự xuống dòng:
+\begin{itemize}
+    \item \texttt{fflush(stdout)} hoặc \texttt{cout.flush()} trong C++;
+    \item \texttt{System.out.flush()} trong Java;
+    \item \texttt{flush(output)} trong Pascal;
+    \item \texttt{stdout.flush()} trong Python;
+    \item xem tài liệu cho các ngôn ngữ khác.
+\end{itemize}
+\end{outputbox}
+
+\textbf{\textcolor{sectioncolor}{Hacks}}
+
+Sử dụng định dạng sau để hack:
+
+Trên dòng đầu tiên in ra chuỗi $ ( \le |s| \le 2 \cdot 10^5$), bao gồm các số 0 và 1, và một số nguyên $ (=1$) — tương ứng với mảng bị giấu và số lượng truy vấn. Trong $ dòng tiếp theo in ra số $ ( \le k \le |s|$).
+
+Giải pháp bị hack sẽ không có quyền truy cập trực tiếp vào mảng bị giấu.
+
+\section*{Ví dụ}
+\begin{minipage}[t]{0.48\textwidth}
+\textbf{Input}
+\begin{lstlisting}
+6 1
+2
+
+2
+
+1
+
+1
+
+0
+
+0
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\textbf{Output}
+\begin{lstlisting}
+? 4 6
+
+? 1 1
+
+? 1 2
+
+? 2 2
+
+? 5 5
+
+! 5
+\end{lstlisting}
+\end{minipage}
+
+*(Lưu ý: Input và Output trên là ví dụ minh họa của quá trình giao tiếp giữa chương trình của bạn và hệ thống)*
+
+\explanation
+Trong test đầu tiên, mảng $[1, 0, 1, 1, 0, 1]$ bị giấu. Trong test này =2$.
+
+\textbf{Giải thích chi tiết quá trình tương tác:}
+\begin{itemize}
+    \item Hệ thống gửi =6, t=1$.
+    \item Hệ thống yêu cầu tìm số 0 thứ =2$.
+    \item Chương trình hỏi tổng các phần tử trong đoạn $[4, 6]$ bằng lệnh \texttt{? 4 6}. Hệ thống trả về $ (mảng có các phần tử là , 0, 1$ ở các vị trí , 5, 6$).
+    \item Chương trình hỏi đoạn $[1, 1]$, hệ thống trả về $.
+    \item Chương trình hỏi đoạn $[1, 2]$, hệ thống trả về $. Điều này chứng tỏ phần tử thứ 2 là $.
+    \item Chương trình hỏi đoạn $[2, 2]$, hệ thống trả về $.
+    \item Chương trình hỏi đoạn $[5, 5]$, hệ thống trả về $. 
+    \item Kết hợp các thông tin, chương trình xác định số 0 thứ $ nằm ở vị trí $, in ra \texttt{! 5}.
+\end{itemize}
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{E. Packmen}{Codeforces}
+
+Một sân chơi là một dải gồm $1 \times n$ ô vuông. Trong một số ô có Packman, trong một số ô có dấu sao, các ô còn lại trống.
+
+Packman có thể di chuyển sang ô liền kề trong $1$ đơn vị thời gian. Nếu có dấu sao trong ô mục tiêu thì Packman sẽ ăn nó. Packman không tốn thời gian để ăn một dấu sao.
+
+Tại thời điểm ban đầu, tất cả Packman bắt đầu di chuyển. Mỗi Packman có thể thay đổi hướng di chuyển của nó vô số lần, nhưng không được phép đi ra ngoài ranh giới của sân chơi. Các Packman không cản trở quá trình di chuyển của các Packman khác; trong một ô có thể có bất kỳ số lượng Packman nào đang di chuyển theo bất kỳ hướng nào.
+
+Nhiệm vụ của bạn là xác định thời gian tối thiểu để các Packman có thể ăn tất cả các dấu sao.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa một số nguyên duy nhất $n$ ($2 \le n \le 10^5$) --- chiều dài của sân chơi.
+
+Dòng thứ hai chứa mô tả của sân chơi bao gồm $n$ ký tự. Nếu có ký tự \texttt{'.'} ở vị trí $i$ --- ô $i$ trống. Nếu có ký tự \texttt{'*'} ở vị trí $i$ --- trong ô $i$ chứa một dấu sao. Nếu có ký tự \texttt{'P'} ở vị trí $i$ --- Packman đang ở trong ô $i$.
+
+Đảm bảo rằng trên sân chơi có ít nhất một Packman và ít nhất một dấu sao.
+
+\section*{Dữ liệu ra}
+In ra thời gian tối thiểu để các Packman có thể ăn tất cả các dấu sao.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item $2 \le n \le 10^5$
+    \item Thời gian giới hạn: 1 giây
+    \item Giới hạn bộ nhớ: 256 megabytes
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+7
+*..P*P*
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+3
+\end{lstlisting}
+\end{outputbox}
+
+\begin{inputbox}
+\begin{lstlisting}
+10
+.**PP.*P.*
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+2
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong ví dụ thứ nhất, Packman ở vị trí $4$ sẽ di chuyển sang trái và ăn dấu sao ở vị trí $1$. Quá trình này mất $3$ đơn vị thời gian. Trong cùng $3$ đơn vị thời gian đó, Packman ở vị trí $6$ sẽ ăn cả hai dấu sao liền kề với nó. Ví dụ, nó có thể di chuyển sang trái và ăn dấu sao ở vị trí $5$ (mất $1$ đơn vị thời gian) rồi di chuyển từ vị trí $5$ sang phải và ăn dấu sao ở vị trí $7$ (mất $2$ đơn vị thời gian). Vì vậy, trong $3$ đơn vị thời gian, các Packman sẽ ăn hết tất cả các dấu sao trên sân chơi.
+
+Trong ví dụ thứ hai, Packman ở vị trí $4$ sẽ di chuyển sang trái và sau $2$ đơn vị thời gian sẽ ăn các dấu sao ở vị trí $3$ và $2$. Các Packman ở vị trí $5$ và $8$ sẽ di chuyển sang phải và trong $2$ đơn vị thời gian sẽ ăn các dấu sao ở vị trí $7$ và $10$ tương ứng. Vì vậy, $2$ đơn vị thời gian là đủ để các Packman ăn hết tất cả các dấu sao trên sân chơi.
+
+
+\newpage
+
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+
+
+% ── Table of contents ────────────────────────────────────────
+
+
+
+\problem{Magic Ship}{Codeforces - 1117C}
+
+Bạn là thuyền trưởng của một con tàu. Ban đầu bạn đang ở điểm $(x_1, y_1)$ (hiển nhiên, tất cả các vị trí trên biển đều có thể được mô tả bằng mặt phẳng tọa độ) và bạn muốn đi đến điểm $(x_2, y_2)$.
+
+Bạn biết dự báo thời tiết — xâu $s$ có độ dài $n$, chỉ gồm các chữ cái \texttt{U}, \texttt{D}, \texttt{L} và \texttt{R}. Mỗi chữ cái tương ứng với một hướng gió. Hơn nữa, dự báo có tính tuần hoàn, ví dụ: ngày đầu tiên gió thổi về hướng $s_1$, ngày thứ hai thổi về hướng $s_2$, ngày thứ $n$ thổi về hướng $s_n$ và ngày thứ $(n+1)$ lại là hướng $s_1$, và cứ thế tiếp tục.
+
+Tọa độ của tàu thay đổi theo cách sau:
+\begin{itemize}[itemsep=0pt,topsep=2pt]
+  \item nếu gió thổi về hướng \texttt{U}, tàu di chuyển từ $(x, y)$ đến $(x, y + 1)$;
+  \item nếu gió thổi về hướng \texttt{D}, tàu di chuyển từ $(x, y)$ đến $(x, y - 1)$;
+  \item nếu gió thổi về hướng \texttt{L}, tàu di chuyển từ $(x, y)$ đến $(x - 1, y)$;
+  \item nếu gió thổi về hướng \texttt{R}, tàu di chuyển từ $(x, y)$ đến $(x + 1, y)$.
+\end{itemize}
+
+Mỗi ngày, tàu cũng có thể di chuyển theo một trong bốn hướng trên hoặc đứng yên. Nếu di chuyển, khoảng cách đúng bằng $1$ đơn vị. Sự dịch chuyển của tàu và gió sẽ được cộng dồn lại với nhau. Nếu tàu đứng yên, chỉ có hướng gió tác động lên tọa độ của tàu. Ví dụ, nếu gió thổi theo hướng \texttt{U} và tàu di chuyển theo hướng \texttt{L}, thì từ điểm $(x, y)$ nó sẽ di chuyển đến điểm $(x - 1, y + 1)$, và nếu tàu di chuyển theo hướng \texttt{U}, nó sẽ di chuyển đến điểm $(x, y + 2)$.
+
+Nhiệm vụ của bạn là xác định số ngày tối thiểu để tàu có thể đến được điểm $(x_2, y_2)$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $x_1, y_1$ ($0 \le x_1, y_1 \le 10^9$) — tọa độ ban đầu của con tàu.
+
+Dòng thứ hai chứa hai số nguyên $x_2, y_2$ ($0 \le x_2, y_2 \le 10^9$) — tọa độ của điểm đến.
+
+Đảm bảo rằng tọa độ ban đầu và tọa độ điểm đến là khác nhau.
+
+Dòng thứ ba chứa một số nguyên $n$ ($1 \le n \le 10^5$) — độ dài của xâu $s$.
+
+Dòng thứ tư chứa xâu $s$, chỉ gồm các chữ cái \texttt{U}, \texttt{D}, \texttt{L} và \texttt{R}.
+
+\section*{Dữ liệu ra}
+In ra một số nguyên duy nhất là số ngày tối thiểu để tàu có thể đến được điểm $(x_2, y_2)$.
+
+Nếu không thể đến được, in ra \texttt{-1}.
+
+\begin{constraintbox}
+\textbf{Giới hạn:}
+\begin{itemize}[itemsep=0pt,topsep=2pt]
+  \item $0 \le x_1, y_1 \le 10^9$
+  \item $0 \le x_2, y_2 \le 10^9$
+  \item $1 \le n \le 10^5$
+  \item $(x_1, y_1) \neq (x_2, y_2)$
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+
+\begin{inputbox}
+\begin{lstlisting}[language=]
+0 0
+4 6
+3
+UUU
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}[language=]
+5
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong ví dụ đầu tiên, tàu nên thực hiện chuỗi di chuyển: \texttt{RRRRU}. Khi đó, tọa độ của tàu sẽ thay đổi lần lượt là: $(0, 0) \to (1, 1) \to (2, 2) \to (3, 3) \to (4, 4) \to (4, 6)$.
+
+\begin{inputbox}
+\begin{lstlisting}[language=]
+0 3
+0 0
+3
+UDD
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}[language=]
+3
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong ví dụ thứ hai, tàu nên thực hiện chuỗi di chuyển: \texttt{DD} (ngày thứ ba tàu đứng yên). Khi đó, tọa độ của tàu sẽ thay đổi lần lượt là: $(0, 3) \to (0, 3) \to (0, 1) \to (0, 0)$.
+
+\begin{inputbox}
+\begin{lstlisting}[language=]
+0 0
+0 1
+1
+L
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}[language=]
+-1
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Trong ví dụ thứ ba, tàu không bao giờ có thể đến được điểm $(0, 1)$.
+
+
+\newpage
+
+% ============================================================
+
+
+\problem{E. Minimizing Difference}{Codeforces}
+
+Cho một dãy số $a_1, a_2, \dots, a_n$ gồm $n$ số nguyên.
+
+Bạn có thể thực hiện thao tác sau trên dãy này: chọn bất kỳ phần tử nào và tăng hoặc giảm nó đi $1$.
+
+Hãy tính độ chênh lệch nhỏ nhất có thể giữa phần tử lớn nhất và phần tử nhỏ nhất trong dãy, nếu bạn có thể thực hiện thao tác trên không quá $k$ lần.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên chứa hai số nguyên $n$ và $k$ ($2 \le n \le 10^{5}$, $1 \le k \le 10^{14}$) — lần lượt là số lượng phần tử của dãy và số lần tối đa bạn có thể thực hiện thao tác.
+
+Dòng thứ hai chứa dãy số nguyên $a_1, a_2, \dots, a_n$ ($1 \le a_i \le 10^{9}$).
+
+\section*{Dữ liệu ra}
+In ra độ chênh lệch nhỏ nhất có thể giữa phần tử lớn nhất và phần tử nhỏ nhất trong dãy, nếu bạn có thể thực hiện thao tác trên không quá $k$ lần.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}[leftmargin=1.5em, nosep]
+    \item $2 \le n \le 10^5$
+    \item $1 \le k \le 10^{14}$
+    \item $1 \le a_i \le 10^9$
+    \item Thời gian giới hạn: 2 giây
+    \item Giới hạn bộ nhớ: 256 megabytes
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4 5
+3 1 7 5
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+2
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 1, bạn có thể tăng phần tử thứ hai ($1$) lên $2$ đơn vị (thành $3$) và giảm phần tử thứ ba ($7$) đi $2$ đơn vị (thành $5$). Tổng số thao tác đã dùng là $2 + 2 = 4 \le 5$. Dãy số trở thành $[3, 3, 5, 5]$, và chênh lệch giữa phần tử lớn nhất và nhỏ nhất là $5 - 3 = 2$. Bạn vẫn còn $1$ thao tác, nhưng không thể dùng nó để giảm kết quả xuống nhỏ hơn $2$.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+3 10
+100 100 100
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+0
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 2, tất cả các phần tử đã bằng nhau sẵn (đều là $100$), vì vậy chênh lệch giữa phần tử lớn nhất và nhỏ nhất là $0$. Ta không cần thực hiện bất kỳ thao tác nào (số thao tác là $0 \le 10$).
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+10 9
+4 5 5 7 5 4 5 2 4 3
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+1
+\end{lstlisting}
+\end{outputbox}
+\explanation
+Trong ví dụ 3, ta có dãy gồm $10$ phần tử. Sau khi sắp xếp lại, dãy là $[2, 3, 4, 4, 4, 5, 5, 5, 5, 7]$.
+Ta có thể thực hiện các thao tác:
+\begin{itemize}[leftmargin=1.5em, nosep]
+    \item Tăng $2$ lên $4$ (cần $2$ thao tác).
+    \item Tăng $3$ lên $4$ (cần $1$ thao tác).
+    \item Giảm $7$ xuống $5$ (cần $2$ thao tác).
+\end{itemize}
+Tổng số thao tác đã sử dụng là $2 + 1 + 2 = 5 \le 9$.
+Sau các thao tác, dãy trở thành $[4, 4, 4, 4, 4, 5, 5, 5, 5, 5]$. Chênh lệch lúc này là $5 - 4 = 1$.
+Ta không thể làm cho tất cả các phần tử bằng nhau vì tổng chi phí để biến tất cả thành $4$ là $11$, hoặc thành $5$ là $10$, đều vượt quá số thao tác cho phép $k = 9$. Do đó, chênh lệch nhỏ nhất có thể là $1$.
+
 
 \newpage
 

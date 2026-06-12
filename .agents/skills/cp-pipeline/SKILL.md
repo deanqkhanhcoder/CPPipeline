@@ -129,6 +129,7 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 ## Lessons Learned
 1. **Gemini báo PASS dù compile fail**: LLM có xu hướng tự tin thái quá, báo cáo thành công chỉ vì thấy file có mặt trên đĩa (hoặc do file PDF cũ chưa bị xoá).
 2. **Subagent hallucinate macro**: Không thể tin tưởng hoàn toàn vào LLM trong việc sinh ra LaTeX macro chuẩn. Chúng thường tự bịa thêm các lệnh lạ.
+3. **Queue Backup**: Hàng đợi (`cache/queue/index.json`) có thể bị kẹt jobs cũ sau crash/restart. Nếu crawler mở URL lạ, kiểm tra ngay queue. Dùng `python tools/crawler_manager.py flush` để dọn dẹp.
 
 ## Anti Regression Rules
 - **Rule 1**: BẮT BUỘC CHÉO KIỂM TRA (cross-verify). Không bao giờ tin tưởng mù quáng vào kết quả sinh file. Phải kiểm tra Return Code và Log file.
@@ -136,7 +137,38 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 - **Rule 3**: Cấm việc subagent tự sáng tạo macro. Pipeline ở bước LaTeX phải có cơ chế validate/sanitize output LaTeX.
 - **Rule 4**: CẤM SUBAGENT CRAWL ĐỘC LẬP. Child agents are forbidden from calling `crawl_problem.py`. Mọi quá trình crawl phải thông qua `crawler_manager.py` theo kiến trúc Queue.
 
+## Repository Hygiene Rules (ENFORCED)
+- **Root Directory**: Chỉ được phép: `README.md`, `LICENSE`, `requirements.txt`, `.gitignore`, `build.py`. Tuyệt đối CẤM tạo file `.html`, `.txt`, `.json`, `.md`, `.log`, `.aux`, `.py` tại root.
+- **cache/problemset/**: Chỉ chứa `.json` files (raw cache). Không được tạo `.html`, `.txt`, `.md` tại đây.
+- **cache/normalized/**: Chứa `.json` normalized (html fragment extracted). Không được chứa HTML files.
+- **cache/build/**: Chỉ chứa `.tex` và `.pdf` cho từng bài. KHÔNG được chứa `.aux`, `.log`, `.toc`, `.out`, `.py`, `.txt` rác.
+- **outputs/**: Chỉ được chứa `output.tex` và `output.pdf`. `.aux`, `.log`, `.toc`, `.out` phải được xóa tự động sau compile.
+- **archive/**: Chỉ lưu `.pdf` và `.tex`. Không lưu `.aux`, `.log`, `.toc`, `.out`, `.synctex.gz`.
+
+## Token Optimization Rules (ENFORCED)
+- **Parser PHẢI đọc `cache/normalized/<id>.json`** (html fragment ~5-50KB), KHÔNG được đọc `cache/problemset/<id>.json` (raw HTML 100-270KB).
+- Trước khi spawn Parser agent: bắt buộc chạy `python tools/html_extractor.py <id>` để extract fragment vào `cache/normalized/`.
+- Nếu `cache/normalized/<id>.json` đã tồn tại: skip extraction (lazy).
+- **NGHIÊM CẤM** truyền raw HTML 100KB+ cho LLM. Đây là lãng phí token 97%.
+
+## Cache Lifecycle Rules
+```
+URL → cache/problemset/<id>.json  (raw, full HTML, 100-270KB)
+      ↓ html_extractor.py
+      cache/normalized/<id>.json  (clean fragment, 5-50KB)
+      ↓ LLM Parser
+      cache/clean/<id>.json       (structured JSON)
+      ↓ LLM Translator
+      cache/build/<id>.tex        (LaTeX fragment)
+      ↓ combine + compile
+      outputs/output.tex + output.pdf
+      ↓ archive
+      archive/<date>/output_NNN.pdf
+```
+Mỗi bước chỉ đọc stage trước của nó. Không bao giờ skip stage.
+
 ## Known Failure Modes
 - Pipeline báo SUCCESS nhưng không có PDF (Fake Success).
 - Root directory bị ô nhiễm (Root Pollution) do quá trình debug.
 - Lỗi LaTeX không được catch và report chính xác cho user.
+- Parser đọc raw HTML (100KB+) thay vì normalized fragment → token waste 97%.

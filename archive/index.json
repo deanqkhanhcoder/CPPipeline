@@ -74,5 +74,27 @@
     "cache_misses": 0,
     "pdf_file": "2026-06-04/output_006.pdf",
     "tex_file": "2026-06-04/output_006.tex"
+  },
+  {
+    "timestamp": "2026-06-11T21:50:31.410883",
+    "problem_count": 1,
+    "sources": [
+      "CEOI"
+    ],
+    "cache_hits": 0,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-11/output_001.pdf",
+    "tex_file": "2026-06-11/output_001.tex"
+  },
+  {
+    "timestamp": "2026-06-12T19:42:43.282604",
+    "problem_count": 1,
+    "sources": [
+      "Codeforces"
+    ],
+    "cache_hits": 0,
+    "cache_misses": 0,
+    "pdf_file": "2026-06-12/output_001.pdf",
+    "tex_file": "2026-06-12/output_001.tex"
   }
 ]
