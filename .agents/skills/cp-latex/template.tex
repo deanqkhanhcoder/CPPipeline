@@ -1,0 +1,159 @@
+\documentclass[12pt,a4paper]{article}
+
+%% ---- Packages ----
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{parskip}
+\setlength{\headheight}{15pt}
+
+%% ---- Màu sắc ----
+\definecolor{sectioncolor}{RGB}{0,70,140}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{boxbg}{RGB}{230,240,255}
+\definecolor{constraintbg}{RGB}{255,248,230}
+\definecolor{examplebg}{RGB}{240,255,240}
+
+%% ---- Tiêu đề section ----
+\titleformat{\section}[block]
+  {\Large\bfseries\color{sectioncolor}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}\rule{\linewidth}{1.5pt}\vspace{0.3em}]
+
+\titleformat{\subsection}[block]
+  {\normalsize\bfseries\color{sectioncolor!80}}
+  {}{0em}{}
+
+%% ---- Header/Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{sectioncolor}{\textbf{Tuyển tập Lập trình Thi đấu}}}
+\fancyhead[R]{\small\textcolor{gray}{\leftmark}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---- Code listings ----
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  framerule=0pt,
+  rulecolor=\color{gray!40},
+  xleftmargin=8pt,
+  xrightmargin=8pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+  columns=flexible,
+  keepspaces=true,
+}
+
+%% ---- Hyperref ----
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sectioncolor,
+  urlcolor=blue!70!black,
+}
+
+%% ---- Macro: khối tiêu đề bài ----
+\newcommand{\problem}[2]{%
+  \addcontentsline{toc}{section}{#1}%
+  \begin{mdframed}[
+    backgroundcolor=boxbg,
+    linecolor=sectioncolor,
+    linewidth=1.5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=12pt,
+    innerrightmargin=12pt,
+  ]
+  \textbf{\large Bài toán: #1}\\[2pt]
+  \textit{Nguồn: #2}
+  \end{mdframed}
+  \vspace{4pt}
+}
+
+%% ---- Macro: Định dạng Input ----
+\newcommand{\inputformat}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}Dữ liệu vào}
+  \vspace{2pt}\par
+}
+
+%% ---- Macro: Định dạng Output ----
+\newcommand{\outputformat}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}Dữ liệu ra}
+  \vspace{2pt}\par
+}
+
+%% ---- Macro: ràng buộc ----
+\newcommand{\constraints}{%
+  \vspace{6pt}
+  \begin{mdframed}[
+    backgroundcolor=constraintbg,
+    linecolor=orange!70,
+    linewidth=1pt,
+    innertopmargin=6pt,
+    innerbottommargin=6pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+  ]
+  \noindent\textbf{Ràng buộc:}
+  \vspace{2pt}\par
+}
+\def\endconstraints{\end{mdframed}\vspace{4pt}}
+
+%% ---- Macro: ví dụ ----
+\newcommand{\example}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}}%
+}
+
+%% ---- Macro: giải thích ----
+\newcommand{\explanation}{%
+  \vspace{4pt}
+  \noindent\textbf{\color{sectioncolor}Giải thích:}
+  \vspace{2pt}\par
+}
+
+%% ============================================================
+\begin{document}
+\hypersetup{pageanchor=false}
+
+%% ---- Trang bìa ----
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{sectioncolor} Tuyển Tập Bài Toán\\[0.4em]
+   Lập Trình Thi Đấu}\\[1.5em]
+  \rule{0.6\linewidth}{2pt}\\[1em]
+  {\large\itshape Codeforces $\cdot$ USACO $\cdot$ AtCoder $\cdot$ CSES}\\[1em]
+  {\normalsize Bản dịch Tiếng Việt -- Văn phong HSG/ICPC}\\[3cm]
+  {\large \textbf{[[PROBLEM_COUNT]] Bài toán}}\\[0.5em]
+  \vfill
+  {\small Được tổng hợp và dịch tự động từ các nguồn gốc tiếng Anh.}
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+
+%% ---- Mục lục ----
+\tableofcontents
+\newpage
+
+% CONTENT_START
+% CONTENT_END
+
+\end{document}

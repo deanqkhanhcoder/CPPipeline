@@ -1,0 +1,971 @@
+% ============================================================
+% Tuyển tập bài tập Competitive Programming
+% Dịch sang tiếng Việt — chuẩn HSG / ICPC
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ─────────────────────────────────────────────────
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{parskip}
+
+% ── Colors ───────────────────────────────────────────────────
+\definecolor{sectioncolor}{RGB}{0,70,127}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{rulecolor}{RGB}{200,200,200}
+\definecolor{framecolor}{RGB}{0,100,180}
+\definecolor{inputbg}{RGB}{240,248,255}
+\definecolor{constraintbg}{RGB}{255,250,235}
+
+% ── Section styling ──────────────────────────────────────────
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}[{\color{sectioncolor}\titlerule[0.8pt]}]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sectioncolor!80}}
+  {\thesubsection}{1em}{}
+
+% ── Header / Footer ──────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{sectioncolor}{\small\textbf{Tuyển tập bài CP}}}
+\fancyhead[R]{\textcolor{sectioncolor}{\small\thepage}}
+\fancyfoot[C]{\textcolor{gray}{\small Dịch thuật: tiếng Việt — Chuẩn HSG/ICPC}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Listings (code blocks) ────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{rulecolor},
+  framesep=4pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% ── Macros ───────────────────────────────────────────────────
+\newcommand{\problem}[2]{%
+  \begin{mdframed}[
+    linecolor=framecolor,
+    linewidth=1.5pt,
+    backgroundcolor=white,
+    topline=true, bottomline=true,
+    leftline=true, rightline=true,
+    innerleftmargin=10pt, innerrightmargin=10pt,
+    innertopmargin=6pt, innerbottommargin=6pt,
+  ]
+  \textbf{\large #1} \hfill \textit{Nguồn: #2}
+  \end{mdframed}
+  \vspace{4pt}%
+}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{inputbox}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{outputbox}
+
+\newmdenv[
+  linecolor=orange!70,
+  linewidth=0.8pt,
+  backgroundcolor=constraintbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{constraintbox}
+
+\newcommand{\inputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu vào}}\par\vspace{2pt}%
+}
+\newcommand{\outputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu ra}}\par\vspace{2pt}%
+}
+\newcommand{\constraints}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giới hạn}}\par\vspace{2pt}%
+}
+\newcommand{\example}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Ví dụ}}\par\vspace{2pt}%
+}
+\newcommand{\explanation}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giải thích ví dụ}}\par\vspace{2pt}%
+}
+
+% ── Hyperref ─────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sectioncolor,
+  urlcolor=sectioncolor!80,
+  pdftitle={Tuyển tập bài CP},
+  pdfauthor={Dịch thuật chuẩn HSG/ICPC},
+}
+
+% ── Miscellaneous ────────────────────────────────────────────
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{sectioncolor} Tuyển tập Bài tập\\[0.4em]
+   Competitive Programming}\\[0.8em]
+  {\large\color{gray} Cấu trúc Dữ liệu \& Giải thuật}\\[2em]
+  \rule{\linewidth}{1pt}\\[1.5em]
+  {\large Nguồn: Tập hợp từ nhiều nền tảng}\\[0.5em]
+  {\large Ngôn ngữ: \textbf{Tiếng Việt} — Chuẩn HSG / ICPC}\\[2em]
+  \rule{\linewidth}{1pt}\\[3em]
+  {\normalsize\color{gray}
+    Tài liệu dịch thuật phục vụ học tập và luyện tập lập trình thi đấu.\\
+    Mọi nội dung được dịch sát nghĩa từ đề gốc, giữ nguyên cấu trúc logic.
+  }
+  \vfill
+  {\small\color{gray} Ngày biên soạn: \today}
+\end{titlepage}
+
+% ── Table of contents ────────────────────────────────────────
+\tableofcontents
+\newpage
+
+\problem{Tổng Hai Giá Trị}{https://cses.fi/problemset/task/1640}
+
+Bạn được cho một mảng gồm $n$ số nguyên, và nhiệm vụ của bạn là tìm hai giá trị (ở các vị trí phân biệt) có tổng bằng $x$.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên $n$ và $x$: kích thước mảng và tổng cần tìm.
+
+Dòng thứ hai chứa $n$ số nguyên $a_1, a_2, \dots, a_n$: các phần tử của mảng.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra hai số nguyên: vị trí của hai giá trị đó. Nếu có nhiều đáp án, bạn có thể in ra bất kỳ đáp án nào. Nếu không có đáp án, in ra \texttt{IMPOSSIBLE}.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 2 \cdot 10^5$
+    \item $1 \le x, a_i \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+4 8
+2 7 5 1
+\end{lstlisting}
+\begin{lstlisting}
+2 4
+\end{lstlisting}
+
+\explanation
+Trong ví dụ, mảng đã cho là $[2, 7, 5, 1]$. Ta cần tìm hai phần tử ở hai vị trí phân biệt có tổng bằng $8$.
+Phần tử ở vị trí thứ $2$ (có giá trị $7$) và vị trí thứ $4$ (có giá trị $1$) có tổng là $7 + 1 = 8$.
+Do đó, đáp án là \texttt{2 4}. (Lưu ý: chỉ số mảng bắt đầu từ $1$).
+
+
+\section{Sách (Books)}
+\problem{Sách (Books)}{\url{https://codeforces.com/contest/279/problem/B}}
+
+Khi Valera có thời gian rảnh, cậu ấy thường đến thư viện để đọc một số cuốn sách. Hôm nay cậu ấy có $t$ phút rảnh rỗi để đọc. Vì vậy, Valera đã lấy $n$ cuốn sách trong thư viện và với mỗi cuốn sách, cậu ấy đã ước lượng thời gian cần thiết để đọc xong nó. Đánh số các cuốn sách bằng các số nguyên từ $1$ đến $n$. Valera cần $a_i$ phút để đọc cuốn sách thứ $i$.
+
+Valera quyết định chọn một cuốn sách bất kỳ có số thứ tự $i$ và đọc lần lượt các cuốn sách, bắt đầu từ cuốn sách này. Nói cách khác, đầu tiên cậu ấy sẽ đọc cuốn sách thứ $i$, sau đó là cuốn sách thứ $i+1$, tiếp theo là cuốn sách thứ $i+2$, v.v. Cậu ấy tiếp tục quá trình này cho đến khi hết thời gian rảnh hoặc đọc xong cuốn sách thứ $n$. Valera đọc trọn vẹn từng cuốn sách, nghĩa là cậu ấy sẽ không bắt đầu đọc một cuốn sách nếu không có đủ thời gian rảnh để hoàn thành nó.
+
+Hãy in ra số lượng sách tối đa mà Valera có thể đọc.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên $n$ và $t$ ($1 \le n \le 10^5$; $1 \le t \le 10^9$) — số lượng sách và số phút rảnh rỗi mà Valera có.
+
+Dòng thứ hai chứa một dãy gồm $n$ số nguyên $a_1, a_2, \dots, a_n$ ($1 \le a_i \le 10^4$), trong đó $a_i$ là số phút mà cậu bé cần để đọc cuốn sách thứ $i$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra một số nguyên duy nhất — số lượng sách tối đa mà Valera có thể đọc.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}[leftmargin=*,noitemsep]
+    \item $1 \le n \le 10^5$
+    \item $1 \le t \le 10^9$
+    \item $1 \le a_i \le 10^4$
+\end{itemize}
+\end{constraintbox}
+
+\example
+
+\textbf{Ví dụ 1:}
+\begin{lstlisting}
+4 5
+3 1 2 1
+\end{lstlisting}
+\textbf{Output:}
+\begin{lstlisting}
+3
+\end{lstlisting}
+
+\textbf{Ví dụ 2:}
+\begin{lstlisting}
+3 3
+2 2 3
+\end{lstlisting}
+\textbf{Output:}
+\begin{lstlisting}
+1
+\end{lstlisting}
+
+\explanation
+Trong \textbf{ví dụ thứ nhất}, Valera có $5$ phút. Dãy thời gian đọc các cuốn sách là $[3, 1, 2, 1]$. Cậu ấy có thể bắt đầu từ cuốn sách thứ $2$ (cần $1$ phút), đọc tiếp cuốn thứ $3$ (cần $2$ phút), và cuốn thứ $4$ (cần $1$ phút). Tổng thời gian đọc là $1 + 2 + 1 = 4$ phút $\le 5$ phút. Do đó, cậu ấy có thể đọc được tối đa $3$ cuốn sách.
+
+Trong \textbf{ví dụ thứ hai}, Valera có $3$ phút rảnh rỗi. Dãy thời gian đọc là $[2, 2, 3]$. Valera chỉ có thể đọc được tối đa $1$ cuốn sách bất kỳ, do mỗi cuốn sách đều cần từ $2$ đến $3$ phút và tổng thời gian của bất kỳ hai cuốn sách liên tiếp nào cũng vượt quá $3$ phút.
+
+
+\section{Subarray Sums I}
+\problem{Subarray Sums I}{\url{https://cses.fi/problemset/task/1660}}
+
+Cho một mảng gồm $n$ số nguyên dương, nhiệm vụ của bạn là đếm số lượng mảng con có tổng các phần tử đúng bằng $x$.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên $n$ và $x$: kích thước của mảng và tổng mục tiêu $x$.
+
+Dòng tiếp theo chứa $n$ số nguyên $a_1, a_2, \dots, a_n$: các phần tử của mảng.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra một số nguyên duy nhất: số lượng mảng con thỏa mãn yêu cầu.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}[leftmargin=*,nosep]
+    \item $1 \le n \le 2 \cdot 10^5$
+    \item $1 \le x, a_i \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+5 7
+2 4 1 2 7
+\end{lstlisting}
+\begin{lstlisting}
+3
+\end{lstlisting}
+
+\explanation
+Có $3$ mảng con có tổng bằng $7$ là:
+\begin{itemize}[leftmargin=*,nosep]
+    \item $[2, 4, 1]$ (các phần tử từ vị trí 1 đến 3)
+    \item $[4, 1, 2]$ (các phần tử từ vị trí 2 đến 4)
+    \item $[7]$ (phần tử tại vị trí 5)
+\end{itemize}
+
+
+\section{Tổng của ba giá trị (Sum of Three Values)}
+
+\problem{Tổng của ba giá trị}{https://cses.fi/problemset/task/1641}
+
+Bạn được cho một mảng gồm $n$ số nguyên, và nhiệm vụ của bạn là tìm ba giá trị (ở các vị trí phân biệt) có tổng bằng $x$.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên $n$ và $x$: kích thước của mảng và tổng cần tìm.\\
+Dòng thứ hai chứa $n$ số nguyên $a_1, a_2, \dots, a_n$: các giá trị của mảng.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra ba số nguyên: vị trí của ba giá trị đó. Nếu có nhiều đáp án, bạn có thể in ra bất kỳ đáp án nào. Nếu không có đáp án nào, in ra \texttt{IMPOSSIBLE}.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 5000$
+    \item $1 \le x, a_i \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+4 8
+2 7 5 1
+\end{lstlisting}
+\begin{lstlisting}
+1 3 4
+\end{lstlisting}
+
+\explanation
+Các giá trị ở các vị trí 1, 3 và 4 lần lượt là $a_1 = 2$, $a_3 = 5$, và $a_4 = 1$. Tổng của chúng là $2 + 5 + 1 = 8$, bằng đúng với giá trị $x$ cần tìm.
+
+
+\section{Paired Up}
+\problem{Paired Up}{http://www.usaco.org/index.php?page=viewproblem2\&cpid=738}
+
+Nông dân John nhận thấy rằng mỗi con bò của mình sẽ dễ vắt sữa hơn khi có một con bò khác ở gần để hỗ trợ tinh thần. Do đó, ông muốn lấy $M$ con bò của mình ($M \le 10^9$, $M$ chẵn) và chia chúng thành $M/2$ cặp. Mỗi cặp bò sau đó sẽ được đưa đến một chuồng riêng biệt trong kho thóc để vắt sữa. Việc vắt sữa ở mỗi chuồng trong số $M/2$ chuồng này sẽ diễn ra đồng thời.
+
+Để mọi chuyện phức tạp hơn một chút, mỗi con bò của Nông dân John có sản lượng sữa khác nhau. Nếu những con bò có sản lượng sữa $A$ và $B$ được ghép cặp với nhau, thì sẽ mất tổng cộng $A+B$ đơn vị thời gian để vắt sữa cả hai con.
+
+Vui lòng giúp Nông dân John xác định khoảng thời gian tối thiểu có thể để hoàn thành toàn bộ quá trình vắt sữa, giả sử ông ghép các con bò theo cách tối ưu nhất.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên của đầu vào chứa $N$ ($1 \le N \le 100,000$). Mỗi dòng trong số $N$ dòng tiếp theo chứa hai số nguyên $x$ và $y$, chỉ ra rằng FJ có $x$ con bò, mỗi con có sản lượng sữa $y$ ($1 \le y \le 10^9$). Tổng của các giá trị $x$ là $M$, tổng số lượng bò.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra khoảng thời gian tối thiểu cần thiết để vắt sữa các con bò của FJ, giả sử chúng được ghép cặp một cách tối ưu.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $M \le 10^9$, $M$ chẵn
+    \item $1 \le N \le 100,000$
+    \item $1 \le y \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+3
+1 8
+2 5
+1 2
+\end{lstlisting}
+\begin{lstlisting}
+10
+\end{lstlisting}
+
+\explanation
+Ở đây, nếu con bò có sản lượng $8$ được ghép cặp với con bò có sản lượng $2$ ($8+2=10$), và hai con bò có sản lượng $5$ được ghép cặp với nhau ($5+5=10$), cả hai chuồng đều sẽ mất 10 đơn vị thời gian để vắt sữa. Vì việc vắt sữa diễn ra đồng thời, toàn bộ quá trình sẽ hoàn thành sau 10 đơn vị thời gian. Bất kỳ cách ghép cặp nào khác đều sẽ không tối ưu, dẫn đến việc một chuồng mất nhiều hơn 10 đơn vị thời gian để vắt sữa.
+
+
+\section{C. Cellular Network}
+\problem{C. Cellular Network}{https://codeforces.com/contest/702/problem/C}
+
+Cho $n$ điểm trên một đường thẳng — vị trí (tọa độ $x$) của các thành phố và $m$ điểm trên cùng đường thẳng đó — vị trí (tọa độ $x$) của các tháp thu phát sóng mạng di động.
+
+Tất cả các tháp hoạt động theo cùng một cách — chúng cung cấp mạng di động cho tất cả các thành phố nằm ở khoảng cách không vượt quá $r$ tính từ tháp.
+
+Nhiệm vụ của bạn là tìm giá trị $r$ nhỏ nhất sao cho mỗi thành phố đều được phủ sóng mạng di động, tức là với mỗi thành phố, có ít nhất một tháp thu phát sóng ở khoảng cách không vượt quá $r$.
+
+Nếu $r = 0$, một tháp chỉ cung cấp mạng cho điểm mà nó được đặt. Một tháp có thể cung cấp mạng cho một số lượng thành phố bất kỳ, nhưng tất cả các thành phố này phải nằm ở khoảng cách không vượt quá $r$ tính từ tháp này.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa hai số nguyên dương $n$ và $m$ ($1 \le n, m \le 10^5$) — số lượng thành phố và số lượng tháp thu phát sóng.
+
+Dòng thứ hai chứa một dãy gồm $n$ số nguyên $a_1, a_2, \dots, a_n$ ($-10^9 \le a_i \le 10^9$) — tọa độ của các thành phố. Có thể có nhiều thành phố ở cùng một điểm. Tất cả các tọa độ $a_i$ được cho theo thứ tự không giảm.
+
+Dòng thứ ba chứa một dãy gồm $m$ số nguyên $b_1, b_2, \dots, b_m$ ($-10^9 \le b_j \le 10^9$) — tọa độ của các tháp thu phát sóng. Có thể có nhiều tháp ở cùng một điểm. Tất cả các tọa độ $b_j$ được cho theo thứ tự không giảm.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra một số nguyên duy nhất là giá trị $r$ nhỏ nhất sao cho mỗi thành phố đều được phủ sóng mạng di động.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n, m \le 10^5$
+    \item $-10^9 \le a_i \le 10^9$
+    \item $-10^9 \le b_j \le 10^9$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+3 2
+-2 2 4
+-3 0
+\end{lstlisting}
+
+\begin{lstlisting}
+4
+\end{lstlisting}
+
+\explanation
+Tháp đầu tiên (tại tọa độ $-3$) sẽ phủ sóng cho thành phố đầu tiên (tại $-2$), khoảng cách là $|-3 - (-2)| = 1$. Tháp thứ hai (tại tọa độ $0$) phủ sóng cho thành phố thứ hai (tại $2$) và thứ ba (tại $4$), khoảng cách xa nhất là $|0 - 4| = 4$. Vậy khoảng cách lớn nhất cần thiết là $\max(1, 4) = 4$, do đó $r = 4$.
+
+\example
+\begin{lstlisting}
+5 3
+1 5 10 14 17
+4 11 15
+\end{lstlisting}
+
+\begin{lstlisting}
+3
+\end{lstlisting}
+
+\explanation
+Tháp đầu tiên (tại $4$) phủ sóng cho các thành phố tại $1$ và $5$ (khoảng cách lớn nhất là $|4 - 1| = 3$). Tháp thứ hai (tại $11$) phủ sóng cho các thành phố tại $10$ và $14$ (khoảng cách lớn nhất là $|11 - 14| = 3$). Tháp thứ ba (tại $15$) phủ sóng cho thành phố tại $17$ (khoảng cách lớn nhất là $|15 - 17| = 2$). Vậy khoảng cách lớn nhất cần thiết là $\max(3, 3, 2) = 3$, do đó $r = 3$.
+
+
+\section{C. They Are Everywhere}
+\problem{C. They Are Everywhere}{https://codeforces.com/problemset/problem/701/C}
+
+Sergei B., một huấn luyện viên Pokemon trẻ tuổi, vừa tìm thấy một tòa nhà lớn gồm $n$ căn hộ được xếp thành một hàng từ trái sang phải. Người ta có thể đi vào mỗi căn hộ từ ngoài phố, và cũng có thể đi ra ngoài phố từ mỗi căn hộ. Đồng thời, mỗi căn hộ đều thông với căn hộ bên trái và bên phải của nó. Căn hộ số $1$ chỉ thông với căn hộ số $2$, và căn hộ số $n$ chỉ thông với căn hộ số $n - 1$.
+
+Có chính xác một Pokemon thuộc một loại nào đó trong mỗi căn hộ này. Sergei B. đã yêu cầu cư dân của tòa nhà cho phép anh ấy vào căn hộ của họ để bắt Pokemon. Sau khi bàn bạc, các cư dân quyết định cho phép Sergei B. đi vào một căn hộ từ ngoài phố, ghé thăm một số căn hộ và sau đó đi ra từ một căn hộ nào đó. Nhưng họ sẽ không cho phép anh ấy ghé thăm cùng một căn hộ quá một lần. Sergei B. rất vui mừng, và bây giờ anh ấy muốn ghé thăm ít căn hộ nhất có thể để thu thập được tất cả các loại Pokemon xuất hiện trong tòa nhà này. Nhiệm vụ của bạn là giúp anh ấy xác định số lượng căn hộ tối thiểu mà anh ấy phải ghé thăm.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa số nguyên $n$ ($1 \le n \le 100\,000$) — số lượng căn hộ trong tòa nhà.
+
+Dòng thứ hai chứa xâu $s$ có độ dài $n$, bao gồm các chữ cái tiếng Anh in hoa và in thường, chữ cái thứ $i$ tương ứng với loại Pokemon có trong căn hộ thứ $i$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra số lượng căn hộ tối thiểu mà Sergei B. cần ghé thăm để bắt được tất cả các loại Pokemon có mặt trong tòa nhà.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 100\,000$.
+    \item $s$ chỉ gồm các chữ cái tiếng Anh in hoa và in thường.
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+3
+AaA
+\end{lstlisting}
+\begin{lstlisting}
+2
+\end{lstlisting}
+
+\begin{lstlisting}
+7
+bcAAcbc
+\end{lstlisting}
+\begin{lstlisting}
+3
+\end{lstlisting}
+
+\begin{lstlisting}
+6
+aaBCCe
+\end{lstlisting}
+\begin{lstlisting}
+5
+\end{lstlisting}
+
+\explanation
+Trong ví dụ thứ nhất, các loại Pokemon có trong tòa nhà là \texttt{'A'} và \texttt{'a'}. Sergei B. có thể bắt đầu từ căn hộ 1 (có \texttt{'A'}) và kết thúc ở căn hộ 2 (có \texttt{'a'}). Tổng cộng anh ấy ghé thăm 2 căn hộ.
+
+Trong ví dụ thứ hai, các loại Pokemon có trong tòa nhà là \texttt{'b'}, \texttt{'c'} và \texttt{'A'}. Anh ấy có thể bắt đầu từ căn hộ số 4 (có \texttt{'A'}) và đi tới căn hộ số 6 (có \texttt{'b'}, đi qua căn hộ 5 có \texttt{'c'}). Tổng số căn hộ cần ghé thăm là 3.
+
+Trong ví dụ thứ ba, các loại Pokemon là \texttt{'a'}, \texttt{'B'}, \texttt{'C'} và \texttt{'e'}. Đoạn chứa đầy đủ các loại này ngắn nhất là từ căn hộ 2 đến căn hộ 6. Các căn hộ ghé qua là 2, 3, 4, 5, 6 tương ứng với các Pokemon \texttt{'a'}, \texttt{'B'}, \texttt{'C'}, \texttt{'C'}, \texttt{'e'}, chứa tất cả 4 loại. Tổng số căn hộ cần ghé thăm là 5.
+
+
+\section{Quiz Master}
+\problem{Quiz Master}{https://codeforces.com/contest/1777/problem/C}
+
+Một trường học phải quyết định đội tuyển cho một cuộc thi đố vui quốc tế. Có $n$ học sinh trong trường. Chúng ta có thể mô tả các học sinh bằng một mảng $a$, trong đó $a_i$ là độ thông minh của học sinh thứ $i$.
+
+Có $m$ chủ đề $1, 2, 3, \ldots, m$ để tạo ra các câu hỏi cho cuộc thi. Học sinh thứ $i$ được coi là thành thạo một chủ đề $T$ nếu $(a_i \bmod T) = 0$. Ngược lại, học sinh đó là lính mới trong chủ đề đó.
+
+Chúng ta nói rằng một đội học sinh được coi là thành thạo tập thể tất cả các chủ đề nếu với mỗi chủ đề, có ít nhất một thành viên trong đội thành thạo chủ đề đó.
+
+Hãy tìm một đội thành thạo tập thể tất cả các chủ đề sao cho chênh lệch lớn nhất giữa độ thông minh của hai học sinh bất kỳ trong đội đó là nhỏ nhất. In ra độ chênh lệch này.
+
+\inputformat
+\begin{inputbox}
+Mỗi test bao gồm nhiều test case. Dòng đầu tiên chứa số lượng test case $t$.
+
+Dòng đầu tiên của mỗi test case chứa $n$ và $m$.
+
+Dòng thứ hai của mỗi test case chứa $n$ số nguyên $a_1, a_2, \ldots, a_n$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+Với mỗi test case, in ra đáp án trên một dòng mới. Nếu không có đội nào thỏa mãn yêu cầu, in ra $-1$.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le t \le 10^4$
+    \item $1 \le n, m \le 10^5$
+    \item $1 \le a_i \le 10^5$
+    \item Tổng của $n$ qua tất cả các test case không vượt quá $10^5$.
+    \item Tổng của $m$ qua tất cả các test case không vượt quá $10^5$.
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+3
+2 4
+3 7
+4 2
+3 7 2 9
+5 7
+6 4 3 5 7
+\end{lstlisting}
+\begin{lstlisting}
+-1
+0
+3
+\end{lstlisting}
+
+\explanation
+Trong test case đầu tiên, chúng ta có các học sinh với độ thông minh là $3$ và $7$, và $m = 4$. Do đó, không có học sinh nào có độ thông minh chia hết cho $2$. Vì $2 \le m$, không có cách nào để chọn ra một đội hợp lệ.
+
+Trong test case thứ hai, chúng ta có thể chọn học sinh có độ thông minh là $2$ làm thành viên duy nhất của đội. Bằng cách này, đội sẽ thành thạo cả hai chủ đề $1$ và $2$.
+
+Trong test case thứ ba, xét đội gồm các học sinh có độ thông minh là $4, 5, 6, 7$. Bằng cách này, đội sẽ thành thạo tất cả các chủ đề $1, 2, \ldots, 7$.
+
+
+\section{Diamond Collector}
+\problem{Diamond Collector}{http://www.usaco.org/index.php?page=viewproblem2\&cpid=643}
+
+Bessie, một cô bò luôn đam mê các đồ vật sáng lấp lánh, đã bắt đầu một sở thích là khai thác kim cương trong thời gian rảnh rỗi! Cô ấy đã thu thập được $N$ viên kim cương ($N \le 50\,000$) với nhiều kích cỡ khác nhau, và cô ấy muốn sắp xếp một số viên kim cương vào một cặp tủ trưng bày trong chuồng.
+
+Vì Bessie muốn các viên kim cương trong mỗi tủ có kích thước tương đối giống nhau, cô ấy quyết định sẽ không đặt hai viên kim cương vào cùng một tủ nếu kích thước của chúng chênh lệch nhau quá $K$ (hai viên kim cương có thể được trưng bày cùng nhau trong một tủ nếu kích thước của chúng chênh lệch nhau tối đa $K$). Cho trước $K$, hãy giúp Bessie xác định tổng số lượng kim cương tối đa mà cô ấy có thể trưng bày trong cả hai tủ.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên của dữ liệu vào chứa hai số nguyên $N$ và $K$ ($0 \le K \le 10^9$).
+
+$N$ dòng tiếp theo, mỗi dòng chứa một số nguyên cho biết kích thước của một viên kim cương. Tất cả các kích thước đều là số dương và không vượt quá $10^9$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra một số nguyên dương duy nhất, là tổng số lượng kim cương tối đa mà Bessie có thể trưng bày trong cả hai tủ.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le N \le 50\,000$
+    \item $0 \le K \le 10^9$
+    \item Kích thước của mỗi viên kim cương là một số nguyên dương $\le 10^9$.
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+7 3
+10
+5
+1
+12
+9
+5
+14
+\end{lstlisting}
+\begin{lstlisting}
+5
+\end{lstlisting}
+
+\explanation
+Sắp xếp kích thước các viên kim cương theo thứ tự tăng dần: $1, 5, 5, 9, 10, 12, 14$. 
+
+Với $K = 3$, ta cần chọn ra hai nhóm (hai tủ trưng bày) sao cho chênh lệch giữa viên kim cương lớn nhất và nhỏ nhất trong mỗi nhóm không vượt quá $3$. Đồng thời, hai nhóm này không được giao nhau.
+
+Ta có thể chọn hai nhóm như sau:
+\begin{itemize}
+    \item Nhóm 1: Chọn các viên kim cương có kích thước $\{5, 5\}$ (chênh lệch $5 - 5 = 0 \le 3$). Số lượng là $2$.
+    \item Nhóm 2: Chọn các viên kim cương có kích thước $\{9, 10, 12\}$ (chênh lệch $12 - 9 = 3 \le 3$). Số lượng là $3$.
+\end{itemize}
+Tổng số lượng kim cương tối đa có thể trưng bày trong cả hai tủ là $2 + 3 = 5$ viên kim cương.
+
+
+\section{Sleepy Cow Herding}
+\problem{Sleepy Cow Herding}{http://www.usaco.org/index.php?page=viewproblem2\&cpid=918}
+
+$N$ con bò của Nông dân John luôn đi lang thang tới những nơi xa xôi của trang trại! Ông ấy cần bạn giúp lùa chúng lại với nhau.
+
+Cánh đồng chính trong trang trại rất dài và hẹp -- ta có thể coi nó như một trục số, trên đó một con bò có thể chiếm giữ bất kỳ vị trí nguyên nào. $N$ con bò hiện đang ở các vị trí nguyên khác nhau và Nông dân John muốn di chuyển chúng sao cho chúng chiếm các vị trí liên tiếp (ví dụ: các vị trí 3, 4, 5, 6, 7 và 8).
+
+Thật không may, những con bò khá buồn ngủ, và Nông dân John gặp khó khăn trong việc thu hút sự chú ý của chúng để bắt chúng di chuyển. Tại bất kỳ thời điểm nào, ông ấy chỉ có thể di chuyển một con bò nếu nó là một "điểm mút" (vị trí nhỏ nhất hoặc lớn nhất trong số tất cả các con bò). Khi di chuyển một con bò, ông ấy có thể chỉ định cho nó đi đến bất kỳ vị trí nguyên nào chưa bị chiếm giữ, miễn là ở vị trí mới này, nó không còn là một điểm mút nữa. Ta có thể thấy rằng theo thời gian, những bước di chuyển này có xu hướng gom các con bò lại gần nhau hơn.
+
+Vui lòng xác định số lần di chuyển tối thiểu và tối đa có thể để các con bò tập hợp lại ở $N$ vị trí liên tiếp.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa $N$ ($3 \le N \le 10^5$).\\
+Mỗi dòng trong $N$ dòng tiếp theo chứa vị trí nguyên của một con bò, nằm trong khoảng $1 \dots 10^9$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+Dòng đầu tiên in ra số lần di chuyển tối thiểu mà Nông dân John cần thực hiện để lùa các con bò đứng liên tiếp nhau.\\
+Dòng thứ hai in ra số lần di chuyển tối đa mà ông ấy có thể thực hiện trước khi các con bò đứng liên tiếp nhau.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $3 \le N \le 10^5$.
+    \item Vị trí ban đầu của các con bò nằm trong khoảng $1 \dots 10^9$.
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+3
+7
+4
+9
+\end{lstlisting}
+\begin{lstlisting}
+1
+2
+\end{lstlisting}
+
+\explanation
+Số lần di chuyển tối thiểu là $1$: nếu Nông dân John di chuyển con bò ở vị trí $4$ đến vị trí $8$, thì các con bò sẽ đứng ở các vị trí liên tiếp là $7, 8, 9$.
+
+Số lần di chuyển tối đa là $2$: ví dụ, con bò ở vị trí $9$ có thể được di chuyển đến vị trí $6$, sau đó con bò ở vị trí $7$ có thể được di chuyển đến vị trí $5$ (kết quả là các con bò ở vị trí $5, 6, 7$).
+
+
+\section{C. An impassioned circulation of affection}
+\problem{C. An impassioned circulation of affection}{https://codeforces.com/problemset/problem/814/C}
+
+Sinh nhật của Nadeko sắp đến! Khi cô ấy trang trí phòng cho bữa tiệc, một dải băng dài gồm các mảnh giấy hình hoa cẩm chướng được treo ở vị trí nổi bật trên tường. Anh Koyomi chắc chắn sẽ thích nó!
+
+Vẫn chưa hài lòng với dải băng, Nadeko quyết định chỉnh trang lại. Dải băng gồm $n$ mảnh giấy được đánh số từ $1$ đến $n$ từ trái sang phải, và mảnh thứ $i$ có màu $s_i$, được biểu diễn bằng một chữ cái tiếng Anh in thường. Nadeko sẽ tô màu lại \textbf{tối đa} $m$ mảnh giấy, mỗi mảnh được tô bằng một màu mới bất kỳ (vẫn được biểu diễn bằng chữ cái in thường). Sau khi hoàn thành, cô ấy tìm tất cả các đoạn con (subsegment) của dải băng chỉ chứa các mảnh giấy cùng màu $c$ — màu yêu thích của anh Koyomi, và gọi chiều dài của đoạn dài nhất trong số đó là \textit{Koyomity} của dải băng.
+
+Ví dụ, giả sử dải băng hiện tại là "\texttt{kooomo}", và màu yêu thích của anh Koyomi là "\texttt{o}". Trong số tất cả các đoạn con chỉ chứa các mảnh giấy màu "\texttt{o}", "\texttt{ooo}" là đoạn dài nhất, với chiều dài là $3$. Do đó, \textit{Koyomity} của dải băng này bằng $3$.
+
+Nhưng vấn đề phát sinh vì Nadeko không chắc chắn về màu yêu thích của anh Koyomi và cũng đang phân vân về lượng công việc phải làm. Cô ấy có $q$ kế hoạch, mỗi kế hoạch được biểu diễn bằng một cặp gồm số nguyên $m_i$ và một chữ cái in thường $c_i$, với ý nghĩa đã được giải thích ở trên. Bạn hãy tìm \textit{Koyomity} lớn nhất có thể đạt được sau khi tô màu lại dải băng theo từng kế hoạch.
+
+\inputformat
+\begin{inputbox}
+\begin{itemize}
+    \item Dòng đầu tiên chứa một số nguyên dương $n$ --- chiều dài của dải băng.
+    \item Dòng thứ hai chứa $n$ chữ cái tiếng Anh in thường $s_1 s_2 \dots s_n$ dưới dạng một chuỗi --- màu sắc ban đầu của các mảnh giấy trên dải băng.
+    \item Dòng thứ ba chứa một số nguyên dương $q$ --- số lượng kế hoạch mà Nadeko có.
+    \item $q$ dòng tiếp theo, mỗi dòng mô tả một kế hoạch: dòng thứ $i$ chứa một số nguyên $m_i$ --- số lượng mảnh giấy tối đa có thể tô lại, theo sau là một dấu cách và chữ cái in thường $c_i$ --- màu có thể là màu yêu thích của Koyomi.
+\end{itemize}
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra $q$ dòng: với mỗi kế hoạch, in ra một dòng chứa một số nguyên --- \textit{Koyomity} lớn nhất có thể đạt được sau khi tô màu lại dải băng theo kế hoạch đó.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le n \le 1500$
+    \item $1 \le q \le 200\,000$
+    \item $1 \le m_i \le n$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\textbf{Input 1}
+\begin{lstlisting}
+6
+koyomi
+3
+1 o
+4 o
+4 m
+\end{lstlisting}
+\textbf{Output 1}
+\begin{lstlisting}
+3
+6
+5
+\end{lstlisting}
+
+\textbf{Input 2}
+\begin{lstlisting}
+15
+yamatonadeshiko
+10
+1 a
+2 a
+3 a
+4 a
+5 a
+1 b
+2 b
+3 b
+4 b
+5 b
+\end{lstlisting}
+\textbf{Output 2}
+\begin{lstlisting}
+3
+4
+5
+7
+8
+1
+2
+3
+4
+5
+\end{lstlisting}
+
+\textbf{Input 3}
+\begin{lstlisting}
+10
+aaaaaaaaaa
+2
+10 b
+10 z
+\end{lstlisting}
+\textbf{Output 3}
+\begin{lstlisting}
+10
+10
+\end{lstlisting}
+
+\explanation
+\begin{itemize}
+    \item \textbf{Ví dụ 1}:
+    \begin{itemize}
+        \item Kế hoạch 1: Tối đa $1$ mảnh giấy có thể được tô lại. Tô lại chữ "\texttt{y}" thành "\texttt{o}" sẽ cho chuỗi "\texttt{kooomi}", đạt \textit{Koyomity} tốt nhất bằng $3$.
+        \item Kế hoạch 2: Tối đa $4$ mảnh giấy có thể được tô lại. Đổi các chữ cái để tạo thành "\texttt{oooooo}", đạt \textit{Koyomity} bằng $6$.
+        \item Kế hoạch 3: Tối đa $4$ mảnh giấy có thể được tô lại. Chuyển thành "\texttt{mmmmmi}" hoặc "\texttt{kmmmmm}" đều đạt \textit{Koyomity} bằng $5$.
+    \end{itemize}
+    \item \textbf{Ví dụ 2}: Với kế hoạch \texttt{5 a}, ta có thể biến đổi chuỗi ban đầu \texttt{yamatonadeshiko} bằng cách đổi $5$ ký tự \texttt{m, t, o, n, d} thành \texttt{a} để có được chuỗi \texttt{yaaaaaaaeshiko}, chứa một đoạn toàn \texttt{a} liền kề dài $8$ ký tự. Các kế hoạch khác tương tự.
+    \item \textbf{Ví dụ 3}: Chuỗi ban đầu đã toàn chữ \texttt{a} dài $10$. Dù kế hoạch là đổi bao nhiêu chữ cái thành màu gì, số lượng ký tự giống nhau liên tiếp tối đa vẫn là $10$.
+\end{itemize}
+
+
+\section{Cow Checkups}
+\problem{Cow Checkups}{https://usaco.org/index.php?page=viewproblem2\&cpid=1470}
+
+Nông dân John có $N$ ($1 \le N \le 5 \cdot 10^5$) con bò đang xếp thành một hàng, với con bò thứ $1$ ở đầu hàng và con bò thứ $N$ ở cuối hàng. Các con bò của FJ thuộc nhiều giống khác nhau. Anh ấy đánh số mỗi giống bằng một số nguyên từ $1$ đến $N$. Con bò thứ $i$ tính từ đầu hàng thuộc giống $a_i$ ($1 \le a_i \le N$).
+
+FJ đang đưa đàn bò của mình đến khám sức khỏe tại một bệnh viện thú y địa phương. Tuy nhiên, bác sĩ thú y rất khó tính và chỉ muốn khám cho con bò thứ $i$ trong hàng nếu nó thuộc giống $b_i$ ($1 \le b_i \le N$).
+
+FJ rất lười và không muốn sắp xếp lại toàn bộ đàn bò của mình. Anh ấy sẽ thực hiện thao tác sau đúng một lần:
+
+Chọn hai số nguyên $l$ và $r$ sao cho $1 \le l \le r \le N$. Đảo ngược thứ tự của các con bò từ vị trí thứ $l$ đến vị trí thứ $r$ trong hàng.
+
+FJ muốn đo lường mức độ hiệu quả của cách tiếp cận này. Hãy tính tổng số lượng bò được bác sĩ thú y khám trên tất cả $N(N+1)/2$ thao tác có thể.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên chứa một số nguyên $N$.
+
+Dòng thứ hai chứa $N$ số nguyên $a_1, a_2, \dots, a_N$.
+
+Dòng thứ ba chứa $N$ số nguyên $b_1, b_2, \dots, b_N$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+In ra một dòng duy nhất chứa tổng số lượng bò được bác sĩ thú y khám trên tất cả các thao tác có thể.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item \textbf{Test 4}: $N \le 100$
+    \item \textbf{Test 5}: $N \le 5000$
+    \item \textbf{Test 6-9}: $a_i, b_i$ được sinh ngẫu nhiên đều trong đoạn $[1, N]$
+    \item \textbf{Test 10-15}: $a_i, b_i$ được sinh ngẫu nhiên đều trong đoạn $[1, 2]$
+    \item \textbf{Test 16-23}: Không có ràng buộc gì thêm.
+\end{itemize}
+\end{constraintbox}
+
+\example
+
+\begin{lstlisting}
+3
+1 3 2
+3 2 1
+\end{lstlisting}
+\begin{lstlisting}
+3
+\end{lstlisting}
+
+\explanation
+Nếu FJ chọn ($l=1, r=1$), ($l=2, r=2$), hoặc ($l=3, r=3$) thì sẽ không có con bò nào được khám. Lưu ý rằng các thao tác này không làm thay đổi vị trí của các con bò.
+
+Các thao tác sau dẫn đến việc có $1$ con bò được khám:
+\begin{itemize}
+    \item $l=1, r=2$: FJ đảo ngược thứ tự của con bò thứ nhất và thứ hai, vì vậy giống của từng con bò trong hàng mới sẽ là $[3, 1, 2]$. Con bò thứ nhất sẽ được khám.
+    \item $l=2, r=3$: FJ đảo ngược thứ tự của con bò thứ hai và thứ ba, vì vậy giống của từng con bò trong hàng mới sẽ là $[1, 2, 3]$. Con bò thứ hai sẽ được khám.
+    \item $l=1, r=3$: FJ đảo ngược thứ tự của cả ba con bò, vì vậy giống của từng con bò trong hàng mới sẽ là $[2, 3, 1]$. Con bò thứ ba sẽ được khám.
+\end{itemize}
+
+Tổng số bò được khám trên cả $6$ thao tác là $0 + 0 + 0 + 1 + 1 + 1 = 3$.
+
+\example
+
+\begin{lstlisting}
+3
+1 2 3
+1 2 3
+\end{lstlisting}
+\begin{lstlisting}
+12
+\end{lstlisting}
+
+\explanation
+Có $3$ thao tác khả dĩ giúp $3$ con bò được khám: ($l=1, r=1$), ($l=2, r=2$), và ($l=3, r=3$). Các thao tác còn lại mỗi thao tác dẫn đến $1$ con bò được khám. Tổng số bò được khám trên tất cả $6$ thao tác là $3 + 3 + 3 + 1 + 1 + 1 = 12$.
+
+\example
+
+\begin{lstlisting}
+7
+1 3 2 2 1 3 2
+3 2 2 1 2 3 1
+\end{lstlisting}
+\begin{lstlisting}
+60
+\end{lstlisting}
+
+\explanation
+Có tất cả $7 \times 8 / 2 = 28$ thao tác có thể. Tổng số bò được khám trên tất cả các thao tác này là $60$.
+
+
+\section{F. MEX vs MED}
+\problem{F. MEX vs MED}{https://codeforces.com/contest/1744/problem/F}
+
+Cho một hoán vị $p_1, p_2, \ldots, p_n$ có độ dài $n$ gồm các số $0, \ldots, n - 1$. Hãy đếm số lượng dãy con liên tiếp $1 \le l \le r \le n$ của hoán vị này sao cho $mex(p_l, p_{l+1}, \ldots, p_r) > med(p_l, p_{l+1}, \ldots, p_r)$.
+
+$mex$ của một tập hợp $S$ là số nguyên không âm nhỏ nhất không xuất hiện trong $S$. Ví dụ:
+\begin{itemize}
+    \item $mex(\{0, 1, 2, 3\}) = 4$
+    \item $mex(\{0, 4, 1, 3\}) = 2$
+    \item $mex(\{5, 4, 0, 1, 2\}) = 3$
+\end{itemize}
+
+$med$ của tập hợp $S$ là trung vị của tập hợp đó, tức là phần tử nằm ở vị trí thứ $\left\lfloor \frac{|S| + 1}{2} \right\rfloor$ sau khi sắp xếp các phần tử theo thứ tự không giảm (các phần tử của mảng được đánh số từ $1$ và $\lfloor v \rfloor$ ký hiệu cho việc làm tròn xuống giá trị $v$). Ví dụ:
+\begin{itemize}
+    \item $med(\{0, 1, 2, 3\}) = 1$
+    \item $med(\{0, 4, 1, 3\}) = 1$
+    \item $med(\{5, 4, 0, 1, 2\}) = 2$
+\end{itemize}
+
+Một dãy gồm $n$ số được gọi là một hoán vị nếu nó chứa tất cả các số từ $0$ đến $n - 1$ chính xác một lần.
+
+\inputformat
+\begin{inputbox}
+Dòng đầu tiên của dữ liệu vào chứa một số nguyên duy nhất $t$ ($1 \le t \le 10^4$) --- số lượng test case. Mô tả các test case theo sau.
+
+Dòng đầu tiên của mỗi test case chứa một số nguyên duy nhất $n$ ($1 \le n \le 2 \cdot 10^5$) --- độ dài của hoán vị $p$.
+
+Dòng thứ hai của mỗi test case chứa đúng $n$ số nguyên: $p_1, p_2, \ldots, p_n$ ($0 \le p_i \le n - 1$) --- các phần tử của hoán vị $p$.
+
+Dữ liệu đảm bảo rằng tổng của $n$ qua tất cả các test case không vượt quá $2 \cdot 10^5$.
+\end{inputbox}
+
+\outputformat
+\begin{outputbox}
+Đối với mỗi test case, in ra câu trả lời trên một dòng: số lượng dãy con liên tiếp $1 \le l \le r \le n$ của hoán vị sao cho $mex(p_l, p_{l+1}, \ldots, p_r) > med(p_l, p_{l+1}, \ldots, p_r)$.
+\end{outputbox}
+
+\constraints
+\begin{constraintbox}
+\begin{itemize}
+    \item $1 \le t \le 10^4$
+    \item $1 \le n \le 2 \cdot 10^5$
+    \item $0 \le p_i \le n - 1$
+    \item $\sum n \le 2 \cdot 10^5$
+\end{itemize}
+\end{constraintbox}
+
+\example
+\begin{lstlisting}
+8
+1
+0
+2
+1 0
+3
+1 0 2
+4
+0 2 1 3
+5
+3 1 0 2 4
+6
+2 0 4 1 3 5
+8
+3 7 2 6 0 1 5 4
+4
+2 0 1 3
+\end{lstlisting}
+\begin{lstlisting}
+1
+2
+4
+4
+8
+8
+15
+6
+\end{lstlisting}
+
+\explanation
+\begin{itemize}
+    \item \textbf{Test case 1:} Hoán vị $p = [0]$. Có một dãy con liên tiếp duy nhất là $[0]$ và $mex(\{0\}) = 1 > med(\{0\}) = 0$ trên đoạn đó. Do đó, số lượng dãy con thỏa mãn là 1.
+    \item \textbf{Test case 2:} Hoán vị $p = [1, 0]$. Các dãy con thỏa mãn là:
+        \begin{itemize}
+            \item $[0]$: $mex = 1, med = 0$.
+            \item $[1, 0]$: $mex = 2, med = 0$.
+        \end{itemize}
+    \item \textbf{Test case 3:} Hoán vị $p = [1, 0, 2]$. Các dãy con thỏa mãn là $[1, 0]$, $[0]$, $[1, 0, 2]$ và $[0, 2]$, trong đó $mex$ lớn hơn $med$.
+    \item \textbf{Test case 4:} Hoán vị $p = [0, 2, 1, 3]$. Các dãy con thỏa mãn là $[0, 2]$, $[0]$, $[0, 2, 1]$ và $[0, 2, 1, 3]$, trong đó $mex$ lớn hơn $med$.
+\end{itemize}
+
+
+\end{document}

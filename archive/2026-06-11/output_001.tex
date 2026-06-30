@@ -1,0 +1,237 @@
+% ============================================================
+% Tuyển tập bài tập Competitive Programming
+% Dịch sang tiếng Việt — chuẩn HSG / ICPC
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ─────────────────────────────────────────────────
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{parskip}
+
+% ── Colors ───────────────────────────────────────────────────
+\definecolor{sectioncolor}{RGB}{0,70,127}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{rulecolor}{RGB}{200,200,200}
+\definecolor{framecolor}{RGB}{0,100,180}
+\definecolor{inputbg}{RGB}{240,248,255}
+\definecolor{constraintbg}{RGB}{255,250,235}
+
+% ── Section styling ──────────────────────────────────────────
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}[{\color{sectioncolor}\titlerule[0.8pt]}]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sectioncolor!80}}
+  {\thesubsection}{1em}{}
+
+% ── Header / Footer ──────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{sectioncolor}{\small\textbf{Tuyển tập bài CP}}}
+\fancyhead[R]{\textcolor{sectioncolor}{\small\thepage}}
+\fancyfoot[C]{\textcolor{gray}{\small Dịch thuật: tiếng Việt — Chuẩn HSG/ICPC}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Listings (code blocks) ────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{rulecolor},
+  framesep=4pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% ── Macros ───────────────────────────────────────────────────
+\newcommand{\problem}[2]{%
+  \addcontentsline{toc}{section}{#1}%
+  \begin{mdframed}[
+    linecolor=framecolor,
+    linewidth=1.5pt,
+    backgroundcolor=white,
+    topline=true, bottomline=true,
+    leftline=true, rightline=true,
+    innerleftmargin=10pt, innerrightmargin=10pt,
+    innertopmargin=6pt, innerbottommargin=6pt,
+  ]
+  \textbf{\large #1} \hfill \textit{Nguồn: #2}
+  \end{mdframed}
+  \vspace{4pt}%
+}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{inputbox}
+
+\newmdenv[
+  linecolor=framecolor!60,
+  linewidth=0.8pt,
+  backgroundcolor=inputbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{outputbox}
+
+\newmdenv[
+  linecolor=orange!70,
+  linewidth=0.8pt,
+  backgroundcolor=constraintbg,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=4pt,
+  innerbottommargin=4pt,
+  skipabove=4pt,
+  skipbelow=4pt,
+]{constraintbox}
+
+\newcommand{\inputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu vào}}\par\vspace{2pt}%
+}
+\newcommand{\outputformat}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Dữ liệu ra}}\par\vspace{2pt}%
+}
+\newcommand{\constraints}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giới hạn}}\par\vspace{2pt}%
+}
+\newcommand{\example}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Ví dụ}}\par\vspace{2pt}%
+}
+\newcommand{\explanation}{%
+  \vspace{6pt}\textbf{\textcolor{sectioncolor}{Giải thích ví dụ}}\par\vspace{2pt}%
+}
+
+% ── Hyperref ─────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sectioncolor,
+  urlcolor=sectioncolor!80,
+  pdftitle={Tuyển tập bài CP},
+  pdfauthor={Dịch thuật chuẩn HSG/ICPC},
+}
+
+% ── Miscellaneous ────────────────────────────────────────────
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{sectioncolor} Tuyển tập Bài tập\\[0.4em]
+   Competitive Programming}\\[0.8em]
+  {\large\color{gray} Cấu trúc Dữ liệu \& Giải thuật}\\[2em]
+  \rule{\linewidth}{1pt}\\[1.5em]
+  {\large Nguồn: Tập hợp từ nhiều nền tảng}\\[0.5em]
+  {\large Ngôn ngữ: \textbf{Tiếng Việt} — Chuẩn HSG / ICPC}\\[2em]
+  \rule{\linewidth}{1pt}\\[3em]
+  {\normalsize\color{gray}
+    Tài liệu dịch thuật phục vụ học tập và luyện tập lập trình thi đấu.\\
+    Mọi nội dung được dịch sát nghĩa từ đề gốc, giữ nguyên cấu trúc logic.
+  }
+  \vfill
+  {\small\color{gray} Ngày biên soạn: \today}
+\end{titlepage}
+
+% ── Table of contents ────────────────────────────────────────
+\tableofcontents
+\newpage
+
+\problem{Một Tháp Khổng Lồ}{CEOI 2010}
+
+Người Babylon cổ đại quyết định xây dựng một tòa tháp khổng lồ. Tòa tháp bao gồm $N$ khối xây dựng hình lập phương được xếp chồng lên nhau. Người Babylon đã thu thập nhiều khối xây dựng có kích thước khác nhau từ khắp nơi trên cả nước. Từ lần thử nghiệm thất bại trước đó, họ đã rút ra bài học rằng nếu họ đặt một khối lớn trực tiếp lên một khối nhỏ hơn nhiều, tháp sẽ đổ.
+
+Hai khối xây dựng bất kỳ luôn khác nhau, ngay cả khi chúng có cùng kích thước. Với mỗi khối xây dựng, bạn được cho độ dài cạnh của nó. Bạn cũng được cho một số nguyên $D$ với ý nghĩa như sau: bạn không được phép đặt khối A trực tiếp lên khối B nếu độ dài cạnh của A lớn hơn nghiêm ngặt tổng của $D$ và độ dài cạnh của B.
+
+Tính số cách khác nhau để có thể xây dựng tháp bằng cách sử dụng tất cả các khối xây dựng. Vì con số này có thể rất lớn, in ra kết quả theo modulo $10^9 + 9$.
+
+\section*{Dữ liệu vào}
+Dòng đầu tiên của dữ liệu vào chứa hai số nguyên dương $N$ và $D$: lần lượt là số lượng khối xây dựng và độ dung sai.
+
+Dòng thứ hai chứa $N$ số nguyên cách nhau bởi dấu cách; mỗi số đại diện cho kích thước của một khối xây dựng.
+
+\section*{Dữ liệu ra}
+In ra một dòng duy nhất chứa một số nguyên duy nhất: số lượng tháp có thể được xây dựng, theo modulo $10^9 + 9$.
+
+\section*{Giới hạn}
+\begin{constraintbox}
+\begin{itemize}
+    \item Tất cả các số trong file dữ liệu vào đều là số nguyên dương không vượt quá $10^9$.
+    \item $N$ luôn lớn hơn hoặc bằng $2$.
+    \item Trong các test có giá trị 70 điểm, $N$ sẽ tối đa là $70$.
+    \item Trong số đó, trong các test có giá trị 45 điểm, $N$ sẽ tối đa là $20$.
+    \item Trong số đó, trong các test có giá trị 10 điểm, $N$ sẽ tối đa là $10$.
+    \item Trong một số test, tổng số tháp hợp lệ sẽ không vượt quá $1\ 000\ 000$. Các test này có tổng giá trị là 30 điểm.
+    \item Đối với sáu test cuối cùng (trị giá 30 điểm), giá trị của $N$ lớn hơn $70$. Không có giới hạn trên cho $N$ trong các test này.
+\end{itemize}
+\end{constraintbox}
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+4 1
+1 2 3 100
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+4
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Chúng ta có thể sắp xếp 3 khối đầu tiên theo bất kỳ thứ tự nào, ngoại trừ 2, 1, 3 hoặc 1, 3, 2. Khối cuối cùng bắt buộc phải nằm ở dưới cùng.
+
+\section*{Ví dụ}
+\begin{inputbox}
+\begin{lstlisting}
+6 9
+10 20 20 10 10 20
+\end{lstlisting}
+\end{inputbox}
+\begin{outputbox}
+\begin{lstlisting}
+36
+\end{lstlisting}
+\end{outputbox}
+
+\explanation
+Chúng ta không được phép đặt một khối có kích thước 20 lên một khối có kích thước 10. Có 6 cách để sắp xếp các khối có kích thước 10, và 6 cách để sắp xếp các khối có kích thước 20. Do đó, có tổng cộng $6 \times 6 = 36$ cách.
+
+\newpage
+
+
+\end{document}

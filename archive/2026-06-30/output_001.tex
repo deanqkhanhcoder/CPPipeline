@@ -1,0 +1,457 @@
+\documentclass[12pt,a4paper]{article}
+
+%% ---- Packages ----
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{parskip}
+\setlength{\headheight}{15pt}
+
+%% ---- Màu sắc ----
+\definecolor{sectioncolor}{RGB}{0,70,140}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{boxbg}{RGB}{230,240,255}
+\definecolor{constraintbg}{RGB}{255,248,230}
+\definecolor{examplebg}{RGB}{240,255,240}
+
+%% ---- Tiêu đề section ----
+\titleformat{\section}[block]
+  {\Large\bfseries\color{sectioncolor}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}\rule{\linewidth}{1.5pt}\vspace{0.3em}]
+
+\titleformat{\subsection}[block]
+  {\normalsize\bfseries\color{sectioncolor!80}}
+  {}{0em}{}
+
+%% ---- Header/Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{sectioncolor}{\textbf{Tuyển tập Lập trình Thi đấu}}}
+\fancyhead[R]{\small\textcolor{gray}{\leftmark}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---- Code listings ----
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  framerule=0pt,
+  rulecolor=\color{gray!40},
+  xleftmargin=8pt,
+  xrightmargin=8pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+  columns=flexible,
+  keepspaces=true,
+}
+
+%% ---- Hyperref ----
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sectioncolor,
+  urlcolor=blue!70!black,
+}
+
+%% ---- Macro: khối tiêu đề bài ----
+\newcommand{\problem}[2]{%
+  \begin{mdframed}[
+    backgroundcolor=boxbg,
+    linecolor=sectioncolor,
+    linewidth=1.5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=12pt,
+    innerrightmargin=12pt,
+  ]
+  \textbf{\large Bài toán: #1}\\[2pt]
+  \textit{Nguồn: #2}
+  \end{mdframed}
+  \vspace{4pt}
+}
+
+%% ---- Macro: Định dạng Input ----
+\newcommand{\inputformat}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}Dữ liệu vào}
+  \vspace{2pt}\par
+}
+
+%% ---- Macro: Định dạng Output ----
+\newcommand{\outputformat}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}Dữ liệu ra}
+  \vspace{2pt}\par
+}
+
+%% ---- Macro: ràng buộc ----
+\newcommand{\constraints}{%
+  \vspace{6pt}
+  \begin{mdframed}[
+    backgroundcolor=constraintbg,
+    linecolor=orange!70,
+    linewidth=1pt,
+    innertopmargin=6pt,
+    innerbottommargin=6pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+  ]
+  \noindent\textbf{Ràng buộc:}
+  \vspace{2pt}\par
+}
+\def\endconstraints{\end{mdframed}\vspace{4pt}}
+
+%% ---- Macro: ví dụ ----
+\newcommand{\example}{%
+  \vspace{6pt}
+  \noindent\textbf{\color{sectioncolor}}%
+}
+
+%% ---- Macro: giải thích ----
+\newcommand{\explanation}{%
+  \vspace{4pt}
+  \noindent\textbf{\color{sectioncolor}Giải thích:}
+  \vspace{2pt}\par
+}
+
+%% ============================================================
+\begin{document}
+\hypersetup{pageanchor=false}
+
+%% ---- Trang bìa ----
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{sectioncolor} Tuyển Tập Bài Toán\\[0.4em]
+   Lập Trình Thi Đấu}\\[1.5em]
+  \rule{0.6\linewidth}{2pt}\\[1em]
+  {\large\itshape Codeforces $\cdot$ USACO $\cdot$ AtCoder $\cdot$ CSES}\\[1em]
+  {\normalsize Bản dịch Tiếng Việt -- Văn phong HSG/ICPC}\\[3cm]
+  {\large \textbf{100 Bài toán}}\\[0.5em]
+  \vfill
+  {\small Được tổng hợp và dịch tự động từ các nguồn gốc tiếng Anh.}
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+
+%% ---- Mục lục ----
+\tableofcontents
+\newpage
+
+% CONTENT_START
+\problem{P0}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P1}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P2}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P3}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P4}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P5}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P6}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P7}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P8}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P9}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P10}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P11}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P12}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P13}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P14}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P15}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P16}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P17}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P18}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P19}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P20}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P21}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P22}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P23}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P24}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P25}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P26}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P27}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P28}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P29}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P30}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P31}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P32}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P33}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P34}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P35}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P36}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P37}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P38}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P39}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P40}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P41}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P42}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P43}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P44}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P45}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P46}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P47}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P48}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P49}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P50}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P51}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P52}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P53}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P54}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P55}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P56}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P57}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P58}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P59}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P60}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P61}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P62}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P63}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P64}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P65}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P66}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P67}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P68}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P69}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P70}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P71}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P72}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P73}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P74}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P75}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P76}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P77}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P78}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P79}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P80}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P81}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P82}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P83}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P84}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P85}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P86}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P87}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P88}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P89}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P90}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P91}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P92}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P93}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P94}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P95}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P96}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P97}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P98}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+
+\problem{P99}{Codeforces}\inputformat x\outputformat y\constraints z\endconstraints\example e\explanation t
+\newpage
+% CONTENT_END
+
+\end{document}
