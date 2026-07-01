@@ -25,6 +25,9 @@ JSON với các trường I/O được định dạng mạch lạc, tách biệt
 ## 4. Forbidden Rules
 - CẤM để `input` và `output` dính trên cùng một dòng.
 - CẤM làm hỏng nội dung code của sample testcases.
+- CẤM bỏ bất kỳ sample nào — số sample đầu ra phải bằng số sample đầu vào.
+- CẤM bỏ explanation của bất kỳ sample nào.
+- CẤM gộp nội dung giữa các sample khác nhau.
 
 ## 5. Failure Mode & Retry Policy
 Nếu format lỗi, chạy lại bước `tools/text_normalizer.py`.

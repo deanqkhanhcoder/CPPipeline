@@ -14,7 +14,9 @@ compatible_pipeline: 2.x
 Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách chấm điểm và đánh giá chất lượng tài liệu LaTeX.
 
 ## 1. Responsibility
-Chấm điểm chất lượng (từ 1.0 đến 5.0) trên 5 phương diện: Statement, Explanation, Formatting, Markdown Conversion, Readability. 
+Chấm điểm chất lượng (từ 1.0 đến 5.0) trên **6 phương diện**: Statement, Explanation, Formatting, Markdown Conversion, Readability, **Semantic Fidelity**.
+
+`Semantic Fidelity` = không mất thông tin so với đề gốc. Điểm 1.0 nếu bản dịch mất bất kỳ sample/explanation/notes/warning nào. 
 
 ## 2. Input Schema
 Đường dẫn đến file LaTeX cần đánh giá.
@@ -25,6 +27,7 @@ Báo cáo điểm số cụ thể kèm theo danh sách các vi phạm nếu có.
 ## 4. Forbidden Rules
 - CẤM bỏ qua bước chấm điểm.
 - CẤM cho PASS nếu điểm trung bình hoặc điểm bất kỳ hạng mục nào dưới 4.0.
+- CẤM cho PASS nếu `Semantic Fidelity` < 4.0 (tức là có mất thông tin so với đề gốc).
 
 ## 5. Failure Mode & Retry Policy
 Nếu chất lượng không đạt, chặn đứng quá trình combine và kết xuất PDF.
