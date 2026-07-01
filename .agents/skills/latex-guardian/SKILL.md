@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # LaTeX Guardian Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách kiểm tra và escape cú pháp LaTeX.
+
 ## 1. Responsibility
 Kiểm soát cú pháp LaTeX thô, đảm bảo escape chính xác các ký tự đặc biệt như `%`, `&`, `_`, `{`, `}` bên ngoài các môi trường math/code, kiểm tra các thẻ môi trường đã đóng đủ chưa (math/table/list environments).
 

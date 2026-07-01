@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # Translation Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách dịch thuật và bảo toàn toán học.
+
 ## 1. Responsibility
 Dịch thô toàn bộ nội dung của đề bài toán Competitive Programming sang tiếng Việt, giữ nguyên vẹn 100% công thức toán học (`$...$`, `$$...$$`).
 

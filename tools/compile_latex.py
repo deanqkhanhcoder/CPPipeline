@@ -88,10 +88,10 @@ def compile_latex(tex_file: str, hits=0, misses=0):
     if os.path.exists(pdf_path):
         os.remove(pdf_path)
     try:
-        res = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='strict')
+        res = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
         if res.returncode == 0:
             # Pass 2
-            res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='strict')
+            res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
             if res2.returncode == 0:
                 print(f"Compilation successful using {engine}.")
                 archive_files(tex_file, pdf_path, hits, misses)

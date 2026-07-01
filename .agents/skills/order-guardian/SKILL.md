@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # Order Guardian Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách đối chiếu và xác minh thứ tự bài toán.
+
 ## 1. Responsibility
 Đối chiếu thứ tự các bài toán từ: URL đầu vào -> Queue -> PDF -> TOC -> Metadata. Đảm bảo chúng khớp nhau hoàn toàn 100% dựa trên chỉ số `order_index`.
 

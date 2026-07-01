@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # Terminology Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách chuẩn hóa thuật ngữ theo từ điển CP.
+
 ## 1. Responsibility
 Đối chiếu bản dịch với danh sách từ điển thuật ngữ chuyên ngành lập trình thi đấu trong `.agents/policies/terminology.md`. Sửa các từ dịch sai/lệch (e.g. sửa `subsegment` thành `đoạn con liên tiếp`, `constraints` thành `ràng buộc`).
 

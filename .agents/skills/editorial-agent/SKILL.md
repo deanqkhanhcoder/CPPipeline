@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # Editorial Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách biên tập văn phong và chia đoạn.
+
 ## 1. Responsibility
 Cải thiện văn phong dịch thuật, chia tách các khối văn bản quá dài (> 12 dòng) thành các paragraph logic nhỏ hơn. Tách biệt rõ ràng phần mở đầu truyện, mô tả thuật toán, quy tắc trò chơi, và mục tiêu bài toán.
 

@@ -32,14 +32,14 @@ def save_debug_snapshot(url, title, html, crawler_name):
     except Exception as e:
         print(f"Failed to save debug snapshot: {e}", file=sys.stderr)
 
-def check_challenge(html):
+def check_challenge(html, url=""):
     if not html or len(html.strip()) < 50:
         return True, False, "Empty content"
     if "class=\"problem-statement\"" in html or "class='problem-statement'" in html or "problem-statement" in html:
         return False, False, "" # Valid problem page
     if "404 Not Found" in html or "Page not found" in html or "No such problem" in html:
         return False, True, "404 Not Found (Fatal)"
-    if "No problem with such id" in html or "does not exist" in html:
+    if "No problem with such id" in html or ("does not exist" in html and "leetcode.com" not in url):
         return False, True, "Problem does not exist (Fatal)"
     if "<title>Just a moment...</title>" in html or "Enable JavaScript and cookies to continue" in html:
         return True, False, "Cloudflare challenge detected"
@@ -124,7 +124,7 @@ class PersistentBrowserManager:
                 title = page.title()
                 page.close()
                 
-                is_chal, is_fatal, reason = check_challenge(html)
+                is_chal, is_fatal, reason = check_challenge(html, url)
                 if is_fatal:
                     print(f"[Persistent Browser] Fatal: {reason}", file=sys.stderr)
                     return {"url": url, "html": f"Error: {reason}", "markdown": "", "title": title, "fatal": True}
@@ -217,7 +217,7 @@ def crawl_with_brave(url, retries=2):
                 title = page.title()
                 browser.close()
                 
-                is_chal, is_fatal, reason = check_challenge(html)
+                is_chal, is_fatal, reason = check_challenge(html, url)
                 if is_fatal:
                     print(f"[Brave] Fatal: {reason}", file=sys.stderr)
                     return {"url": url, "html": f"Error: {reason}", "markdown": "", "title": title, "fatal": True}
@@ -249,7 +249,7 @@ def crawl_with_cloakbrowser(url, retries=3):
             html = page.content()
             browser.close()
             
-            is_chal, is_fatal, reason = check_challenge(html)
+            is_chal, is_fatal, reason = check_challenge(html, url)
             if is_fatal:
                 print(f"[CloakBrowser] Fatal: {reason}", file=sys.stderr)
                 return {"url": url, "html": f"Error: {reason}", "markdown": "", "title": title, "fatal": True}
@@ -279,7 +279,7 @@ def crawl_with_crawl4ai(url, retries=2):
                 async with AsyncWebCrawler() as crawler:
                     res = await crawler.arun(url)
                     if res and res.html:
-                        is_chal, is_fatal, reason = check_challenge(res.html)
+                        is_chal, is_fatal, reason = check_challenge(res.html, url)
                         if is_fatal:
                             print(f"[Crawl4AI] Fatal: {reason}", file=sys.stderr)
                             return {"url": url, "html": f"Error: {reason}", "markdown": "", "title": "", "fatal": True}

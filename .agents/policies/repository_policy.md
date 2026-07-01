@@ -44,4 +44,16 @@ Lịch sử kết xuất phải được lưu giữ vĩnh viễn và có trật 
 - Mọi LLM downstream chỉ nhận Structured Problem JSON hoặc HTML đã qua làm sạch (tuyệt đối không chứa `script`, `style`, chrome elements).
 
 ## 9. NO PYTHON PDF PARSING / OCR (LLM-FIRST PDF)
-Tuyệt đối NGHIÊM CẤM việc sử dụng Python để parse, OCR (như Tesseract, PaddleOCR), hoặc dùng Regex để trích xuất nội dung từ các file PDF đề bài. Các script chỉ được phép tải PDF hoặc chuyển đổi định dạng (PDF sang ảnh PNG làm fallback). Gemini phải là thực thể duy nhất chịu trách nhiệm đọc hiểu, suy luận, và phân tích cấu trúc statement từ PDF.
+Tuyệt đối NGHIÊM CẤM việc sử dụng Python để parse, OCR (như Tesseract, PaddleOCR), hoặc dùng Regex để trích xuất nội dung từ các file PDF đề bài. Các script chỉ được phép tải PDF hoặc chuyển đổi định dạng (PDF sang ảnh PNG làm fallback). Host LLM phải là thực thể duy nhất chịu trách nhiệm đọc hiểu, suy luận, và phân tích cấu trúc statement từ PDF.
+
+## 10. FORBIDDEN ARCHITECTURE (Kiến trúc Bị Cấm)
+Repository này là AI Skill Repository. Host LLM là Runtime duy nhất. Tuyệt đối NGHIÊM CẤM mọi kiến trúc gọi LLM API từ bên ngoài.
+
+Không được tạo:
+- `llm_backend.py` hoặc bất kỳ module nào gọi Gemini API / OpenAI API / Claude API / DeepSeek API
+- `provider.py`, `model_factory.py`, `model_router.py`
+- API wrapper, API abstraction layer
+- Agent spawn Agent qua HTTP API
+- Bất kỳ cấu trúc nào khởi tạo LLM từ code Python
+
+Nếu cần nhiều AI Agent: đó là nhiều Skill. Host LLM sẽ tuần tự thực hiện từng Skill theo Orchestrator Workflow.

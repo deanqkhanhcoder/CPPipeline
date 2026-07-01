@@ -5,6 +5,9 @@ description: Skill điều phối toàn diện Hệ thống Dịch thuật và T
 
 # CP Pipeline Orchestrator
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách suy luận, điều phối Tool và thực thi Workflow.
+
 ## Tổng quan
 
 `cp-pipeline` là Skill cốt lõi đóng vai trò "Nhạc trưởng" (Orchestrator) điều phối toàn bộ Hệ thống Dịch thuật Competitive Programming. Thay vì tự mình thực hiện các tác vụ phân tích, dịch thuật hay xử lý file, Skill này tự động hóa quy trình gọi tuần tự các bộ kỹ năng chuyên biệt khác, giám sát luồng dữ liệu đầu vào/đầu ra, và xử lý rủi ro xuyên suốt chu trình. Mục đích cao nhất là chuyển đổi tự động một URL bài toán (từ các nguồn như Codeforces, CSES, USACO...) thành một tài liệu PDF tiếng Việt chuẩn mực ICPC/HSG.
@@ -22,7 +25,7 @@ Hệ thống nay hỗ trợ đọc hiểu đề bài dạng PDF (IOI, APIO, CEOI
 ## Vị trí và Vai trò của các Skill
 
 *   **.agents/skills/cp-crawler/SKILL.md**
-    *Vai trò:* Thu thập HTML/Markdown nguyên bản từ URL. Hỗ trợ vượt tường lửa Cloudflare/Anti-bot qua các fallback API mạnh mẽ (CloakBrowser, Crawl4AI, Playwright).
+    *Vai trò:* Thu thập HTML/Markdown nguyên bản từ URL. Hỗ trợ vượt tường lửa Cloudflare/Anti-bot qua các cơ chế fallback mạnh mẽ (CloakBrowser, Crawl4AI, Playwright).
 *   **.agents/skills/cp-parser/SKILL.md**
     *Vai trò:* Đọc hiểu tài liệu thô, nhận diện ngữ nghĩa và trích xuất thành cấu trúc dữ liệu JSON tiêu chuẩn (Title, Statement, Input, Output, Constraints, Samples).
 *   **.agents/skills/translation-agent/SKILL.md**
@@ -147,7 +150,7 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 ---
 
 ## Bài học kinh nghiệm
-1. **Gemini báo PASS dù compile fail**: LLM có xu hướng tự tin thái quá, báo cáo thành công chỉ vì thấy file có mặt trên đĩa (hoặc do file PDF cũ chưa bị xoá).
+1. **Host LLM báo PASS dù compile fail**: LLM có xu hướng tự tin thái quá, báo cáo thành công chỉ vì thấy file có mặt trên đĩa (hoặc do file PDF cũ chưa bị xoá).
 2. **Subagent hallucinate macro**: Không thể tin tưởng hoàn toàn vào LLM trong việc sinh ra LaTeX macro chuẩn. Chúng thường tự bịa thêm các lệnh lạ.
 3. **Queue Backup**: Hàng đợi (`cache/queue/index.json`) có thể bị kẹt jobs cũ sau crash/restart. Nếu crawler mở URL lạ, kiểm tra ngay queue. Dùng `python tools/crawler_manager.py flush` để dọn dẹp.
 

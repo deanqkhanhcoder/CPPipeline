@@ -1,9 +1,12 @@
 ---
 name: cp-parser
-description: Hướng dẫn Gemini cách parse raw HTML/Markdown thành Structured JSON.
+description: Hướng dẫn Host LLM cách parse raw HTML/Markdown thành Structured JSON.
 ---
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách suy luận và sử dụng Tool.
+
 ## Nhiệm vụ
-Gemini phải đọc nội dung HTML fragment từ `cache/normalized/<id>.json` (trường `content`) và tự suy luận để xuất ra cấu trúc JSON chuẩn. KHÔNG dùng Python script.
+Host LLM phải đọc nội dung HTML fragment từ `cache/normalized/<id>.json` (trường `content`) và tự suy luận để xuất ra cấu trúc JSON chuẩn. KHÔNG dùng Python script.
 
 **QUAN TRỌNG**: Đọc `cache/normalized/<id>.json`, KHÔNG đọc `cache/problemset/<id>.json`. File normalized đã được extract chỉ còn phần `.problem-statement` (~5-50KB thay vì 100-270KB raw HTML). Đọc raw sẽ lãng phí 97% token.
 
@@ -20,8 +23,8 @@ JSON với schema: name, source, statement, input, output, constraints, notes, s
 ## Xử lý PDF Statement (LLM-First)
 Nếu bài toán được cung cấp dưới dạng PDF:
 - **Direct PDF Reading (Ưu tiên):** Sử dụng tool `view_file` để đọc trực tiếp nội dung văn bản từ file PDF (lưu tại `cache/pdf/`).
-- **Image Fallback:** Nếu PDF chỉ chứa ảnh hoặc văn bản bị lỗi font (toán học không hiển thị đúng), Gemini phải sử dụng tool `view_file` để nạp các file ảnh chụp PDF (lưu tại `cache/pdf_images/`).
-- **Nghiêm cấm OCR bằng Python:** Mọi quá trình trích xuất, nhận diện ký tự, phân tích hình học trang PDF PHẢI do Gemini tự thực hiện bằng Computer Vision. Không được dùng bất kỳ tool/script Python nào để trích xuất text.
+- **Image Fallback:** Nếu PDF chỉ chứa ảnh hoặc văn bản bị lỗi font (toán học không hiển thị đúng), Host LLM phải sử dụng tool `view_file` để nạp các file ảnh chụp PDF (lưu tại `cache/pdf_images/`).
+- **Nghiêm cấm OCR bằng Python:** Mọi quá trình trích xuất, nhận diện ký tự, phân tích hình học trang PDF PHẢI do Host LLM tự thực hiện. Không được dùng bất kỳ tool/script Python nào để trích xuất text.
 
 ## Bài học kinh nghiệm
 1. LLM đôi khi sinh thiếu trường bắt buộc (như `samples` bị rỗng) nếu HTML quá phức tạp.

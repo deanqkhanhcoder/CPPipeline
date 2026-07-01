@@ -61,7 +61,7 @@ def main() -> int:
     # 3. Check if actual_urls is a subsequence of expected_urls
     # (since some enqueued URLs might have failed/skipped)
     it = iter(expected_urls)
-    is_subsequence = all(any(clean_url(x) in clean_url(y) or clean_url(y) in clean_url(x) for y in it) for x in actual_urls)
+    is_subsequence = all(any(clean_url(x).lower() in clean_url(y).lower() or clean_url(y).lower() in clean_url(x).lower() for y in it) for x in actual_urls)
     
     if not is_subsequence:
         print("FAIL: Actual PDF problem order does not match enqueued URL order.")

@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # LaTeX Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách điền dữ liệu JSON vào Golden Template để sinh mã LaTeX.
+
 ## 1. Responsibility
 Sinh mã nguồn `.tex` từ JSON. Điền các trường nội dung tương ứng vào các macro của `template.tex` như `\problem{...}`, `\begin{inputbox}`, `\begin{outputbox}`, `\begin{constraintbox}`, `\begin{samplecode}`.
 

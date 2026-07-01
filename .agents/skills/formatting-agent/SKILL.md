@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # Formatting Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách chuẩn hóa cấu trúc I/O và Sample Cases.
+
 ## 1. Responsibility
 Chuẩn hóa cấu trúc và cách trình bày của các phần dữ liệu đầu vào (Input), đầu ra (Output) và các ví dụ (Samples). Đảm bảo chúng nằm trong khối độc lập và không dính vào nhau.
 

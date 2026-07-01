@@ -5,6 +5,9 @@ description: Skill chuyên biệt làm nhiệm vụ lấy dữ liệu HTML/Markd
 
 # CP Crawler
 
+## Runtime
+Host LLM đang thực thi Skill này. Crawler là Tool xác định — Host LLM ra lệnh chạy script Python. Skill không gọi bất kỳ LLM API nào khác.
+
 ## Tính Năng & Kiến Trúc
 Đây là cỗ máy tải dữ liệu mạnh mẽ được thiết kế với cơ chế ưu tiên fallback nhiều lớp để vượt qua Cloudflare và các lớp bảo vệ chống Bot:
 

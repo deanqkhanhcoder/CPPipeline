@@ -10,6 +10,9 @@ compatible_pipeline: 2.x
 
 # QA Agent Contract
 
+## Runtime
+Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách chấm điểm và đánh giá chất lượng tài liệu LaTeX.
+
 ## 1. Responsibility
 Chấm điểm chất lượng (từ 1.0 đến 5.0) trên 5 phương diện: Statement, Explanation, Formatting, Markdown Conversion, Readability. 
 
