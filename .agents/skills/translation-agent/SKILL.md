@@ -24,6 +24,10 @@ Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịc
 - Nếu đề có 8 bullet trong explanation → bản dịch phải có đủ 8 bullet.
 - Nếu LLM nghĩ "câu này không quan trọng" → **vẫn phải dịch**.
 
+**BẮT BUỘC: MỌI SAMPLE phải có Explanation.**
+- Nếu đề gốc có explanation → dịch trung thực, không rút gọn.
+- Nếu đề gốc KHÔNG có explanation → chuyển sang `sample-explainer` để tự sinh.
+
 ## 2. Input Schema
 JSON chứa các trường: `statement`, `input`, `output`, `constraints`, `notes`, `samples`, `order_index`.
 
