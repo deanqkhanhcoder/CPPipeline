@@ -26,7 +26,7 @@ def run(name: str, rel_path: str) -> tuple[bool, list[str]]:
 
 
 def template_audit() -> tuple[bool, list[str]]:
-    template = ROOT / ".agents" / "skills" / "cp-latex" / "template.tex"
+    template = ROOT / ".agents" / "templates" / "template.tex"
     text = template.read_text(encoding="utf-8")
     required = ["[[PROBLEM_COUNT]]", "% CONTENT_START", "% CONTENT_END", "\\tableofcontents", "\\begin{titlepage}"]
     missing = [token for token in required if token not in text]

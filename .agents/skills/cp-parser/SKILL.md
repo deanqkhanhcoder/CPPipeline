@@ -7,11 +7,11 @@ Gemini phải đọc nội dung HTML fragment từ `cache/normalized/<id>.json` 
 
 **QUAN TRỌNG**: Đọc `cache/normalized/<id>.json`, KHÔNG đọc `cache/problemset/<id>.json`. File normalized đã được extract chỉ còn phần `.problem-statement` (~5-50KB thay vì 100-270KB raw HTML). Đọc raw sẽ lãng phí 97% token.
 
-## Hướng dẫn nhận diện
+## Hướng dẫn nhận diện (PDF Quality - Phase 5)
 - **Statement (Đề bài)**: Nhận diện nội dung mô tả cốt truyện và yêu cầu thuật toán.
-- **Input/Output (Dữ liệu vào/ra)**: Nhận diện định dạng dữ liệu vào và dữ liệu ra.
+- **Input/Output (Dữ liệu vào/ra)**: Nhận diện định dạng dữ liệu vào và dữ liệu ra. Bắt buộc tách biệt rõ ràng, không được trộn lẫn hoặc viết liền nhau.
 - **Constraints (Ràng buộc)**: Giới hạn thời gian, bộ nhớ, giới hạn biến số (N, M, v.v.).
-- **Samples (Ví dụ)**: Trích xuất các test case mẫu. Bắt buộc tạo trường `input`, `output`, `explanation`.
+- **Samples (Ví dụ)**: Trích xuất các test case mẫu. Bắt buộc tạo trường `input`, `output`, `explanation`. Các ví dụ phải được cấu trúc độc lập trong block code, không được dính liền với nội dung văn bản.
 
 ## Output
 JSON với schema: name, source, statement, input, output, constraints, notes, samples, order_index.

@@ -13,6 +13,6 @@ cache/*
 !cache/.keep
 
 outputs/*
-!outputs/output.tex
-!outputs/output.pdf
 !outputs/.keep
+
+archive/*

@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> int:
     output_tex = ROOT / "outputs" / "output.tex"
-    output_toc = ROOT / "cache" / "build" / "output.toc"
+    output_toc = ROOT / "cache" / "debug" / "output.toc"
     
     if not output_tex.exists():
         print("PASS: outputs/output.tex does not exist yet. Skip TOC validation.")

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     print("Running TOC Regression Test...")
     
-    template_path = ROOT / ".agents" / "skills" / "cp-latex" / "template.tex"
+    template_path = ROOT / ".agents" / "templates" / "template.tex"
     output_dir = ROOT / "outputs"
     output_dir.mkdir(exist_ok=True)
     output_tex = output_dir / "output.tex"

@@ -15,7 +15,7 @@ Tuyệt đối KHÔNG LƯU các file debug, log rác (`compile_error.log`), json
 Tuyệt đối CẤM hardcode tên người dùng (username), đường dẫn hệ thống cố định (như `C:\Users\toanpq\...`, `C:\Program Files\...`) vào bất kỳ script nào (vd: crawler). Phải sử dụng biến môi trường (Environment Variables) hoặc cơ chế tự động khám phá (Auto Discovery qua `os.environ`, `sys.platform`, `os.path.expanduser`) để đảm bảo tính khả chuyển (Portability) trên mọi OS: Windows, Linux, MacOS.
 
 ## 3. Template là nguồn chân lý duy nhất (Single Source Of Truth)
-File `.agents/skills/cp-latex/template.tex` là quy chuẩn duy nhất cho toàn bộ kết xuất PDF.
+File `.agents/templates/template.tex` là quy chuẩn duy nhất cho toàn bộ kết xuất PDF.
 - Bất kỳ file tài liệu LaTeX nào được sinh ra cũng phải tuân thủ nghiêm ngặt, đọc và kế thừa toàn bộ cấu trúc (Title, Header, Footer) từ file template này.
 - Nghiêm cấm mọi hành vi bypass, hardcode cấu trúc LaTeX trong các script Python.
 

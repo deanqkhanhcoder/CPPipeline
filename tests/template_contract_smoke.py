@@ -4,7 +4,7 @@ import importlib.util
 import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATE = ROOT / ".agents" / "skills" / "cp-latex" / "template.tex"
+TEMPLATE = ROOT / ".agents" / "templates" / "template.tex"
 HASH = ROOT / ".agents" / "metadata" / "template_hash.txt"
 COMBINE = ROOT / "tools" / "combine_latex.py"
 

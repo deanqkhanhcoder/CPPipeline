@@ -1,7 +1,7 @@
 # Chính sách template
 
 ## Bất biến
-- `.agents/skills/cp-latex/template.tex` là Single Source Of Truth.
+- `.agents/templates/template.tex` là Single Source Of Truth.
 - Chỉ được chèn body giữa `% CONTENT_START` và `% CONTENT_END`.
 - Không được rewrite, tối ưu, beautify, hay sinh lại template.
 - Không được thêm package, màu, font, title page, TOC, header, footer, hoặc macro mới ngoài thay đổi giao diện có chủ đích.

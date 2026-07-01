@@ -25,52 +25,70 @@ Hệ thống nay hỗ trợ đọc hiểu đề bài dạng PDF (IOI, APIO, CEOI
     *Vai trò:* Thu thập HTML/Markdown nguyên bản từ URL. Hỗ trợ vượt tường lửa Cloudflare/Anti-bot qua các fallback API mạnh mẽ (CloakBrowser, Crawl4AI, Playwright).
 *   **.agents/skills/cp-parser/SKILL.md**
     *Vai trò:* Đọc hiểu tài liệu thô, nhận diện ngữ nghĩa và trích xuất thành cấu trúc dữ liệu JSON tiêu chuẩn (Title, Statement, Input, Output, Constraints, Samples).
-*   **.agents/skills/cp-translator/SKILL.md**
-    *Vai trò:* Dịch thuật nội dung sang tiếng Việt chuyên ngành lập trình thi đấu (CP) và tự động suy luận, sinh ra giải thích (explanation) chi tiết cho từng Sample test.
-*   **.agents/skills/cp-latex/SKILL.md**
-    *Vai trò:* Định dạng và render dữ liệu đã dịch vào chuẩn Golden Template Tiếng Việt (`template.tex`).
+*   **.agents/skills/translation-agent/SKILL.md**
+    *Vai trò:* Dịch thuật nội dung ngữ nghĩa chính xác sang tiếng Việt và bảo toàn công thức toán học.
+*   **.agents/skills/editorial-agent/SKILL.md**
+    *Vai trò:* Biên tập văn phong tự nhiên chuẩn HSG, tự động chia đoạn hợp lý (< 12 dòng).
+*   **.agents/skills/terminology-agent/SKILL.md**
+    *Vai trò:* Chuẩn hóa thuật ngữ lập trình thi đấu (CP) theo từ điển `terminology.md`.
+*   **.agents/skills/formatting-agent/SKILL.md**
+    *Vai trò:* Chuẩn hóa cấu trúc I/O và Sample Cases.
+*   **.agents/skills/latex-agent/SKILL.md**
+    *Vai trò:* Chuyển đổi cấu trúc JSON sang mã nguồn LaTeX.
+*   **.agents/skills/latex-guardian/SKILL.md**
+    *Vai trò:* Kiểm soát cú pháp LaTeX thô, escape ký tự đặc biệt, kiểm tra math/list environments.
+*   **.agents/skills/order-guardian/SKILL.md**
+    *Vai trò:* Đối chiếu thứ tự bài toán từ URL gốc -> Queue -> PDF -> TOC -> Metadata.
+*   **.agents/skills/qa-agent/SKILL.md**
+    *Vai trò:* Chấm điểm chất lượng toàn diện của tài liệu đầu ra qua hệ thống 5 sao (Aspect Score >= 4.0).
 
 ---
 
-## Quy trình Tiêu Chuẩn
+## Quy trình Tiêu Chuẩn (Declarative Orchestration)
 
 Khi người dùng thực thi lệnh:
 `/cp-pipeline <url>`
 
-Agent sẽ tự động chạy không ngừng nghỉ theo 5 giai đoạn sau:
+Host LLM (Gemini CLI, Antigravity, Claude Code, Cursor...) sẽ trực tiếp làm runtime điều phối theo các bước:
 
 ### STEP 1: Enqueue URLs
-*   **Thực thi:** Gọi lệnh enqueue vào hàng đợi (vd: `python tools/crawler_manager.py enqueue <url>`).
-*   **Mục tiêu:** Ghi nhận URL cần xử lý vào `cache/queue/index.json`.
+*   **Thực thi:** Host LLM chạy lệnh `python tools/crawler_manager.py enqueue <url>`.
+*   **Mục tiêu:** Thêm URL vào `cache/queue/index.json`.
 
-### STEP 2: Crawler Manager
-*   **Thực thi:** Gọi `python tools/crawler_manager.py process`.
-*   **Mục tiêu:** Crawl tuần tự các bài trong queue, tuân thủ nghiêm ngặt **Single Browser Policy** (Chỉ mở 1 phiên làm việc để không dính lỗi Profile Lock).
-*   **Expected Output:** Lưu file thô vào `cache/problemset/<id>.json`.
+### STEP 2: Crawler Engine
+*   **Thực thi:** Host LLM chạy lệnh `python tools/crawler_manager.py run` (hoặc `process`).
+*   **Mục tiêu:** Tải HTML thô về `cache/problemset/<id>.json`.
 
-### STEP 3: Verify Cache
-*   **Thực thi:** Pipeline đọc queue state để xác nhận job `done` hay `failed`.
-*   **Mục tiêu:** Quyết định xem có nên spawn subagents cho các bước tiếp theo hay không. Nếu `failed` thì bỏ qua bài đó, không đập sập toàn pipeline.
+### STEP 3: Verify Cache & Extract Fragment
+*   **Thực thi:** Host LLM chạy `python tools/extract_html.py <id>` để lọc chrome DOM và sinh fragment chính vào `cache/normalized/<id>.json`.
 
-### STEP 4: Spawn Parse Agents
-*   **Thực thi:** Gọi `cp-parser` trên các file JSON hợp lệ trong `cache/problemset/`.
-*   **Expected Output:** `cache/clean/<id>.json` (hoặc `problem_normalized.json`).
+### STEP 4: Parse Content
+*   **Thực thi:** Host LLM nạp `.agents/skills/cp-parser/SKILL.md` để tự chuyển đổi fragment thô thành JSON cấu trúc chuẩn.
 
-### STEP 5: Spawn Translate Agents
-*   **Thực thi:** Khởi chạy `cp-translator`.
-*   **Expected Output:** Dữ liệu ngôn ngữ đích.
+### STEP 5: Apply Reasoning Skills
+*   **Thực thi:** Host LLM lần lượt (hoặc song song bằng subagents) áp dụng các Skill Contracts lên JSON cấu trúc để sinh ra mã nguồn LaTeX:
+    1. `translation-agent` (Dịch thuật bảo toàn toán học)
+    2. `editorial-agent` (Biên tập văn phong, chia đoạn hợp lý)
+    3. `terminology-agent` (Chuẩn hóa từ điển)
+    4. `formatting-agent` (Tách biệt I/O format)
+    5. `latex-agent` (Chuyển đổi sang mã LaTeX chuẩn template)
+    6. `latex-guardian` (Escape ký tự đặc biệt, kiểm tra cú pháp)
+*   **Mục tiêu:** Lưu kết quả LaTeX cuối cùng vào `cache/build/<problem_id>.tex` kèm comment `% order_index: <index>`.
 
-### STEP 6: Spawn LaTeX Agents
-*   **Thực thi:** Khởi chạy `cp-latex`.
-*   **Expected Output:** Mã nguồn file tex từng bài tại `cache/build/<problem_id>.tex`.
+### STEP 6: Verify Order
+*   **Thực thi:** Host LLM chạy `python tools/validate_order.py`.
+*   **Mục tiêu:** Xác minh thứ tự bài viết trong `cache/build/` khớp hoàn toàn với queue.
 
-### STEP 7: Combine
-*   **Thực thi:** Chạy `python tools/combine_latex.py`.
-*   **Expected Output:** Gộp tất cả thành file tổng `outputs/output.tex`.
+### STEP 7: Text Normalization
+*   **Thực thi:** Host LLM chạy `python tools/text_normalizer.py`.
+*   **Mục tiêu:** Định dạng lại khoảng trắng, dấu câu và danh sách LaTeX.
 
-### STEP 8: Compile
-*   **Thực thi:** Gọi `python tools/compile_latex.py outputs/output.tex`.
-*   **Expected Output:** File tài liệu cuối cùng tại `outputs/output.pdf`.
+### STEP 8: Quality Auditor Gate
+*   **Thực thi:** Host LLM chạy `python tools/audit_quality.py`.
+*   **Mục tiêu:** Xác minh điểm chất lượng và quy tắc chống hồi quy.
+
+### STEP 9: Combine & Compile
+*   **Thực thi:** Host LLM chạy `python tools/combine_latex.py` để gộp tài liệu, sau đó chạy `python tools/compile_latex.py outputs/output.tex` để kết xuất PDF thành phẩm.
 
 ---
 
@@ -118,11 +136,12 @@ Khi người dùng truyền vào nhiều bài toán cùng lúc:
 ## Tiêu Chí Hoàn Thành (Completion Criteria)
 
 *   Pipeline chỉ được xác nhận **THÀNH CÔNG** khi và chỉ khi file **`outputs/output.pdf` tồn tại** và biên dịch không lỗi.
-*   **BẮT BUỘC TUÂN THỦ 4 LUẬT SAU TRƯỚC KHI BÁO PASS:**
+*   **BẮT BUỘC TUÂN THỦ 5 LUẬT SAU TRƯỚC KHI BÁO PASS:**
     1. Không được kết luận PASS nếu chưa đọc compile log (compile_error.log).
     2. Không được tự khẳng định PDF thành công chỉ vì tool không văng lỗi.
     3. Phải xác minh file PDF tồn tại thực tế trên ổ cứng.
     4. Phải xác minh lệnh compile (pdflatex/latexmk) có `return code = 0`.
+    5. Phải đảm bảo tất cả các file LaTeX trong `cache/build/` đều đã vượt qua bước kiểm duyệt chất lượng `audit_quality.py` mà không bị văng lỗi hoặc cảnh báo vi phạm.
 *   Nếu PDF không được sinh ra hoặc compile log chứa `LaTeX Error`/`Fatal error`, quy trình bị tính là THẤT BẠI. Mọi bước ở giữa không được tính là thành công nếu chưa có PDF.
 
 ---

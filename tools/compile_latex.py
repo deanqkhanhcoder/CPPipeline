@@ -16,7 +16,7 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATE_PATH = ROOT / ".agents" / "skills" / "cp-latex" / "template.tex"
+TEMPLATE_PATH = ROOT / ".agents" / "templates" / "template.tex"
 HASH_PATH = ROOT / ".agents" / "metadata" / "template_hash.txt"
 
 
@@ -112,13 +112,13 @@ def compile_latex(tex_file: str, hits=0, misses=0):
         print(f"{engine} execution failed: {e}")
     finally:
         base_no_ext = os.path.splitext(tex_file)[0]
-        build_dir = os.path.join(ROOT, "cache", "build")
-        os.makedirs(build_dir, exist_ok=True)
+        debug_dir = os.path.join(ROOT, "cache", "debug")
+        os.makedirs(debug_dir, exist_ok=True)
         for ext in [".aux", ".out", ".toc", ".log", ".synctex.gz"]:
             for candidate in [base_no_ext + ext, os.path.join(cwd, os.path.splitext(basename)[0] + ext)]:
                 if os.path.exists(candidate):
                     try:
-                        target = os.path.join(build_dir, os.path.basename(candidate))
+                        target = os.path.join(debug_dir, os.path.basename(candidate))
                         if os.path.exists(target):
                             os.remove(target)
                         shutil.move(candidate, target)

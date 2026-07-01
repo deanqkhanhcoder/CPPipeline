@@ -4,7 +4,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATE_PATH = ROOT / ".agents" / "skills" / "cp-latex" / "template.tex"
+TEMPLATE_PATH = ROOT / ".agents" / "templates" / "template.tex"
 HASH_PATH = ROOT / ".agents" / "metadata" / "template_hash.txt"
 BUILD_DIR = ROOT / "cache" / "build"
 OUTPUT_PATH = ROOT / "outputs" / "output.tex"

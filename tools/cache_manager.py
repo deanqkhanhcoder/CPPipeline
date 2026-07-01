@@ -3,6 +3,22 @@ import json
 import hashlib
 import sys
 from datetime import datetime
+from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
+
+def normalize_url(url):
+    parsed = urlparse(url)
+    scheme = parsed.scheme.lower()
+    netloc = parsed.netloc.lower()
+    path = parsed.path
+    if path.endswith('/') and len(path) > 1:
+        path = path[:-1]
+    
+    # Filter query parameters
+    query_params = parse_qsl(parsed.query)
+    allowed_qs = [(k, v) for k, v in query_params if k.lower() in ('cpid',)]
+    query = urlencode(allowed_qs)
+    
+    return urlunparse((scheme, netloc, path, parsed.params, query, parsed.fragment))
 
 CACHE_DIR = "cache/problemset"
 INDEX_FILE = os.path.join(CACHE_DIR, "index.json")
@@ -14,6 +30,7 @@ def _init_cache():
             json.dump([], f)
 
 def get_problem_id(url):
+    url = normalize_url(url)
     if "codeforces.com" in url:
         parts = url.split('/')
         if "contest" in parts and "problem" in parts:
@@ -42,6 +59,7 @@ def get_source(url):
     return "Unknown"
 
 def lookup_cache(url):
+    url = normalize_url(url)
     _init_cache()
     pid = get_problem_id(url)
     cache_path = os.path.join(CACHE_DIR, f"{pid}.json")
@@ -56,6 +74,7 @@ def lookup_cache(url):
     return None
 
 def save_cache(url, title, html="", markdown="", content_type="html", pdf_path=None, images=None, order_index=0):
+    url = normalize_url(url)
     _init_cache()
     pid = get_problem_id(url)
     source = get_source(url)
@@ -77,8 +96,10 @@ def save_cache(url, title, html="", markdown="", content_type="html", pdf_path=N
         "_cached": True
     }
     
-    with open(cache_path, "w", encoding="utf-8") as f:
+    temp_cache_path = cache_path + ".tmp"
+    with open(temp_cache_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(temp_cache_path, cache_path)
         
     with open(INDEX_FILE, "r", encoding="utf-8") as f:
         index_data = json.load(f)
@@ -93,8 +114,10 @@ def save_cache(url, title, html="", markdown="", content_type="html", pdf_path=N
         "cached_at": data["timestamp"]
     })
     
-    with open(INDEX_FILE, "w", encoding="utf-8") as f:
+    temp_index_file = INDEX_FILE + ".tmp"
+    with open(temp_index_file, "w", encoding="utf-8") as f:
         json.dump(index_data, f, ensure_ascii=False, indent=2)
+    os.replace(temp_index_file, INDEX_FILE)
         
     print(f"[Cache] Saved to {pid}.json", file=sys.stderr)
 

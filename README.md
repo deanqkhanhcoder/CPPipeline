@@ -8,8 +8,13 @@ Hệ thống sử dụng mô hình **Chain-of-Skills** dựa trên sức mạnh 
 - **cp-pipeline (Orchestrator)**: "Nhạc trưởng" điều phối luồng dữ liệu tự động.
 - **cp-crawler**: Module thu thập dữ liệu thô. Chống lại Cloudflare bằng cơ chế "Stealth & Retry" 4 tầng (Ưu tiên Brave Persistent Profile → CloakBrowser → Playwright Stealth → Crawl4AI). Có nhận diện Cloudflare Challenge tự động để Fail-fast.
 - **cp-parser**: Module AI phân tích cấu trúc DOM/Markdown để trích xuất Title, Statement, Input/Output, và Samples mà không phụ thuộc vào Regex tĩnh.
-- **cp-translator**: Module AI dịch thuật và sinh tư duy logic. Đảm bảo bảo toàn 100% công thức Toán Học (Mathematics) và tự động chạy tay thuật toán để giải thích ví dụ.
-- **cp-latex**: Module AI render dữ liệu vào "Golden Template", tạo ra file `.tex` chuẩn tiếng Việt.
+- **Sub-Agents (Reasoning)**:
+  - **translation-agent**: Dịch thô bài toán và bảo toàn 100% công thức Toán Học.
+  - **editorial-agent**: Biên tập văn phong mượt mà chuẩn HSG/ICPC, chia đoạn logic hợp lý (< 12 dòng).
+  - **terminology-agent**: Chuẩn hóa thuật ngữ chuyên ngành CP theo từ điển terminology.
+  - **formatting-agent**: Tách biệt rõ ràng cấu trúc Input, Output, Constraints và Sample Cases.
+  - **latex-agent**: Điền dữ liệu vào "Golden Template" để tạo file `.tex` chuẩn.
+  - **latex-guardian**: Kiểm tra cú pháp LaTeX, tự động escape ký tự đặc biệt ngoài toán.
 - **PDF Compiler**: Tool gọi tự động `pdflatex` để xuất bản PDF.
 
 ## Quy trình làm việc
