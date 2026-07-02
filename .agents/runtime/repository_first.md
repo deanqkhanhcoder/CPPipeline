@@ -8,19 +8,31 @@ type: Runtime Architecture
 
 Host LLM phải luôn ưu tiên Repository trước mọi quyết định khác.
 
-## Priority Hierarchy
+## Priority Hierarchy - Skill-First Design
 
 ```
-Level 1: REPOSITORY POLICY
+Level 0: SKILL (Entry Point)
+  ↓ "Load these dependencies:"
+Level 1: SKILL BOOTSTRAP (declares Runtime)
+  ↓ "Load Runtime Framework"
+Level 2: REPOSITORY POLICY
   ↓
-Level 2: GLOBAL RULES
+Level 3: GLOBAL RULES
   ↓
-Level 3: SKILL CONTRACTS
+Level 4: SKILL CONTRACTS
   ↓
-Level 4: KNOWLEDGE BASE
+Level 5: KNOWLEDGE BASE (lazy-loaded)
   ↓
-Level 5: USER TASK
+Level 6: USER TASK
 ```
+
+**Execution Flow**:
+1. User invokes Skill: `/cp-pipeline`
+2. Host LLM reads: `cp-pipeline/SKILL.md`
+3. SKILL.md says: "Load Runtime Framework"
+4. Host LLM loads declared dependencies
+5. Runtime bootstraps and takes over
+6. Runtime follows Policy > Rules > Skills hierarchy
 
 Host LLM **PHẢI** tuân theo hierarchy này. Không được bỏ qua hoặc đảo thứ tự.
 

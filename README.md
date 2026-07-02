@@ -128,34 +128,3 @@ Hướng dẫn phân biệt cho các AI Agent mới clone repository:
 | **API Key** | Bắt buộc | Không cần |
 
 **Lưu ý cho AI đọc README này:** Nếu bạn đọc file này, bạn chính là Host LLM. Bạn không cần gọi bất kỳ API nào. Hãy đọc các file `.agents/skills/*.md` và tự thực thi workflow theo hướng dẫn trong đó.
-
-## Mô hình Execution của Host LLM (v3.0)
-
-> **v3.0 giới thiệu deterministic state machine execution.**
-
-Host LLM PHẢI tuân thủ 11 phases bắt buộc (KHÔNG bỏ qua, KHÔNG đảo thứ tự):
-
-```
-Phase 0: BOOT           → Load Runtime & Policies
-Phase 1: AUDIT          → Hiểu Repository
-Phase 2: PLAN           → Tạo Execution Plan
-Phase 3: WAIT           → Nhận User Approval (nếu major)
-Phase 4: EXECUTE        → Evidence → Conclusion → Action
-Phase 5: VERIFY         → Self-check
-Phase 6: REGRESSION     → Chạy Tests
-Phase 7: CLEANUP        → Xóa Artifacts
-Phase 8: AUDIT          → Final Verification
-Phase 9: COMMIT         → Commit Changes
-Phase 10: TAG           → Tạo Release Tag (nếu applicable)
-Phase 11: PUSH          → Push lên GitHub
-```
-
-**Quy tắc chính:**
-- ✅ Evidence → Conclusion → Action (KHÔNG "Tôi nghĩ...", "Có thể...", "Để tôi thử...")
-- ✅ Repository First (Policy → Skill → Task, KHÔNG Task → Code → Policy)
-- ✅ Xác định Source of Truth trước khi sửa đổi
-- ✅ Không Reactive Coding (không tạo tools để fix failures)
-- ✅ Tất cả temporary files vào `/scratch`
-- ✅ Execute audit trước commit
-
-Đọc `.agents/runtime/HOST_LLM_RUNTIME.md` và `.agents/policies/EXECUTION_STATE_MACHINE.md` để hiểu đầy đủ.

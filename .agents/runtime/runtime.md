@@ -8,18 +8,26 @@ type: Architecture
 
 **CPPipeline** không phải một ứng dụng. Nó là một **Runtime Framework** cho AI.
 
-## What is Host LLM?
+## Architecture: Skill-First Design
 
-**Host LLM** là AI mà người dùng đang chat với:
-- Antigravity
-- Gemini CLI
-- Claude Code
-- Cursor
-- Codex
-- Copilot Agent
-- ChatGPT
+```
+User: /cp-pipeline
+  ↓
+Host Runtime finds: cp-pipeline/SKILL.md
+  ↓
+SKILL.md Bootstrap Section: "Load Runtime"
+  ↓
+Host Runtime loads: .agents/runtime/runtime.md
+  ↓
+Runtime takes over execution
+  ↓
+Runtime orchestrates all phases
+```
 
-Host LLM **chính là Runtime** của CPPipeline. Nó không gọi LLM nào khác.
+**Key Point**: Skill is the **Entry Point**. Runtime is the **Execution Engine**.
+
+Host Runtime does NOT scan `.agents/runtime/` on its own.
+Skill TELLS Host Runtime to load Runtime Framework.
 
 ## Runtime Architecture Layers
 

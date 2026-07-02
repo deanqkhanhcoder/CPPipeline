@@ -19,17 +19,25 @@ Ví dụ về Host LLM:
 - Copilot Agent
 - ChatGPT
 
-## Principle: Repository First
+## Principle: Skill-First Bootstrap
 
-Host LLM luôn ưu tiên theo thứ tự này:
+Host LLM knows ONLY about Skills it's asked to invoke:
+- User: `/cp-pipeline`
+- Host LLM: Finds `cp-pipeline/SKILL.md`
+- SKILL.md: "First, load `.agents/runtime/runtime.md`"
+- Host LLM: Loads runtime as instructed
+- Runtime: Takes over and orchestrates execution
 
-```
-1. Repository Policy (.agents/policies/)
-2. Global Rules (.agents/rules/)
-3. Skill Contracts (.agents/skills/*/SKILL.md)
-4. Knowledge Base (.agents/knowledge/)
-5. User Task
-```
+**Host LLM does NOT**:
+- Scan `.agents/runtime/` on its own
+- Discover Runtime before reading Skill
+- Assume where Runtime is located
+
+**Host LLM DOES**:
+- Read Skill.md (given by user command)
+- Follow Skill's bootstrap instructions
+- Load dependencies declared by Skill
+- Delegate execution to Runtime
 
 Không được:
 - Thực hiện task trước khi đọc Policy

@@ -37,12 +37,19 @@ Không được bỏ qua bất kỳ bước nào.
 - Preconditions/Postconditions
 - Forbidden operations
 
-### 3. Knowledge Base
-- Terminology definitions
-- Common patterns
-- Lessons learned
+### 3. Terminology
+- From `.agents/policies/terminology.md`
+- Loaded during LOAD TERMINOLOGY state
 
-### 4. Inference (Lowest Priority)
+### 4. Knowledge Base (Lazy-Loaded)
+- **NOT loaded upfront** - only when needed
+- `.agents/knowledge/crawler_failures.md` → When crawler error occurs
+- `.agents/knowledge/latex_failures.md` → When LaTeX generation fails
+- `.agents/knowledge/pdf_statement_handling.md` → When parsing PDF
+- `.agents/knowledge/pipeline_failures.md` → When phase fails
+- `.agents/knowledge/repository_failures.md` → When unexpected error
+
+### 5. Inference (Lowest Priority)
 - Logical deduction
 - Pattern matching
 - Only if no explicit evidence

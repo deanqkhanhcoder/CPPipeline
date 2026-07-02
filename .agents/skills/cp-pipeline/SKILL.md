@@ -8,28 +8,39 @@ description: Skill điều phối toàn diện Hệ thống Dịch thuật và T
 ## Runtime
 Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách suy luận, điều phối Tool và thực thi Workflow.
 
+## Runtime Bootstrap (Entry Point)
+
+**Khi Skill này được Host Runtime kích hoạt**:
+
+Việc đầu tiên Host LLM phải làm là:
+
+1. **Load Runtime Framework**
+   - Read: `.agents/runtime/runtime.md`
+   - Runtime sẽ hướng dẫn các bước tiếp theo
+
+2. **Runtime Dependencies** (Host LLM sẽ resolve):
+   - `.agents/runtime/runtime.md` (index and overview)
+   - `.agents/runtime/host_llm_contract.md` (runtime principles)
+   - `.agents/runtime/execution_state_machine.md` (12-state machine)
+   - `.agents/runtime/phase_definition.md` (what each phase does)
+   - `.agents/runtime/repository_first.md` (decision priority)
+   - `.agents/runtime/decision_policy.md` (evidence-based decisions)
+   - `.agents/runtime/rollback_policy.md` (error recovery)
+   - `.agents/runtime/verification_policy.md` (output verification)
+
+3. **Runtime Will Guide**:
+   - Which policies to load (.agents/policies/)
+   - Which knowledge to load on-demand (.agents/knowledge/)
+   - Which dependency skills to resolve
+   - When to plan execution
+   - When to execute phases
+   - When to verify output
+
+**This Skill is NOT the Executor.** This Skill is the **Bootstrap Point**. Runtime is the **Execution Engine**.
+
 ## Tổng quan
 
 `cp-pipeline` là Skill cốt lõi đóng vai trò "Nhạc trưởng" (Orchestrator) điều phối toàn bộ Hệ thống Dịch thuật Competitive Programming. Thay vì tự mình thực hiện các tác vụ phân tích, dịch thuật hay xử lý file, Skill này tự động hóa quy trình gọi tuần tự các bộ kỹ năng chuyên biệt khác, giám sát luồng dữ liệu đầu vào/đầu ra, và xử lý rủi ro xuyên suốt chu trình. Mục đích cao nhất là chuyển đổi tự động một URL bài toán (từ các nguồn như Codeforces, CSES, USACO...) thành một tài liệu PDF tiếng Việt chuẩn mực ICPC/HSG.
-
-## v3.0: Host LLM Runtime State Machine
-
-`cp-pipeline` phải orchestrate đầy đủ 11 phases của Execution State Machine (`.agents/policies/EXECUTION_STATE_MACHINE.md`):
-
-- **Phase 0: BOOT** - Load Runtime & Policies → Build Execution Context
-- **Phase 1: AUDIT** - Hiểu Repository Structure → Xác định Source of Truth
-- **Phase 2: PLAN** - Tạo Execution Plan → Document Goals, Skills, Tools, Risk
-- **Phase 3: WAIT** - Hiển thị Plan → Chờ User Approval (nếu major operation)
-- **Phase 4: EXECUTE** - Evidence → Conclusion → Action (KHÔNG reactive decisions)
-- **Phase 5: VERIFY** - Self-check tất cả outputs → Verify Skill Contracts & Policies
-- **Phase 6: REGRESSION** - Chạy tests cho modified components
-- **Phase 7: CLEANUP** - Xóa debug files, temp artifacts
-- **Phase 8: AUDIT** - Final verification (Repository, Skill, Policy, Template, Language, Encoding)
-- **Phase 9: COMMIT** - Commit chỉ nếu Phase 8 PASS
-- **Phase 10: TAG** - Tạo release tag (nếu release)
-- **Phase 11: PUSH** - Push lên GitHub
-
-**Điều quan trọng:** cp-pipeline KHÔNG bỏ qua bất kỳ phase nào. Mỗi phase có checkpoint bắt buộc phải PASS trước khi chuyển sang phase tiếp theo.
 
 ## Kiến trúc
 

@@ -6,6 +6,10 @@ type: Runtime Architecture
 
 # Host LLM Execution State Machine
 
+**Context**: This state machine executes AFTER Skill (e.g., `/cp-pipeline`) is invoked by Host Runtime.
+
+The Skill bootstraps Runtime, then Runtime follows this state machine.
+
 Host LLM phải hoạt động theo State Machine dưới đây. Mỗi state phải hoàn tất trước khi chuyển state tiếp theo.
 
 ## State Diagram
