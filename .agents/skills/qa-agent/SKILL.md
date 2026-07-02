@@ -19,7 +19,13 @@ Chấm điểm chất lượng (từ 1.0 đến 5.0) trên **6 phương diện**
 `Semantic Fidelity` = không mất thông tin so với đề gốc. Điểm 1.0 nếu bản dịch mất bất kỳ sample/explanation/notes/warning nào.
 
 **KIỂM TRA BẮT BUỘC: Mọi sample phải có Explanation.**
-Nếu bất kỳ sample nào thiếu explanation → điểm Explanation = 1.0 → FAIL. 
+Nếu bất kỳ sample nào thiếu explanation → điểm Explanation = 1.0 → FAIL.
+
+**KIỂM TRA BẮT BUỘC: display_title phải đúng format.**
+Format chuẩn: **Tên tiếng Việt (Tên tiếng Anh)**
+- Ví dụ đúng: "Bắt tay (Handshake)", "A. Dưa hấu (Watermelon)"
+- Sai: "Handshake", "Bắt tay", "Handshake (Bắt tay)", "BẮT TAY"
+Nếu sai format → điểm Statement = 1.0 → FAIL. 
 
 ## 2. Input Schema
 Đường dẫn đến file LaTeX cần đánh giá.
@@ -32,6 +38,8 @@ Báo cáo điểm số cụ thể kèm theo danh sách các vi phạm nếu có.
 - CẤM cho PASS nếu điểm trung bình hoặc điểm bất kỳ hạng mục nào dưới 4.0.
 - CẤM cho PASS nếu `Semantic Fidelity` < 4.0 (tức là có mất thông tin so với đề gốc).
 - CẤM cho PASS nếu bất kỳ sample nào thiếu explanation (trừ khi ghi rõ "không đủ thông tin để suy luận").
+- CẤM cho PASS nếu `display_title` không đúng format "Tên tiếng Việt (Tên tiếng Anh)".
+- CẤM cho PASS nếu TOC, bookmark, header, footer không dùng `display_title`.
 
 ## 5. Failure Mode & Retry Policy
 Nếu chất lượng không đạt, chặn đứng quá trình combine và kết xuất PDF.

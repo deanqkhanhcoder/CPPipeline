@@ -28,11 +28,28 @@ Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịc
 - Nếu đề gốc có explanation → dịch trung thực, không rút gọn.
 - Nếu đề gốc KHÔNG có explanation → chuyển sang `sample-explainer` để tự sinh.
 
+**BẮT BUỘC: Tạo display_title.**
+Phải tạo `display_title` theo format chuẩn: "Tên tiếng Việt (Tên tiếng Anh)".
+
 ## 2. Input Schema
-JSON chứa các trường: `statement`, `input`, `output`, `constraints`, `notes`, `samples`, `order_index`.
+JSON chứa các trường: `title`, `statement`, `input`, `output`, `constraints`, `notes`, `samples`, `order_index`.
 
 ## 3. Output Schema
-JSON tương tự Input nhưng nội dung text đã được dịch sang tiếng Việt.
+JSON tiếng Việt với các trường:
+- `title`: Giữ nguyên tiêu đề tiếng Anh gốc.
+- `translated_title`: Bản dịch tiếng Việt của tiêu đề.
+- `display_title`: **SOURCE OF TRUTH** — Format chuẩn duy nhất: **Tên tiếng Việt (Tên tiếng Anh)**.
+
+**Quy tắc tạo `display_title`:**
+- Nếu title gốc là `"Handshake"` → `display_title = "Bắt tay (Handshake)"`
+- Nếu title gốc có label `"A. Watermelon"` → `display_title = "A. Dưa hấu (Watermelon)"`
+- Nếu title gốc có label `"E - Handshake"` → `display_title = "E. Bắt tay (Handshake)"` (chuẩn hóa `-` thành `.`)
+
+**Cấm:**
+- `display_title = "Handshake"` (chỉ tiếng Anh)
+- `display_title = "Bắt tay"` (chỉ tiếng Việt)
+- `display_title = "Handshake (Bắt tay)"` (đảo thứ tự)
+- `display_title = "BẮT TAY"` (viết hoa toàn bộ)
 
 ## 4. Forbidden Rules
 - CẤM thay đổi hoặc làm mất công thức toán học.

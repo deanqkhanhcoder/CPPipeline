@@ -45,6 +45,19 @@ Hệ thống nay hỗ trợ đọc hiểu đề bài dạng PDF (IOI, APIO, CEOI
 *   **.agents/skills/qa-agent/SKILL.md**
     *Vai trò:* Chấm điểm chất lượng toàn diện của tài liệu đầu ra qua hệ thống 5 sao (Aspect Score >= 4.0).
 
+## Unified Bilingual Title Policy
+
+**Format chuẩn duy nhất:** Tên tiếng Việt (Tên tiếng Anh)
+
+Mọi nơi trong pipeline (JSON, LaTeX, PDF, TOC, Bookmark, Header, Footer, Archive, Metadata) đều phải dùng `display_title` với format:
+
+- **Đúng:** "Bắt tay (Handshake)", "A. Dưa hấu (Watermelon)", "E. Ba số (Three Numbers)"
+- **Sai:** "Handshake", "Bắt tay", "Handshake (Bắt tay)", "BẮT TAY"
+
+**Source of Truth:** Chỉ tồn tại duy nhất `display_title` được tạo bởi `translation-agent`. Mọi skill downstream không được tự dịch, tự format, hoặc đảo thứ tự.
+
+**Anti-Regression:** Pipeline FAIL nếu phát hiện title không đúng format, hoặc TOC/bookmark/header/footer không dùng `display_title`.
+
 ---
 
 ## Quy trình Tiêu Chuẩn (Declarative Orchestration)

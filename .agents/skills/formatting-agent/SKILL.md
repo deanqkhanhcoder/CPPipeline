@@ -31,6 +31,7 @@ JSON với các trường I/O được định dạng mạch lạc, tách biệt
 - CẤM bỏ explanation của bất kỳ sample nào.
 - CẤM gộp nội dung giữa các sample khác nhau.
 - CẤM để trống trường `explanation` — nếu thiếu, FAIL và yêu cầu `sample-explainer` bổ sung.
+- CẤM thay đổi `display_title` — phải giữ nguyên vẹn từ `translation-agent`.
 
 ## 5. Failure Mode & Retry Policy
 Nếu format lỗi, chạy lại bước `tools/text_normalizer.py`.
