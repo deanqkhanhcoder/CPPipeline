@@ -40,11 +40,11 @@ String chứa mã nguồn `.tex` nguyên bản.
 - CẤM dùng `title` hoặc `translated_title` trong bất kỳ macro nào — phải dùng `display_title`.
 
 ## v3.0: Phase Awareness
-Skill này được gọi từ PHASE 4 (EXECUTION) của State Machine (sau formatting-agent).
+Skill này được gọi từ PHASE 4 (EXECUTE) của State Machine (sau formatting-agent).
 - Host LLM phải tuân thủ: Evidence → Conclusion → Action
 - Phải self-verify (Phase 5): Kiểm tra LaTeX syntax, escape sequences, macro correctness
 - Phải chạy latex-guardian (Phase 6 implicit) để verify output
-- Không được tự sửa template hoặc tạo macro mới nếu không có evidence
+- KHÔNG được tự sửa template hoặc tạo macro mới nếu không có evidence
 
 ## 5. Failure Mode & Retry Policy
 Nếu text bị sai mã hóa, tự động sửa lỗi mojibake qua tool.

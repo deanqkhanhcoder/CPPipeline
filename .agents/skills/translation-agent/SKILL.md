@@ -30,9 +30,9 @@ Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịc
 - Nếu đề gốc KHÔNG có explanation → chuyển sang `sample-explainer` để tự sinh.
 
 **v3.0: Phase Awareness**
-Skill này được gọi từ PHASE 4 (EXECUTION) của Execution State Machine.
+Skill này được gọi từ PHASE 4 (EXECUTE) của Execution State Machine.
 - Host LLM phải tuân thủ: Evidence → Conclusion → Action
-- Không được reactive (đoán rồi sửa)
+- KHÔNG được reactive (đoán rồi sửa)
 - Phải self-verify (Phase 5) trước Phase 6
 
 **BẮT BUỘC: Tạo display_title.**

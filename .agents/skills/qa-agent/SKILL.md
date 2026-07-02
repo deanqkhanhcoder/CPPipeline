@@ -46,7 +46,7 @@ Skill này là cuối cùng của PHASE 5 (VERIFY) trong State Machine.
 - Host LLM phải thực hiện toàn bộ 6 audits: Repository, Skill, Policy, Template, Language, Encoding
 - Nếu ANY FAIL → STOP, không commit (Phase 9 bị block)
 - Nếu ALL PASS → Proceed to Phase 6 (Regression) nếu có modified components
-- Không được "assume pass" - phải explicit PASS mọi tiêu chí
+- KHÔNG được "assume pass" - phải explicit PASS mọi tiêu chí
 
 ## 5. Failure Mode & Retry Policy
 Nếu chất lượng không đạt, chặn đứng quá trình combine và kết xuất PDF.

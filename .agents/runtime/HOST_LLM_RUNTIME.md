@@ -1,16 +1,16 @@
 ---
 name: HOST_LLM_RUNTIME
 version: 3.0.0
-status: FOUNDATIONAL
+status: NỀN_TẢNG
 ---
 
-# Host LLM Runtime Specification v3.0
+# Đặc tả Host LLM Runtime v3.0
 
-## Core Concept
+## Khái niệm cốt lõi
 
-**Host LLM** = The AI assistant the user is currently chatting with.
+**Host LLM** = Trợ lý AI mà người dùng hiện đang chat.
 
-Examples:
+Ví dụ:
 - Antigravity
 - Claude Code
 - Cursor
@@ -19,39 +19,39 @@ Examples:
 - ChatGPT
 - Codex
 
-**Host LLM IS the Runtime.** There is NO backend, NO API, NO provider layer.
+**Host LLM CHÍNH LÀ RUNTIME.** Không có backend, không có API, không có tầng provider.
 
 ```
-User
+Người dùng
   ↓
 Host LLM (AI)
   ↓
-Reads: Skill Contracts, Policies, Rules, Knowledge
+Đọc: Skill Contracts, Policies, Rules, Knowledge
   ↓
-Executes: State Machine (11 Phases)
+Thực thi: State Machine (11 Phases)
   ↓
-Uses: Local Tools (Python scripts, Git, LaTeX compiler)
+Sử dụng: Local Tools (Python scripts, Git, LaTeX compiler)
   ↓
 Output: PDF, JSON, LaTeX, Reports
 ```
 
-## No Backend Architecture
+## Kiến trúc cấm (Forbidden Architecture)
 
-**Forbidden in v3.0:**
-- ❌ Gemini API calls
-- ❌ OpenAI API calls
-- ❌ Claude API calls
-- ❌ Any LLM backend layer
-- ❌ Model provider abstraction
-- ❌ Agent spawning other agents via API
+**Cấm trong v3.0:**
+- ❌ Gọi Gemini API
+- ❌ Gọi OpenAI API
+- ❌ Gọi Claude API
+- ❌ Bất kỳ tầng backend LLM nào
+- ❌ Abstraction layer provider model
+- ❌ Agent spawning agent qua API
 - ❌ llm_backend.py, provider.py, model_router.py
-- ❌ Any Python code that initiates LLM calls
+- ❌ Bất kỳ Python code nào khởi tạo LLM calls
 
-**The entire backend IS the Host LLM.**
+**Toàn bộ backend LÀ Host LLM.**
 
-## State Machine Model
+## Mô hình State Machine
 
-Host LLM MUST operate as a deterministic state machine with 11 phases:
+Host LLM PHẢI hoạt động như state machine xác định với 11 phases:
 
 ```
 Phase 0: BOOT
@@ -64,60 +64,59 @@ Phase 0: BOOT
   └─ Build Execution Context
 
 Phase 1: REPOSITORY AUDIT
-  ├─ Understand folder structure
-  ├─ Understand skill purposes
-  ├─ Understand policy purposes
-  ├─ Identify Source of Truth
-  └─ Checkpoint: PASS or FAIL
+  ├─ Hiểu folder structure
+  ├─ Hiểu skill purposes
+  ├─ Hiểu policy purposes
+  ├─ Xác định Source of Truth
+  └─ Checkpoint: PASS hoặc FAIL
 
 Phase 2: EXECUTION PLAN
-  ├─ Define Current Goal
-  ├─ List Required Skills
-  ├─ List Required Tools
-  ├─ List Required Policies
-  ├─ Define Expected Outputs
-  ├─ Define Files to Modify
-  ├─ Define Forbidden Files
-  ├─ Define Risk
-  └─ Define Rollback Strategy
+  ├─ Định nghĩa Current Goal
+  ├─ Liệt kê Required Skills
+  ├─ Liệt kê Required Tools
+  ├─ Liệt kê Required Policies
+  ├─ Định nghĩa Expected Outputs
+  ├─ Định nghĩa Files to Modify
+  ├─ Định nghĩa Forbidden Files
+  ├─ Định nghĩa Risk
+  └─ Định nghĩa Rollback Strategy
 
 Phase 3: WAIT USER APPROVAL
-  ├─ Show Execution Plan
-  ├─ Wait for Proceed
-  └─ If rejected: Go to Phase 2
+  ├─ Hiển thị Execution Plan
+  ├─ Chờ Proceed
+  └─ Nếu từ chối: Quay về Phase 2
 
 Phase 4: EXECUTION
-  ├─ For each action:
-  │  ├─ Gather Evidence
-  │  ├─ Draw Conclusion
-  │  └─ Execute Action
-  ├─ Forbidden: Reactive decisions
-  ├─ Forbidden: I think..., Maybe..., Actually...
-  └─ Required: Evidence → Conclusion → Action
+  ├─ Với mỗi action:
+  │  ├─ Thu thập Evidence
+  │  ├─ Rút ra Conclusion
+  │  └─ Thực thi Action
+  ├─ Cấm: Reactive decisions
+  ├─ Cấm: I think..., Maybe..., Actually...
+  └─ Yêu cầu: Evidence → Conclusion → Action
 
 Phase 5: SELF VERIFICATION
-  ├─ Check output correctness
-  ├─ Check Skill Contract compliance
-  ├─ Check Policy compliance
-  ├─ Check Golden Template integrity
-  ├─ Check Order Preservation
-  └─ Checkpoint: PASS or FAIL
+  ├─ Kiểm tra output correctness
+  ├─ Kiểm tra Skill Contract compliance
+  ├─ Kiểm tra Policy compliance
+  ├─ Kiểm tra Golden Template integrity
+  ├─ Kiểm tra Order Preservation
+  └─ Checkpoint: PASS hoặc FAIL
 
 Phase 6: REGRESSION TEST
-  ├─ If modified: crawler → run crawler tests
-  ├─ If modified: parser → run parser tests
-  ├─ If modified: translator → run translator tests
-  ├─ If modified: latex → run latex tests
-  ├─ If modified: compiler → run compiler tests
-  ├─ If modified: queue → run queue tests
-  └─ Checkpoint: ALL PASS or FAIL
+  ├─ Nếu sửa: crawler → chạy crawler tests
+  ├─ Nếu sửa: parser → chạy parser tests
+  ├─ Nếu sửa: translator → chạy translator tests
+  ├─ Nếu sửa: latex → chạy latex tests
+  ├─ Nếu sửa: compiler → chạy compiler tests
+  ├─ Nếu sửa: queue → chạy queue tests
+  └─ Checkpoint: ALL PASS hoặc FAIL
 
 Phase 7: REPOSITORY CLEANUP
-  ├─ Remove debug files
-  ├─ Remove one-time scripts
-  ├─ Remove duplicate files
-  ├─ Move temp files to /scratch
-  └─ Remove /scratch after completion
+  ├─ Xóa debug files
+  ├─ Xóa one-time scripts
+  ├─ Xóa duplicate files
+  └─ Di chuyển temp files sang /scratch
 
 Phase 8: FINAL AUDIT
   ├─ Repository Audit: PASS
@@ -126,25 +125,25 @@ Phase 8: FINAL AUDIT
   ├─ Template Audit: PASS
   ├─ Language Audit: PASS
   ├─ Encoding Audit: PASS
-  └─ Checkpoint: ALL PASS or FAIL
+  └─ Checkpoint: ALL PASS hoặc FAIL
 
 Phase 9: COMMIT
-  ├─ Only if Phase 8 PASS
-  └─ Create descriptive commit message
+  ├─ Chỉ nếu Phase 8 PASS
+  └─ Tạo descriptive commit message
 
-Phase 10: TAG (if release)
-  ├─ Only if all phases PASS
-  └─ Create annotated tag
+Phase 10: TAG (nếu release)
+  ├─ Chỉ nếu all phases PASS
+  └─ Tạo annotated tag
 
 Phase 11: PUSH
   ├─ Push branch
   └─ Push tag
 ```
 
-## Key Rules for Host LLM
+## Quy tắc chính cho Host LLM
 
-### Rule 1: Repository First
-Always follow this hierarchy:
+### Quy tắc 1: Repository First
+Luôn tuân thủ hierarchy này:
 ```
 Repository Structure
   ↓
@@ -159,97 +158,88 @@ Knowledge (Reference)
 Current Task
 ```
 
-FORBIDDEN: Task → Code → Policy
+CẤM: Task → Code → Policy
 
-### Rule 2: Source of Truth
-Always identify and locate Source of Truth before modification.
+### Quy tắc 2: Source of Truth
+Luôn xác định và định vị Source of Truth trước khi sửa đổi.
 
-Examples:
-- Template changes → Must update `.agents/templates/template.tex`
-- Terminology → Must update `.agents/policies/terminology.md`
-- Title format → Must update `translation-agent` Skill Contract
-- Queue structure → Must update `crawler_manager.py`
+Ví dụ:
+- Template changes → Phải cập nhật `.agents/templates/template.tex`
+- Terminology → Phải cập nhật `.agents/policies/terminology.md`
+- Title format → Phải cập nhật `translation-agent` Skill Contract
+- Queue structure → Phải cập nhật `crawler_manager.py`
 
-### Rule 3: Evidence → Conclusion → Action
-Every decision MUST follow this pattern:
+### Quy tắc 3: Evidence → Conclusion → Action
+Mọi quyết định PHẢI tuân thủ pattern này:
 
 ```
-Evidence: "I read file X and found Y"
-Conclusion: "Therefore, I need to do Z"
-Action: "Execute Z"
+Evidence: "Tôi đọc file X và tìm thấy Y"
+Conclusion: "Do đó, tôi cần làm Z"
+Action: "Thực thi Z"
 ```
 
-Forbidden: "I think we should...", "Maybe we could...", "Actually, let me try..."
+CẤM: "Tôi nghĩ chúng ta nên...", "Có thể chúng ta có thể...", "Thực ra, hãy thử..."
 
-### Rule 4: No Reactive Coding
-FORBIDDEN:
-- Writing a new tool to fix a failing workflow
-- Creating batch_parser.py because parser is slow
-- Creating helper.py for one-time use
-- Duplicating pipeline code to work around bug
+### Quy tắc 4: Không Reactive Coding
+CẤM:
+- Viết tool mới để fix failing workflow
+- Tạo batch_parser.py vì parser chậm
+- Tạo helper.py cho one-time use
+- Duplicate pipeline code để work around bug
 
-REQUIRED:
-- Fix the root cause (the abstraction layer)
-- If feature missing, extend abstraction
-- Don't patch on top
+YÊU CẦU:
+- Fix root cause (abstraction layer)
+- Nếu feature thiếu, extend abstraction
+- Không patch trên top
 
-### Rule 5: Scratch Policy
-Temporary files MUST go to `/scratch` or `/temp`:
+### Quy tắc 5: Scratch Policy
+Temporary files PHẢI vào `/scratch` hoặc `/temp`:
 - One-time scripts
 - Debug files
 - Test outputs
 - Intermediate data
 
-After use, MUST delete. Never commit to main repo.
+Sau khi sử dụng, PHẢI xóa. Không commit vào main repo.
 
-### Rule 6: No Early Execution
-FORBIDDEN to execute before:
+### Quy tắc 6: Không Execute trước
+CẤM execute trước khi:
 - ❌ Audit complete
-- ❌ Plan approved by user
+- ❌ Plan approved bởi user
 - ❌ Verification step passed
 - ❌ Final audit passed
 
-### Rule 7: Self Verification
-After each phase, Host LLM MUST ask:
-- "Did output match expected?"
-- "Does Skill Contract still apply?"
-- "Did I violate any Policy?"
-- "Is Golden Template unchanged?"
-- "Is Order Preservation intact?"
+### Quy tắc 7: Self Verification
+Sau mỗi phase, Host LLM PHẢI hỏi:
+- "Output có khớp expected không?"
+- "Skill Contract vẫn còn áp dụng không?"
+- "Tôi có vi phạm Policy không?"
+- "Golden Template có bị thay đổi không?"
+- "Order Preservation vẫn còn đúng không?"
 
-If ANY answer is "No" → Go back, fix, re-verify.
+Nếu BẤT KỲ câu trả lời là "Không" → Quay lại, fix, re-verify.
 
 ## Execution Context
 
-When Host LLM boots, it MUST build execution context:
+Khi Host LLM boot, nó PHẢI xây dựng execution context:
 
-```
+```json
 {
   "repository_root": "d:\\CP crawl",
   "current_branch": "master",
-  "current_commit": "ac0c03e",
+  "current_commit": "29c2876",
   "repository_version": "v2.1",
   "target_version": "v3.0",
   "skills_available": [
-    "cp-pipeline",
-    "cp-crawler",
-    "cp-parser",
-    "translation-agent",
-    "sample-explainer",
-    "editorial-agent",
-    "terminology-agent",
-    "formatting-agent",
-    "latex-agent",
-    "latex-guardian",
-    "semantic-fidelity-reviewer",
-    "order-guardian",
-    "qa-agent"
+    "cp-pipeline", "cp-crawler", "cp-parser",
+    "translation-agent", "sample-explainer",
+    "editorial-agent", "terminology-agent",
+    "formatting-agent", "latex-agent",
+    "latex-guardian", "semantic-fidelity-reviewer",
+    "order-guardian", "qa-agent"
   ],
   "policies": [
-    "repository_policy",
-    "template_policy",
-    "terminology_policy",
-    "execution_state_machine"
+    "repository_policy", "template_policy",
+    "terminology_policy", "execution_state_machine"
   ],
   "golden_template": ".agents/templates/template.tex",
   "source_of_truth": {
@@ -266,41 +256,41 @@ When Host LLM boots, it MUST build execution context:
 
 ## Phase Transitions
 
-Host LLM MUST NOT skip phases:
+Host LLM KHÔNG ĐƯỢC bỏ qua phases:
 
 ```
-Phase 0 → Phase 1 (MANDATORY)
+Phase 0 → Phase 1 (BẮT BUỘC)
 Phase 1 FAIL → STOP
-Phase 1 PASS → Phase 2 (MANDATORY)
-Phase 2 → Phase 3 (MANDATORY for large ops)
-Phase 3 REJECTED → Back to Phase 2
-Phase 3 APPROVED → Phase 4 (MANDATORY)
-Phase 4 ERROR → Stop or Rollback (defined in plan)
-Phase 4 SUCCESS → Phase 5 (MANDATORY)
-Phase 5 FAIL → Stop or Fix then Phase 5 again
-Phase 5 PASS → Phase 6 (if applicable, else Phase 7)
+Phase 1 PASS → Phase 2 (BẮT BUỘC)
+Phase 2 → Phase 3 (BẮT BUỘC cho major ops)
+Phase 3 REJECTED → Quay về Phase 2
+Phase 3 APPROVED → Phase 4 (BẮT BUỘC)
+Phase 4 ERROR → Stop hoặc Rollback
+Phase 4 SUCCESS → Phase 5 (BẮT BUỘC)
+Phase 5 FAIL → Stop hoặc Fix rồi Phase 5 lại
+Phase 5 PASS → Phase 6 (nếu applicable, else Phase 7)
 Phase 6 FAIL → STOP, Fix issue
-Phase 6 PASS → Phase 7 (MANDATORY)
-Phase 7 → Phase 8 (MANDATORY)
-Phase 8 FAIL → STOP, Do NOT commit
-Phase 8 PASS → Phase 9 (MANDATORY for release)
-Phase 9 → Phase 10 (if release)
-Phase 10 → Phase 11 (MANDATORY)
+Phase 6 PASS → Phase 7 (BẮT BUỘC)
+Phase 7 → Phase 8 (BẮT BUỘC)
+Phase 8 FAIL → STOP, DO NOT commit
+Phase 8 PASS → Phase 9 (BẮT BUỘC for release)
+Phase 9 → Phase 10 (nếu release)
+Phase 10 → Phase 11 (BẮT BUỘC)
 ```
 
-## Success Criteria for v3.0
+## Tiêu chí thành công cho v3.0
 
-After v3.0 upgrade, ALL Host LLMs must:
+Sau v3.0 upgrade, TẤT CẢ Host LLMs phải:
 
-✅ Follow the 11-phase state machine deterministically
-✅ Never execute before audit and plan approval
-✅ Never make reactive decisions (try-error-guess)
-✅ Always identify Source of Truth before modifying
-✅ Always gather evidence before conclusions
-✅ Always self-verify after changes
-✅ Always respect Skill Contracts and Policies
-✅ Never create unnecessary tools or files
-✅ Always cleanup artifacts
-✅ Always pass final audit before committing
+✅ Tuân thủ 11-phase state machine deterministically
+✅ KHÔNG bao giờ execute trước audit và plan approval
+✅ KHÔNG bao giờ make reactive decisions (try-error-guess)
+✅ Luôn xác định Source of Truth trước khi sửa đổi
+✅ Luôn thu thập evidence trước conclusions
+✅ Luôn self-verify sau changes
+✅ Luôn respect Skill Contracts và Policies
+✅ KHÔNG bao giờ tạo unnecessary tools hoặc files
+✅ Luôn cleanup artifacts
+✅ Luôn pass final audit trước khi committing
 
-If ANY Host LLM violates these rules → Repository fails to load properly.
+Nếu BẤT KỲ Host LLM vi phạm rules này → Repository fails to load properly.

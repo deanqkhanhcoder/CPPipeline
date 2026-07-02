@@ -1,119 +1,119 @@
 ---
 name: EXECUTION_STATE_MACHINE
 version: 3.0.0
-status: MANDATORY_POLICY
+status: POLICY_MANDATORY
 ---
 
-# Execution State Machine Policy v3.0
+# Chính sách Execution State Machine v3.0
 
-## Overview
+## Tổng quan
 
-This policy defines 11 mandatory phases that Host LLM MUST follow for ANY operation on CPPipeline repository.
+Policy này định nghĩa 11 phases bắt buộc mà Host LLM PHẢI tuân thủ cho BẤT KỲ operation nào trên CPPipeline repository.
 
-**No phase can be skipped.**
-**No phase can be executed out of order.**
-**No phase can be combined.**
+**Không phase nào có thể bỏ qua.**
+**Không phase nào có thể thực thi không theo thứ tự.**
+**Không phase nào có thể kết hợp lại.**
 
 ## Phase 0: BOOT
 
-**Duration:** Immediate on task start  
-**Checkpoint:** MANDATORY
+**Thời gian:** Ngay khi task bắt đầu  
+**Checkpoint:** BẮT BUỘC
 
 ### Actions:
 1. Load `.agents/runtime/HOST_LLM_RUNTIME.md`
 2. Load `.agents/policies/repository_policy.md`
-3. Load `.agents/policies/EXECUTION_STATE_MACHINE.md` (this file)
+3. Load `.agents/policies/EXECUTION_STATE_MACHINE.md` (file này)
 4. Load `.agents/policies/terminology.md`
 5. Load `README.md`
 6. Load `.agents/skills/cp-pipeline/SKILL.md`
-7. Load all dependent skills
-8. Build execution context (see HOST_LLM_RUNTIME.md)
+7. Load tất cả dependent skills
+8. Build execution context
 
 ### Checkpoint:
-- ✅ All files loaded successfully
-- ✅ No conflicts in policies
-- ✅ Repository version identified
+- ✅ Tất cả files load thành công
+- ✅ Không conflict trong policies
+- ✅ Repository version được xác định
 - ✅ Execution context ready
 
-**If FAIL:** STOP, report which file failed to load
+**Nếu FAIL:** STOP, report file nào fail
 
-**If PASS:** → Phase 1
+**Nếu PASS:** → Phase 1
 
 ---
 
 ## Phase 1: REPOSITORY AUDIT
 
-**Duration:** 5-10 minutes  
-**Checkpoint:** MANDATORY
+**Thời gian:** 5-10 phút  
+**Checkpoint:** BẮT BUỘC
 
-### Requirements:
+### Yêu cầu:
 
-Host LLM MUST understand:
+Host LLM PHẢI hiểu:
 - ✅ Repository folder structure (.agents/, tools/, cache/, outputs/)
-- ✅ Skill purposes (what each skill does)
-- ✅ Policy purposes (what each policy enforces)
-- ✅ Tool purposes (what each Python script does)
-- ✅ Golden Template location and immutability rules
-- ✅ Source of Truth for each component
-- ✅ File organization and naming conventions
-- ✅ Encoding standards (UTF-8 for all text files)
-- ✅ Forbidden architectures and patterns
+- ✅ Skill purposes (skill nào làm gì)
+- ✅ Policy purposes (policy nào enforce gì)
+- ✅ Tool purposes (script Python nào làm gì)
+- ✅ Golden Template location và immutability rules
+- ✅ Source of Truth cho mỗi component
+- ✅ File organization và naming conventions
+- ✅ Encoding standards (UTF-8 cho tất cả text files)
+- ✅ Forbidden architectures và patterns
 
 ### Audit Checklist:
 
 ```
-□ All 13 skills exist
-□ All policies loaded correctly
-□ Golden Template found at .agents/templates/template.tex
-□ README describes Host LLM Runtime correctly
-□ No llm_backend.py or provider.py exists
-□ No API wrapper code exists
+□ Tất cả 13 skills tồn tại
+□ Tất cả policies load đúng
+□ Golden Template tìm thấy ở .agents/templates/template.tex
+□ README mô tả Host LLM Runtime đúng
+□ Không có llm_backend.py hoặc provider.py
+□ Không có API wrapper code
 □ Terminology dictionary accessible
-□ Queue structure understood
-□ Cache structure understood
-□ Build process understood
-□ Compile process understood
+□ Queue structure hiểu được
+□ Cache structure hiểu được
+□ Build process hiểu được
+□ Compile process hiểu được
 ```
 
 ### Checkpoint:
-- ✅ Host LLM answers: "I understand this repository"
-- ✅ All 13 skills can be located and described
-- ✅ All policies can be cited correctly
-- ✅ Source of Truth identified for each component
+- ✅ Host LLM trả lời: "Tôi hiểu repository này"
+- ✅ Tất cả 13 skills có thể locate và describe
+- ✅ Tất cả policies có thể cite đúng
+- ✅ Source of Truth được xác định cho mỗi component
 
-**If FAIL:** STOP, identify what's missing or misunderstood
+**Nếu FAIL:** STOP, xác định cái gì thiếu hoặc hiểu sai
 
-**If PASS:** → Phase 2
+**Nếu PASS:** → Phase 2
 
 ---
 
 ## Phase 2: EXECUTION PLAN
 
-**Duration:** 5-15 minutes  
-**Checkpoint:** MANDATORY
+**Thời gian:** 5-15 phút  
+**Checkpoint:** BẮT BUỘC
 
-### Requirements:
+### Yêu cầu:
 
-Host LLM MUST create written Execution Plan containing:
+Host LLM PHẢI tạo written Execution Plan chứa:
 
 ```
 EXECUTION PLAN
 ==============
 
-Current Goal:
-[What are we trying to accomplish?]
+Mục tiêu hiện tại:
+[Chúng ta đang cố gắng làm gì?]
 
 Required Skills:
-- [Skill A]: for [purpose]
-- [Skill B]: for [purpose]
+- [Skill A]: cho [mục đích]
+- [Skill B]: cho [mục đích]
 
 Required Tools:
-- [Tool 1]: for [purpose]
-- [Tool 2]: for [purpose]
+- [Tool 1]: cho [mục đích]
+- [Tool 2]: cho [mục đích]
 
 Required Policies:
-- [Policy 1]: governs [what]
-- [Policy 2]: governs [what]
+- [Policy 1]: govern [gì]
+- [Policy 2]: govern [gì]
 
 Expected Outputs:
 - [Output 1]: location, format
@@ -124,42 +124,42 @@ Files to Modify:
 - [File 2]: reason, expected changes
 
 Files Forbidden to Modify:
-- [File 1]: because [reason from policy]
-- [File 2]: because [reason from policy]
+- [File 1]: vì [reason từ policy]
+- [File 2]: vì [reason từ policy]
 
 Risk Assessment:
 - Low/Medium/High
-- If breaking change, what mitigates it?
+- Nếu breaking change, gì mitigate?
 
 Rollback Strategy:
-- If something fails, how do we rollback?
-- What are the recovery steps?
+- Nếu có gì fail, chúng ta rollback sao?
+- Recovery steps là gì?
 ```
 
 ### Checkpoint:
-- ✅ Plan is written (not just in mind)
-- ✅ All required skills identified
-- ✅ All required tools identified
-- ✅ All required policies referenced
-- ✅ Outputs clearly defined
-- ✅ Forbidden files explicitly listed
-- ✅ Risk assessed
-- ✅ Rollback strategy defined
+- ✅ Plan được viết (không chỉ trong mind)
+- ✅ Tất cả required skills được xác định
+- ✅ Tất cả required tools được xác định
+- ✅ Tất cả required policies được reference
+- ✅ Outputs được define rõ ràng
+- ✅ Forbidden files được list rõ ràng
+- ✅ Risk được assess
+- ✅ Rollback strategy được define
 
-**If FAIL:** STOP, refine plan
+**Nếu FAIL:** STOP, refine plan
 
-**If PASS:** → Phase 3 (if major operation) or → Phase 4 (if minor operation)
+**Nếu PASS:** → Phase 3 (nếu major operation) hoặc → Phase 4 (nếu minor operation)
 
 ---
 
 ## Phase 3: WAIT USER APPROVAL
 
-**Duration:** Depends on user  
-**Checkpoint:** CONDITIONAL (only for large operations)
+**Thời gian:** Phụ thuộc user  
+**Checkpoint:** CONDITIONAL (chỉ cho large operations)
 
-### When Required:
+### Khi yêu cầu:
 
-Major operations only:
+Major operations:
 - ✅ Skill refactor
 - ✅ Policy change
 - ✅ Template modification
@@ -168,68 +168,68 @@ Major operations only:
 - ✅ Creating new agents/skills
 - ✅ Generating large outputs (>100 files)
 
-### When NOT Required:
+### Khi KHÔNG yêu cầu:
 
 Minor operations:
 - ✅ Fixing typos
 - ✅ Adding documentation
 - ✅ Updating single field values
 - ✅ Translating content
-- ✅ Running existing tools without modification
+- ✅ Running existing tools mà không modify
 
 ### Action:
 
-1. Display Execution Plan to user
-2. Request: "Does this plan look correct? Type: Proceed"
-3. Wait for explicit "Proceed" or similar confirmation
+1. Display Execution Plan cho user
+2. Request: "Plan này có đúng không? Type: Proceed"
+3. Chờ explicit "Proceed" hoặc similar confirmation
 
 ### Checkpoint:
 - ✅ User approved plan
 - ✅ User confirmed goal alignment
 
-**If REJECTED:** → Back to Phase 2 (refine plan)
+**Nếu REJECTED:** → Quay về Phase 2 (refine plan)
 
-**If APPROVED:** → Phase 4
+**Nếu APPROVED:** → Phase 4
 
-**If SKIPPED (minor op):** → Phase 4
+**Nếu SKIPPED (minor op):** → Phase 4
 
 ---
 
 ## Phase 4: EXECUTION
 
-**Duration:** Depends on complexity  
+**Thời gian:** Phụ thuộc complexity  
 **Checkpoint:** PER ACTION
 
-### Mandatory Pattern for Each Action:
+### Bắt buộc Pattern cho mỗi Action:
 
 ```
 Evidence:
-[I read file X and found Y]
-[The policy says Z]
+[Tôi đọc file X và tìm thấy Y]
+[Policy nói Z]
 
 Conclusion:
-[Therefore, I need to do A]
-[Because B requires C]
+[Do đó, tôi cần làm A]
+[Vì B yêu cầu C]
 
 Action:
-[Execute A]
+[Thực thi A]
 [Result: D]
 ```
 
-### Forbidden During Execution:
-- ❌ "I think we should..."
-- ❌ "Maybe we could..."
-- ❌ "Actually, let me try..."
-- ❌ "Wait, I realized..."
-- ❌ "Let me create a helper script..."
+### CẤM Trong Execution:
+- ❌ "Tôi nghĩ chúng ta nên..."
+- ❌ "Có thể chúng ta có thể..."
+- ❌ "Thực ra, để tôi thử..."
+- ❌ "Chờ, tôi nhận ra..."
+- ❌ "Để tôi tạo helper script..."
 - ❌ Reactive decision-making
-- ❌ Guessing without evidence
+- ❌ Guessing mà không evidence
 
-### Required During Execution:
-- ✅ Evidence from repository/policy
-- ✅ Clear conclusion logically derived
+### YÊU CẦU Trong Execution:
+- ✅ Evidence từ repository/policy
+- ✅ Clear conclusion được derive logically
 - ✅ Deliberate action
-- ✅ Verification of result
+- ✅ Result verification
 
 ### Checkpoint (per action):
 - ✅ Evidence gathered
@@ -237,44 +237,44 @@ Action:
 - ✅ Action completed
 - ✅ Result verified
 
-**If any action FAILS:** → Determine: Rollback or Fix & Retry
+**Nếu action FAIL:** → Determine: Rollback hay Fix & Retry
 
-**After all actions PASS:** → Phase 5
+**Sau khi tất cả actions PASS:** → Phase 5
 
 ---
 
 ## Phase 5: SELF VERIFICATION
 
-**Duration:** 5-10 minutes  
-**Checkpoint:** MANDATORY
+**Thời gian:** 5-10 phút  
+**Checkpoint:** BẮT BUỘC
 
-### Host LLM MUST Ask and Answer:
+### Host LLM PHẢI Hỏi và Trả lời:
 
 ```
-□ Do outputs match the expected format? YES / NO
-□ Does each output respect Skill Contracts? YES / NO
-□ Are all Policies still being followed? YES / NO
-□ Is Golden Template unchanged? YES / NO
-□ Is Order Preservation intact? YES / NO
-□ Are there any new errors? YES / NO
-□ Are encoding standards maintained? YES / NO
-□ Are all files in correct locations? YES / NO
+□ Outputs có khớp expected format? YES / NO
+□ Mỗi output có respect Skill Contracts? YES / NO
+□ Tất cả Policies vẫn được follow? YES / NO
+□ Golden Template không bị thay? YES / NO
+□ Order Preservation vẫn còn đúng? YES / NO
+□ Có errors mới? YES / NO
+□ Encoding standards được maintain? YES / NO
+□ Tất cả files ở correct locations? YES / NO
 ```
 
-### If ANY Answer is "NO":
-→ Identify issue and fix before moving forward
+### Nếu BẤT KỲ Answer là "NO":
+→ Identify issue và fix trước khi move forward
 
-### If ALL Answers are "YES":
+### Nếu TẤT CẢ Answers là "YES":
 → Phase 6
 
 ---
 
 ## Phase 6: REGRESSION TEST
 
-**Duration:** 10-30 minutes  
+**Thời gian:** 10-30 phút  
 **Checkpoint:** CONDITIONAL
 
-### Only Required If Modified:
+### Chỉ yêu cầu nếu Modified:
 
 ```
 Modified crawler.py?
@@ -287,11 +287,11 @@ Modified parser?
 
 Modified translator workflow?
   → Run: sample translation on known input
-  → Expected: Output matches previous baseline
+  → Expected: Output khớp previous baseline
 
 Modified latex generation?
   → Run: pdflatex compile
-  → Expected: PDF generates without errors
+  → Expected: PDF generates không errors
 
 Modified queue system?
   → Run: queue integrity check
@@ -299,86 +299,86 @@ Modified queue system?
 ```
 
 ### Checkpoint:
-- ✅ If modified components have tests, tests PASS
-- ✅ No regression observed
+- ✅ Nếu modified components có tests, tests PASS
+- ✅ Không regression observed
 - ✅ Output quality maintained
 
-**If ANY test FAILS:** → STOP, fix issue, re-run Phase 6
+**Nếu ANY test FAIL:** → STOP, fix issue, re-run Phase 6
 
-**If ALL tests PASS:** → Phase 7
+**Nếu ALL tests PASS:** → Phase 7
 
 ---
 
 ## Phase 7: REPOSITORY CLEANUP
 
-**Duration:** 5 minutes  
-**Checkpoint:** MANDATORY
+**Thời gian:** 5 phút  
+**Checkpoint:** BẮT BUỘC
 
-### Host LLM MUST Ask:
+### Host LLM PHẢI Hỏi:
 
 ```
-□ Are there debug files? YES / NO → Delete
-□ Are there one-time scripts? YES / NO → Delete or move to /scratch
-□ Are there duplicate files? YES / NO → Delete
-□ Are there misplaced files? YES / NO → Move to correct location
-□ Is /scratch polluted? YES / NO → Clean up
-□ Are there temporary outputs? YES / NO → Delete
+□ Có debug files? YES / NO → Xóa
+□ Có one-time scripts? YES / NO → Xóa hoặc move /scratch
+□ Có duplicate files? YES / NO → Xóa
+□ Có misplaced files? YES / NO → Move to correct location
+□ /scratch bị polluted? YES / NO → Clean up
+□ Có temporary outputs? YES / NO → Xóa
 ```
 
-### Required Locations for Temporary Files:
+### Required Locations cho Temporary Files:
 - `scratch/` - One-time scripts, debug files
 - `/tmp` - Temporary outputs during processing
 
 ### Post-Cleanup:
-- ✅ Delete all temporary files
+- ✅ Xóa tất cả temporary files
 - ✅ Clean `/scratch` directory
 - ✅ Remove debug artifacts
 
 ### Checkpoint:
 - ✅ Repository is clean
-- ✅ No debug files remain
-- ✅ No artifacts remain
+- ✅ Không debug files remain
+- ✅ Không artifacts remain
 
-**After cleanup:** → Phase 8
+**Sau cleanup:** → Phase 8
 
 ---
 
 ## Phase 8: FINAL AUDIT
 
-**Duration:** 10-15 minutes  
-**Checkpoint:** MANDATORY - ALL MUST PASS
+**Thời gian:** 10-15 phút  
+**Checkpoint:** BẮT BUỘC - TẤT CẢ PHẢI PASS
 
-### Run All Audits:
+### Chạy Tất cả Audits:
 
 1. **Repository Audit** - Same as Phase 1
-   - All skills still accessible
-   - All policies still enforced
-   - No new violations introduced
+   - Tất cả skills vẫn accessible
+   - Tất cả policies vẫn enforced
+   - Không violations mới
 
 2. **Skill Audit** - All skills function correctly
-   - Skills load without errors
+   - Skills load mà không errors
    - Skills understand inputs
    - Skills produce expected outputs
 
-3. **Policy Audit** - All policies still enforced
-   - No policy violations detected
-   - Forbidden patterns not introduced
+3. **Policy Audit** - All policies vẫn enforced
+   - Không policy violations detected
+   - Forbidden patterns không introduced
    - Required patterns maintained
 
 4. **Template Audit** - Golden Template unchanged
-   - template.tex file signature matches baseline
-   - No macros modified
-   - No structure altered
+   - template.tex file signature khớp baseline
+   - Không macros modified
+   - Không structure altered
 
 5. **Language Audit** - All text properly Vietnamese/bilingual
-   - Titles in format: "Tiếng Việt (English)"
+   - Titles ở format: "Tiếng Việt (English)"
    - Terminology consistent
-   - No English-only content where Vietnamese required
+   - Không English-only content ở chỗ yêu cầu Vietnamese
 
 6. **Encoding Audit** - All files UTF-8
-   - No encoding errors
+   - Không encoding errors
    - Special characters preserved
-   - No mojibake present
+   - Không mojibake present
 
 ### Checkpoint:
 ```
@@ -389,23 +389,23 @@ Template Audit: PASS / FAIL
 Language Audit: PASS / FAIL
 Encoding Audit: PASS / FAIL
 
-FINAL RESULT: ALL PASS or STOP
+FINAL RESULT: ALL PASS hoặc STOP
 ```
 
-**If ANY FAIL:** → STOP, DO NOT COMMIT
+**Nếu ANY FAIL:** → STOP, DO NOT COMMIT
 
-**If ALL PASS:** → Phase 9
+**Nếu ALL PASS:** → Phase 9
 
 ---
 
 ## Phase 9: COMMIT
 
-**Duration:** 2 minutes  
+**Thời gian:** 2 phút  
 **Checkpoint:** CONDITIONAL
 
-### Only Execute If:
+### Chỉ Execute nếu:
 - ✅ Phase 8: ALL audits PASS
-- ✅ No uncommitted changes exist (or only new files to commit)
+- ✅ Không uncommitted changes (hoặc chỉ new files)
 
 ### Action:
 ```
@@ -433,16 +433,16 @@ feat: add Host LLM Runtime state machine for v3.0
 - ✅ Commit message descriptive
 - ✅ All changes included
 
-**After commit:** → Phase 10 (if release) or → Phase 11 (if push)
+**Sau commit:** → Phase 10 (nếu release) hoặc → Phase 11 (nếu push)
 
 ---
 
 ## Phase 10: TAG (Release Only)
 
-**Duration:** 1 minute  
+**Thời gian:** 1 phút  
 **Checkpoint:** CONDITIONAL
 
-### Only Execute For Release:
+### Chỉ Execute cho Release:
 
 ```
 git tag -a v3.0 -m "CPPipeline v3.0 - Host LLM Runtime State Machine"
@@ -452,53 +452,53 @@ git tag -a v3.0 -m "CPPipeline v3.0 - Host LLM Runtime State Machine"
 - ✅ Tag created
 - ✅ Tag message descriptive
 
-**After tag:** → Phase 11
+**Sau tag:** → Phase 11
 
 ---
 
 ## Phase 11: PUSH
 
-**Duration:** 2 minutes  
+**Thời gian:** 2 phút  
 **Checkpoint:** FINAL
 
 ### Actions:
 ```
 git push origin master
-git push origin v3.0  (if release)
+git push origin v3.0  (nếu release)
 ```
 
 ### Checkpoint:
 - ✅ Branch pushed
-- ✅ Tag pushed (if applicable)
+- ✅ Tag pushed (nếu applicable)
 - ✅ Remote synchronized
 
-**After push:** → COMPLETE
+**Sau push:** → COMPLETE
 
 ---
 
-## Violation Consequences
+## Hậu quả Vi phạm
 
-If Host LLM violates any phase rule:
+Nếu Host LLM vi phạm bất kỳ phase rule nào:
 
-- ❌ Skips phase → Repository enters inconsistent state
-- ❌ Executes out of order → Data corruption risk
-- ❌ Makes reactive decisions → Unpredictable behavior
-- ❌ Modifies forbidden files → Policy violation
-- ❌ Commits without audit → Broken state propagates
-- ❌ Doesn't follow evidence→conclusion→action → Logical errors
+- ❌ Bỏ qua phase → Repository enters inconsistent state
+- ❌ Execute out of order → Data corruption risk
+- ❌ Make reactive decisions → Unpredictable behavior
+- ❌ Modify forbidden files → Policy violation
+- ❌ Commit mà không audit → Broken state propagates
+- ❌ Không follow evidence→conclusion→action → Logical errors
 
-**Result:** Repository becomes unmaintainable, requires recovery.
+**Result:** Repository trở nên unmaintainable, yêu cầu recovery.
 
 ## Success Criteria
 
-After ALL 11 phases complete successfully:
+Sau khi TẤT CẢ 11 phases hoàn thành thành công:
 
-✅ Changes are production-ready
-✅ No regressions introduced
-✅ All policies enforced
-✅ All contracts satisfied
-✅ All audits pass
-✅ Repository is clean
-✅ Commit is meaningful
-✅ Tag is descriptive
-✅ Push is complete
+✅ Changes production-ready
+✅ Không regressions
+✅ Tất cả policies enforced
+✅ Tất cả contracts satisfied
+✅ Tất cả audits pass
+✅ Repository clean
+✅ Commit meaningful
+✅ Tag descriptive
+✅ Push complete
