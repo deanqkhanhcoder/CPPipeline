@@ -18,6 +18,7 @@ Dịch **toàn bộ** nội dung đề bài Competitive Programming sang tiếng
 
 **Nguyên tắc cốt lõi: SEMANTICALLY LOSSLESS.**
 Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịch. Đây là bản dịch — không phải tóm tắt, không phải blog, không phải tài liệu học.
+Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịch. Đây là bản dịch — không phải tóm tắt, không phải tài liệu học.
 
 - Nếu đề có 5 đoạn → bản dịch phải có đủ nội dung của 5 đoạn.
 - Nếu đề có 3 ví dụ → bản dịch phải có đủ 3 ví dụ.
@@ -27,6 +28,12 @@ Mọi thông tin có trong đề gốc phải còn tồn tại trong bản dịc
 **BẮT BUỘC: MỌI SAMPLE phải có Explanation.**
 - Nếu đề gốc có explanation → dịch trung thực, không rút gọn.
 - Nếu đề gốc KHÔNG có explanation → chuyển sang `sample-explainer` để tự sinh.
+
+**v3.0: Phase Awareness**
+Skill này được gọi từ PHASE 4 (EXECUTION) của Execution State Machine.
+- Host LLM phải tuân thủ: Evidence → Conclusion → Action
+- Không được reactive (đoán rồi sửa)
+- Phải self-verify (Phase 5) trước Phase 6
 
 **BẮT BUỘC: Tạo display_title.**
 Phải tạo `display_title` theo format chuẩn: "Tên tiếng Việt (Tên tiếng Anh)".
