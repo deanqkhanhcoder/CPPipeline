@@ -89,25 +89,24 @@ def compile_latex(tex_file: str, hits=0, misses=0):
         os.remove(pdf_path)
     try:
         res = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
-        if res.returncode == 0:
-            # Pass 2
-            res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
-            if res2.returncode == 0:
-                print(f"Compilation successful using {engine}.")
-                archive_files(tex_file, pdf_path, hits, misses)
-                return
-            print(f"{engine} (pass 2) failed with return code {res2.returncode}.")
-            res = res2
-        else:
-            print(f"{engine} failed with return code {res.returncode}.")
-        stdout = res.stdout or ''
-        stderr = res.stderr or ''
+        # Run pass 2 unconditionally if pass 1 didn't hard-crash, because we want table of contents
+        res2 = subprocess.run(cmd_with_base, cwd=cwd, capture_output=True, timeout=60, encoding='utf-8', errors='replace')
+        
+        stdout = res2.stdout or ''
+        stderr = res2.stderr or ''
         log_dir = os.path.join(ROOT, "cache", "debug")
         os.makedirs(log_dir, exist_ok=True)
         log_path = os.path.join(log_dir, "compile_error.log")
         with open(log_path, "w", encoding="utf-8") as f:
             f.write(stdout + "\n" + stderr)
-        print(f"Check {log_path} for details.")
+            
+        if os.path.exists(pdf_path):
+            print(f"Compilation successful (with or without warnings) using {engine}.")
+            archive_files(tex_file, pdf_path, hits, misses)
+            return
+        else:
+            print(f"{engine} failed. No PDF produced.")
+            print(f"Check {log_path} for details.")
     except Exception as e:
         print(f"{engine} execution failed: {e}")
     finally:

@@ -15,97 +15,70 @@ Host LLM phải hoạt động theo State Machine dưới đây. Mỗi state ph�
 ## State Diagram
 
 ```
-┌──────────────┐
-│    BOOT      │
-└──────┬───────┘
-       │
+┌──────────────────────────┐
+│   SKILL INVOKED          │
+│   (User: /cp-pipeline)   │
+│   cp-pipeline/SKILL.md   │
+└──────┬───────────────────┘
+       │ Bootstrap Runtime
        ↓
 ┌─────────────────────────┐
 │  LOAD RUNTIME           │
-│  - Load host_llm_contract.md
-│  - Verify runtime principles
+│  - Load runtime.md      │
+│  - Load all runtime/    │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  LOAD GLOBAL POLICIES   │
-│  - Load repository_policy.md
-│  - Load template_policy.md
-│  - Load encoding_policy.md
+│  - repository_policy.md │
+│  - template_policy.md   │
+│  - encoding_policy.md   │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  LOAD TERMINOLOGY       │
-│  - Load terminology.md
-│  - Build terminology cache
+│  - terminology.md       │
+│  - Build cache          │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
-│  LOAD KNOWLEDGE         │
-│  - Load .agents/knowledge/*
-│  - Build context cache
-└──────┬──────────────────┘
-       │
-       ↓
-┌─────────────────────────┐
-│  LOAD cp-pipeline       │
-│  - Parse SKILL.md
-│  - Identify dependencies
-└──────┬──────────────────┘
-       │
-       ↓
-┌─────────────────────────┐
-│  LOAD REQUIRED SKILLS   │
-│  - Resolve dependency graph
-│  - Load in dependency order
-│  - Verify no circular deps
+│  RESOLVE SKILLS         │
+│  - Read cp-pipeline deps│
+│  - Load in order        │
+│  - Verify no cycles     │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  AUDIT INPUT            │
-│  - Validate user input
-│  - Validate URLs (if any)
-│  - Check input against Policy
+│  - Validate user input  │
+│  - Check against Policy │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  BUILD EXECUTION PLAN   │
-│  - Determine goal
-│  - List required skills
-│  - Map data flow
-│  - Identify outputs
-│  - List validation steps
-└──────┬──────────────────┘
-       │
-       ↓
-┌─────────────────────────┐
-│  WAIT USER APPROVAL     │
-│  (nếu plan phức tạp)
-│  - Show plan to user
-│  - Wait for approval
-│  - Handle rejection
+│  - Goal, skills, outputs│
+│  - Data flow map        │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  EXECUTION              │
-│  - Execute each skill
-│  - Monitor outputs
-│  - Catch errors
-│  - Apply rollback (if needed)
+│  - Run phases 1-8       │
+│  - Knowledge: lazy load │
+│  - Rollback on error    │
 └──────┬──────────────────┘
        │
        ↓
 ┌─────────────────────────┐
 │  SELF VERIFICATION      │
-│  - Verify each output
-│  - Check policy compliance
-│  - Validate data integrity
-│  - Semantic fidelity check
+│  - Verify each output   │
+│  - Policy compliance    │
+│  - Semantic fidelity    │
 └──────┬──────────────────┘
        │
        ↓
@@ -114,25 +87,33 @@ Host LLM phải hoạt động theo State Machine dưới đây. Mỗi state ph�
 └──────────────┘
 ```
 
+> **Knowledge Loading**: KHÔNG load toàn bộ knowledge upfront.
+> Knowledge được lazy-load on-demand trong EXECUTION:
+> - Crawler error → `crawler_failures.md`
+> - LaTeX error → `latex_failures.md`
+> - PDF input → `pdf_statement_handling.md`
+
 ## State Specifications
 
-### BOOT
-**Duration:** Instant  
-**Action:** Initialize state machine  
-**Validation:** None  
+### SKILL INVOKED
+**Trigger:** User types `/cp-pipeline <url>`
+**Action:** Host Runtime finds `cp-pipeline/SKILL.md`. Reads Bootstrap section. Follows dependency list.
 **Next State:** LOAD RUNTIME
+**Failure:** N/A (starting point)
 
 ### LOAD RUNTIME
-**Duration:** 1-2 seconds  
-**Action:** Read `.agents/runtime/host_llm_contract.md`, verify this state machine  
-**Validation:** Contract must be valid  
-**Next State:** LOAD GLOBAL POLICIES  
-**Failure:** HALT - runtime misconfigured
+**Duration:** 1-2 seconds
+**Action:** Load all `.agents/runtime/*.md` files as declared by Skill's Runtime Dependencies
+**Validation:** All runtime files must be readable
+**Next State:** LOAD GLOBAL POLICIES
+**Failure:** HALT - runtime not found
 
 ### LOAD GLOBAL POLICIES
 **Duration:** 1-2 seconds  
 **Action:** Load all `.agents/policies/*.md` files  
-**Validation:** All policies must be readable  
+**Files**: `repository_policy.md`, `template_policy.md`, `terminology.md`  
+**Note**: Encoding rules are embedded in `repository_policy.md` (UTF-8 requirement)  
+**Validation:** All policy files must be readable  
 **Next State:** LOAD TERMINOLOGY  
 **Failure:** HALT - policies missing
 
