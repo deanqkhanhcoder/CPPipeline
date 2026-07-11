@@ -8,6 +8,14 @@ dependencies:
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # Order Guardian Contract
 
 ## Runtime

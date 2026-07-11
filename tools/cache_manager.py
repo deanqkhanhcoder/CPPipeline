@@ -15,7 +15,7 @@ def normalize_url(url):
     
     # Filter query parameters
     query_params = parse_qsl(parsed.query)
-    allowed_qs = [(k, v) for k, v in query_params if k.lower() in ('cpid',)]
+    allowed_qs = [(k, v) for k, v in query_params if k.lower() in ('page', 'cpid', 'id', 'p')]
     query = urlencode(allowed_qs)
     
     return urlunparse((scheme, netloc, path, parsed.params, query, parsed.fragment))
@@ -50,12 +50,22 @@ def get_problem_id(url):
             if basename.lower().endswith('.pdf'):
                 return basename[:-4]
             return basename if basename else hashlib.md5(url.encode()).hexdigest()[:8]
+    elif "atcoder.jp" in url:
+        return url.split('/')[-1]
+    elif "vnoi.info" in url:
+        return url.split('/')[-1]
+    elif "poj.org" in url:
+        if "id=" in url:
+            return "poj" + url.split('id=')[-1].split('&')[0]
     return hashlib.md5(url.encode()).hexdigest()[:8]
 
 def get_source(url):
     if "codeforces" in url.lower(): return "Codeforces"
     if "cses" in url.lower(): return "CSES"
     if "usaco" in url.lower(): return "USACO"
+    if "atcoder" in url.lower(): return "AtCoder"
+    if "poj" in url.lower(): return "POJ"
+    if "vnoi" in url.lower(): return "VNOI"
     return "Unknown"
 
 def lookup_cache(url):

@@ -7,6 +7,14 @@ description: >
   Trigger: /caveman-compress FILEPATH or "compress memory file"
 ---
 
+## Declarative Dependencies
+- **Runtime**: None
+- **Policies**: None
+- **Knowledge**: None
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # Caveman Compress
 
 ## Purpose

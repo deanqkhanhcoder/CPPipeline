@@ -8,6 +8,14 @@ description: >
   "be brief", or invokes /caveman. Also auto-triggers when token efficiency is requested.
 ---
 
+## Declarative Dependencies
+- **Runtime**: None
+- **Policies**: None
+- **Knowledge**: None
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
 
 ## Persistence

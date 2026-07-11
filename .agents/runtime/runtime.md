@@ -1,14 +1,14 @@
 ---
 title: Host LLM Runtime Framework v3.0
 version: 3.0.0
-type: Architecture
+type: Ki?n tr?c
 ---
 
 # Host LLM Runtime Framework v3.0
 
 **CPPipeline** không phải một ứng dụng. Nó là một **Runtime Framework** cho AI.
 
-## Architecture: Skill-First Design
+## Ki?n tr?c: Skill-First Design
 
 ```
 User: /cp-pipeline
@@ -29,7 +29,7 @@ Runtime orchestrates all phases
 Host Runtime does NOT scan `.agents/runtime/` on its own.
 Skill TELLS Host Runtime to load Runtime Framework.
 
-## Runtime Architecture Layers
+## C?c t?ng Ki?n tr?c Runtime
 
 ### Layer 1: Specification Files (.agents/runtime/)
 
@@ -201,7 +201,7 @@ No Gemini-specific behavior. No Claude-specific behavior. Just pure **Runtime Fr
 
 Then: Read the Skills. Read the Policies. Execute accordingly.
 
-## Integration with Existing Architecture
+## T?ch h?p v?i Ki?n tr?c hi?n t?i
 
 This runtime framework **does NOT change** any Skills or Policies.
 
@@ -213,3 +213,23 @@ It **adds clarity** on:
 - HOW to recover from failure
 
 The framework is **non-invasive** and **additive**.
+
+## V3.1 Hardening Gates
+
+Execution after LaTeX generation is now:
+
+```text
+Latex Agent -> Fragment QA -> Combine -> Compile -> PDF QA -> Archive
+```
+
+Rules:
+- Fragment QA must PASS before combine.
+- Compile success is only `.tex -> .pdf` with return code 0.
+- PDF QA must PASS before archive.
+- Archive is not part of compile.
+- Any bug must be classified by `.agents/policies/error_taxonomy.md`.
+- Never patch `outputs/output.tex`, `outputs/output.pdf`, or create `fix_output*.py`.
+
+
+## V3.2 Continuous Improvement Engine
+Host LLM ph?i th?c hi?n State 12 (CONTINUOUS_IMPROVEMENT) theo ch?nh s?ch `.agents/policies/self_improvement_policy.md` sau m?i l?n ch?y ho?c khi g?p l?i, ??m b?o h? th?ng t? ??ng c?p nh?t ki?n th?c v? test matrix.

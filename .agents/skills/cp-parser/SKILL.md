@@ -2,6 +2,15 @@
 name: cp-parser
 description: Hướng dẫn Host LLM cách parse raw HTML/Markdown thành Structured JSON.
 ---
+
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 ## Runtime
 Host LLM đang thực thi Skill này. Skill không gọi bất kỳ LLM nào khác. Skill chỉ hướng dẫn Host LLM cách suy luận và sử dụng Tool.
 
@@ -44,3 +53,13 @@ Nếu bài toán được cung cấp dưới dạng PDF:
 - Parser bị lừa bởi các trang web có cấu trúc lạ không theo chuẩn Codeforces/CSES.
 - Thất bại trong việc trích xuất bảng Sample Input/Output nếu nó sử dụng cấu trúc `div` lồng nhau phức tạp thay vì `pre` hoặc `table`.
 - Parser đọc raw HTML 100KB+ từ cache/problemset → token overflow, chi phí tăng 100x.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

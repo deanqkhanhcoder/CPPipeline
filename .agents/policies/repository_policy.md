@@ -56,4 +56,24 @@ Không được tạo:
 - Agent spawn Agent qua HTTP API
 - Bất kỳ cấu trúc nào khởi tạo LLM từ code Python
 
-Nếu cần nhiều AI Agent: đó là nhiều Skill. Host LLM sẽ tuần tự thực hiện từng Skill theo Orchestrator Workflow.
+Nếu cần nhiều AI Agent: đó là nhiều Skill. Host LLM sẽ tuần tự thực hiện từng Skill theo quy tr?nh ?i?u ph?i.
+
+## V3.1 Anti-Patch Policy
+
+Forbidden:
+- `fix_output*.py`
+- manual patch of `outputs/output.tex`
+- manual patch of `outputs/output.pdf`
+- regex repair of generated artifacts
+- combining fragments that fail Fragment QA
+- archiving before PDF QA PASS
+
+Every bug must be fixed in the producing layer and regenerated.
+
+## 11. REPOSITORY CLEANLINESS & ARTIFACT LOCATIONS
+To maintain a clean and deterministic workspace, all agents and scripts MUST follow these directory rules:
+- **Root Directory**: NO temporary files, debug dumps (`check_log.txt`, `env.txt`), test outputs, or intermediate scripts allowed in root.
+- **Scratch & Temp Files**: All scratch files, partial downloads, and temporary test data MUST go into `cache/temp/`.
+- **Compile Artifacts**: All LaTeX auxiliary files (`*.aux`, `*.log`, `*.out`, `*.toc`, `*.synctex.gz`) MUST be generated inside or moved to `cache/debug/` or `cache/build/`. They MUST NEVER pollute `outputs/` or root.
+- **Reports**: All audit and diagnostic reports MUST be saved in `reports/`.
+- **Logs**: All system, compile, and error logs MUST be saved in `cache/debug/`.

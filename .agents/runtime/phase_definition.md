@@ -1,7 +1,7 @@
 ---
 title: CP Pipeline Phase Definitions
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Phase Definitions for Host LLM
@@ -276,3 +276,30 @@ Mỗi phase định nghĩa một bước rõ ràng trong pipeline. Host LLM ph�
 3. **Rollback:** Nếu phase FAIL, trigger rollback (xem rollback_policy.md)
 4. **Logging:** Mỗi phase phải log input/output
 5. **Idempotency:** Chạy lại phase phải sinh kết quả giống nhau
+
+## V3.1 Phase Split
+
+### PHASE 8: FRAGMENT_QA
+Responsibility: validate each `cache/build/*.tex` fragment before combine.
+Tool/Skill: `tools/fragment_qa.py`, `fragment-qa`.
+Postcondition: every fragment PASS. Failing fragments are rejected and regenerated from the producer layer.
+
+### PHASE 9: COMBINE
+Responsibility: read fragments, validate, sort by `order_index`, write `outputs/output.tex`.
+Tool: `tools/combine_latex.py`.
+Forbidden: parse HTML, repair Markdown/LaTeX, cleanup output, patch generated artifacts.
+
+### PHASE 10: COMPILE
+Responsibility: compile `outputs/output.tex` to `outputs/output.pdf` and return status/log.
+Tool: `tools/compile_latex.py`.
+Forbidden: archive, patch, semantic QA, output repair.
+
+### PHASE 11: PDF_QA
+Responsibility: audit compiled PDF text and compile log.
+Tool: `tools/pdf_qa.py`.
+Postcondition: no raw Markdown/HTML/Mermaid/SVG/UI chrome/serious LaTeX errors.
+
+### PHASE 12: ARCHIVE
+Responsibility: copy QA-passed outputs to `archive/` and update metadata.
+Tool: `tools/archive_output.py`.
+Precondition: Compile PASS and PDF QA PASS.

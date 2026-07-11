@@ -1,7 +1,7 @@
 ---
 title: Host LLM Runtime Specification
 version: 3.0.0
-type: Architecture
+type: Ki?n tr?c
 ---
 
 # Host LLM Runtime Contract

@@ -3,6 +3,14 @@ name: cp-crawler
 description: Skill chuyên biệt làm nhiệm vụ lấy dữ liệu HTML/Markdown từ các trang web CP (Codeforces, CSES, USACO...).
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/crawler_failures.md`, `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # CP Crawler
 
 ## Runtime

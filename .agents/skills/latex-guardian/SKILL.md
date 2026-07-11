@@ -8,6 +8,14 @@ dependencies:
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/template_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/latex_failures.md`, `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # LaTeX Guardian Contract
 
 ## Runtime
@@ -27,4 +35,17 @@ Chuỗi mã nguồn LaTeX đã được làm sạch và hợp lệ 100% (hoặc 
 - CẤM để lại markdown chưa chuyển đổi trong file LaTeX.
 
 ## 5. Failure Mode & Retry Policy
-Nếu phát hiện lỗi cú pháp, tự động áp dụng regex escape để tự phục hồi. Nếu không thể sửa được, ném Exception dừng build.
+Nếu phát hiện lỗi cú pháp:
+1. Xác định lỗi thuộc parser / formatting-agent / latex-agent / template / combine.
+2. FAIL build nếu không thể sửa ở tầng sinh lỗi.
+3. Tuyệt đối KHÔNG sinh script `fix_output*.py` hoặc regex patch lên `outputs/output.tex`.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

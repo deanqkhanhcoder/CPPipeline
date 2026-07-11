@@ -7,6 +7,14 @@ description: >
   "/commit", or invokes /caveman-commit. Auto-triggers when staging changes.
 ---
 
+## Declarative Dependencies
+- **Runtime**: None
+- **Policies**: None
+- **Knowledge**: None
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 Write commit messages terse and exact. Conventional Commits format. No fluff. Why over what.
 
 ## Rules

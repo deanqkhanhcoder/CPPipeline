@@ -8,6 +8,14 @@ dependencies:
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # QA Agent Contract
 
 ## Runtime
@@ -43,3 +51,13 @@ Báo cáo điểm số cụ thể kèm theo danh sách các vi phạm nếu có.
 
 ## 5. Failure Mode & Retry Policy
 Nếu chất lượng không đạt, chặn đứng quá trình combine và kết xuất PDF.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

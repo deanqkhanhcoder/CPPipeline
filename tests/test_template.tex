@@ -1,0 +1,83 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{mdframed}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{parskip}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\newtheorem{theorem}{Định lý}
+\definecolor{sectioncolor}{RGB}{0,70,140}
+\definecolor{codebg}{RGB}{245,245,245}
+\lstset{backgroundcolor=\color{codebg}, basicstyle=\ttfamily\small, breaklines=true, frame=single, columns=flexible, keepspaces=true}
+\hypersetup{colorlinks=true,linkcolor=sectioncolor,urlcolor=blue!70!black}
+\begin{document}
+\title{Template Stress Test -- CP Pipeline}
+\author{Repository Test}
+\maketitle
+\tableofcontents
+\newpage
+\section{Unicode va ky hieu}
+Tieng Viet: Duong di ngan nhat, cay khung nho nhat, xau nhi phan.
+Unicode: cafe, naive, cooperate.
+Ky hieu IOI/CP: $n \le 2\cdot 10^5$, $a_i \oplus x$, bitwise AND/OR/XOR.
+Inline code: \texttt{for (int i = 0; i < n; ++i)}.
+Markdown edge cases escaped: \texttt{\# heading}, \texttt{*italic*}, \texttt{[link](url)}.
+\subsection{Theorem va math}
+\begin{theorem}
+Neu $a \equiv b \pmod m$ thi $a+c \equiv b+c \pmod m$.
+\end{theorem}
+\[\sum_{i=1}^{n} i = \frac{n(n+1)}{2},\qquad (a\oplus b)\oplus b=a.\]
+\section{Lists}
+\begin{enumerate}[leftmargin=*]
+  \item First item.
+  \item Nested:
+  \begin{itemize}[leftmargin=*]
+    \item child one
+    \item child two with $O(n\log n)$
+  \end{itemize}
+\end{enumerate}
+\section{Code Block}
+\begin{lstlisting}[language=C++]
+#include <bits/stdc++.h>
+using namespace std;
+int main(){ cout << (3 ^ 5) << '\n'; }
+\end{lstlisting}
+\section{Image and TikZ Graph}
+\begin{figure}[H]\centering\fbox{\rule{0pt}{2cm}\rule{3cm}{0pt}}\caption{Image placeholder.}\end{figure}
+\begin{center}
+\begin{tikzpicture}[node distance=2cm,>=Stealth]
+\node[draw,circle] (a) {A};
+\node[draw,circle,right of=a] (b) {B};
+\node[draw,circle,below of=b] (c) {C};
+\draw[->] (a) -- node[above]{5} (b);
+\draw[->] (b) -- node[right]{7} (c);
+\draw[->] (a) -- node[left]{9} (c);
+\end{tikzpicture}
+\end{center}
+\section{Hyperlink}
+Visit \href{https://example.com}{example.com}.
+\section{Tables}
+\begin{tabularx}{\linewidth}{lXr}\toprule ID & Meaning & Value\\\midrule 1 & Long description wraps naturally in tabularx. & 42\\\bottomrule\end{tabularx}
+\begin{longtable}{lll}\caption{Longtable smoke test}\\\toprule A & B & C\\\midrule\endfirsthead\toprule A & B & C\\\midrule\endhead 1 & 2 & 3\\4 & 5 & 6\\\bottomrule\end{longtable}
+\section{Unsupported Raw Formats}
+Raw Mermaid/SVG blocks are intentionally not accepted by the LaTeX pipeline. Convert upstream to TikZ/image before LaTeX generation.
+\end{document}

@@ -1,7 +1,7 @@
 ---
 title: Rollback Policy for Host LLM
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Rollback Policy
@@ -145,3 +145,27 @@ Rollback should NEVER result in data loss:
 - Intermediate results can be redone
 - Only temporary outputs deleted
 - User can always inspect cache/
+
+## V3.1 Root-Cause Rollback
+
+Rollback never means patching generated outputs.
+
+If Fragment QA fails:
+1. keep upstream JSON,
+2. delete/reject only bad fragment if needed,
+3. classify the layer,
+4. regenerate from that layer,
+5. rerun Fragment QA.
+
+If Compile fails:
+1. keep `outputs/output.tex` for diagnosis,
+2. read compile log/status,
+3. classify COMPILE or LATEX,
+4. fix template/latex-agent/fragment source as appropriate,
+5. regenerate; do not archive.
+
+If PDF QA fails:
+1. do not patch PDF,
+2. classify the source layer,
+3. regenerate from the source-of-truth layer,
+4. rerun compile and PDF QA.

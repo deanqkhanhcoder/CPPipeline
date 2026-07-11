@@ -93,7 +93,6 @@ FORBIDDEN_CLASSES = {
     "MathJax_CHTML",
     "MathJax_SVG",
     "MathJax_MathML",
-    "mathjax",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -159,6 +158,18 @@ def _clean_node(node) -> str:
 
     tag_name = node.name.lower() if node.name else ""
 
+    if tag_name == "mjx-container":
+        math_node = node.find("math")
+        if math_node:
+            return _clean_node(math_node)
+        return ""
+
+    if tag_name == "script" and str(node.get("type", "")).startswith("math/tex"):
+        text = node.get_text(strip=True)
+        if "mode=display" in str(node.get("type", "")):
+            return f" $${text}$$ "
+        return f" ${text}$ "
+
     # Hard-remove forbidden tags (and all their children)
     if tag_name in FORBIDDEN_TAGS:
         return ""
@@ -198,7 +209,7 @@ def extract_problem_statement(html: str) -> str:
     2. CSES        → #task-statement, .task-statement
     3. USACO       → .problem-text, .problem-statement
     4. Generic     → #problem-statement, .statement, .problem, .task
-    5. Fallback    → <body>
+    5. Fallback    → <body> only if it does not look like UI chrome
 
     Returns a clean, minimal HTML string with only allowed content.
     """
@@ -214,6 +225,8 @@ def extract_problem_statement(html: str) -> str:
         "#task-statement", ".task-statement",
         # USACO
         ".problem-text", "#problem-text",
+        # VNOI OJ / DMOJ
+        ".content-description", "#problem-body", ".problem-body",
         # Generic
         "#problem-statement", ".statement", ".problem", ".task",
     ]
@@ -223,9 +236,19 @@ def extract_problem_statement(html: str) -> str:
             root = el
             break
 
-    # Absolute fallback
+    used_fallback = False
     if root is None:
         root = soup.find("body") or soup
+        used_fallback = True
+
+    if used_fallback:
+        fallback_text = root.get_text(" ", strip=True)
+        ui_markers = (
+            "DescriptionDescription", "TopicsCompanies", "EditorialEditorial",
+            "SubmissionsSubmissions", "TestcaseTestcase", "Test ResultTest Result",
+        )
+        if any(marker in fallback_text for marker in ui_markers):
+            raise ValueError("unsupported page layout: fallback body contains UI chrome")
 
     # Apply allowlist walker
     cleaned = _clean_node(root)
@@ -280,7 +303,11 @@ def extract_one(problem_id: str, force: bool = False) -> dict | None:
             return None
 
         before_size = len(raw_html.encode("utf-8"))
-        extracted = extract_problem_statement(raw_html)
+        try:
+            extracted = extract_problem_statement(raw_html)
+        except ValueError as exc:
+            print(f"[Extractor] SKIP {problem_id}: {exc}", file=sys.stderr)
+            return None
         after_size = len(extracted.encode("utf-8"))
 
         reduction = ((before_size - after_size) / before_size * 100) if before_size > 0 else 0

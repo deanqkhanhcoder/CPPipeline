@@ -8,6 +8,14 @@ dependencies:
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/terminology.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # Terminology Agent Contract
 
 ## Runtime
@@ -28,3 +36,13 @@ JSON tiếng Việt với các thuật ngữ được chuẩn hóa hoàn toàn 1
 
 ## 5. Failure Mode & Retry Policy
 Quét và thay thế bằng regex nếu LLM không thể match hết.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

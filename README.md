@@ -53,7 +53,7 @@ Host LLM (Antigravity / Gemini CLI / Claude Code / Cursor / Copilot Agent / Clin
 - Không có Agent spawn Agent qua API
 - Không có `llm_backend.py`, `provider.py`, hay bất kỳ wrapper LLM nào
 
-**Skill là gì?** Skill là Contract + Workflow + Prompt + Rule + Policy. Host LLM đọc Skill và tự thực hiện. Skill không gọi LLM khác.
+**Skill là gì?** Skill là Contract + Quy tr?nh + Prompt + Rule + Policy. Host LLM đọc Skill và tự thực hiện. Skill không gọi LLM khác.
 
 ## Cấu trúc thư mục
 ```text

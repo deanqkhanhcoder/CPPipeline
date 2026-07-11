@@ -53,7 +53,7 @@ def main() -> int:
     
     for filename, order_idx, title, url, delay in completion_order:
         time.sleep(0.1) # Simulate delay
-        content = f"% order_index: {order_idx}\n\\problem{{{title}}}{{{url}}}\nThis is problem {title}.\n"
+        content = f"% order_index: {order_idx}\n\\problem{{{title}}}{{{url}}}\n\\inputformat\nInput format for {title}.\n\\outputformat\nOutput format for {title}.\n\\example\nExample for {title}.\n\\explanation\nExplanation for {title}.\n"
         (build_dir / filename).write_text(content, encoding="utf-8")
         print(f"Mock completion: {title} (Delay {delay}s, File: {filename})")
         

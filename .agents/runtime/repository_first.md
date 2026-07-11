@@ -1,7 +1,7 @@
 ---
 title: Repository First Principle
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Repository First Principle
@@ -64,7 +64,7 @@ Host LLM **PHẢI** tuân theo hierarchy này. Không được bỏ qua hoặc �
 - Language consistency rules
 - Formatting rules
 - Naming conventions
-- Workflow rules
+- Quy tr?nh rules
 
 **When Task conflicts with Rules:** MODIFY TASK to comply
 

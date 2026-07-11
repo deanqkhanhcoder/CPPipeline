@@ -1,7 +1,7 @@
 ---
 title: Decision Policy for Host LLM
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Decision Policy

@@ -8,6 +8,14 @@ dependencies:
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/terminology.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: `.agents/skills/terminology-agent/SKILL.md`
+- **Optional Knowledge**: None
+
 # Translation Agent Contract
 
 ## Runtime
@@ -70,3 +78,13 @@ Nếu bản dịch không đạt yêu cầu (mất định dạng toán học, m
 
 ## 7. Self Improving
 Lỗi dịch sai thuật ngữ hoặc mất toán sẽ được log vào `.agents/knowledge/quality_failures.md` để rút kinh nghiệm.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

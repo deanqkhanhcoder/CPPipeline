@@ -5,6 +5,14 @@ version: 2.1.0
 compatible_pipeline: 2.x
 ---
 
+## Declarative Dependencies
+- **Runtime**: `.agents/runtime/runtime.md`
+- **Policies**: `.agents/policies/repository_policy.md`, `.agents/policies/error_taxonomy.md`
+- **Knowledge**: `.agents/knowledge/root_causes.md`
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # Sample Explainer Contract
 
 ## Runtime
@@ -192,3 +200,13 @@ Nếu Host LLM không thể sinh explanation hợp lý sau 2 lần thử:
 - Ghi rõ: "Không thể suy luận chính xác..."
 - Giải thích được đến đâu thì giải thích.
 - KHÔNG được để trống hoàn toàn.
+
+## V3.1 Root-Cause Hardening
+
+If any bug appears:
+1. classify it using `.agents/policies/error_taxonomy.md`,
+2. fix the producing layer only,
+3. regenerate downstream artifacts,
+4. verify with the matching gate.
+
+Never patch `outputs/output.tex`, patch `outputs/output.pdf`, create `fix_output*.py`, regex-repair generated artifacts, or move a defect to another layer.

@@ -1,7 +1,7 @@
 ---
 title: Verification Policy for Host LLM
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Verification Policy
@@ -206,3 +206,18 @@ RESULT: FAIL - found "Handshake" instead of "Bắt tay (Handshake)"
 EVIDENCE: qa-agent validation
 ACTION: Rollback Phase 3, retry with display_title enforcement
 ```
+
+## V3.1 Verification Gates
+
+Before fixing any failure, classify it as exactly one of:
+PARSER, NORMALIZER, TRANSLATOR, FORMATTER, LATEX, COMBINE, COMPILE, PDF, RUNTIME.
+
+Forbidden classifications: Unknown, Misc, Other.
+
+Required gates:
+- Fragment QA after LaTeX generation and before combine.
+- Compile status after combine.
+- PDF QA after compile and before archive.
+
+Failure action: reject generated artifact, fix source-of-truth layer, regenerate, verify again.
+Never patch `outputs/output.tex` or `outputs/output.pdf`.

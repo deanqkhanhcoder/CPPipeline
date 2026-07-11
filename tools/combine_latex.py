@@ -4,6 +4,9 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "tools") not in sys.path:
+    sys.path.insert(0, str(ROOT / "tools"))
+from fragment_qa import validate_content
 TEMPLATE_PATH = ROOT / ".agents" / "templates" / "template.tex"
 HASH_PATH = ROOT / ".agents" / "metadata" / "template_hash.txt"
 BUILD_DIR = ROOT / "cache" / "build"
@@ -11,15 +14,6 @@ OUTPUT_PATH = ROOT / "outputs" / "output.tex"
 START = "% CONTENT_START"
 END = "% CONTENT_END"
 COUNT_PLACEHOLDER = "[[PROBLEM_COUNT]]"
-BANNED = (
-    r"\documentclass", r"\usepackage", r"\begin{titlepage}", r"\end{titlepage}",
-    r"\tableofcontents", r"\pagestyle", r"\fancyhead", r"\fancyfoot", r"\fancyhf",
-    r"\hypersetup", r"\definecolor", r"\newcommand", r"\def\end",
-    r"\begin{constraintbox}", r"\end{constraintbox}", r"\begin{examplebox}", r"\end{examplebox}",
-    r"\begin{codebg}", r"\end{codebg}", r"\begin{exmp}", r"\end{exmp}",
-    r"\begin{samplebox}", r"\end{samplebox}", r"\begin{inputbox}", r"\end{inputbox}",
-    r"\begin{outputbox}", r"\end{outputbox}",
-)
 
 
 def fail(message: str) -> None:
@@ -46,13 +40,9 @@ def read_template() -> tuple[str, str]:
 
 
 def validate_body(path: Path, content: str) -> int:
-    for banned in BANNED:
-        if banned in content:
-            fail(f"{path}: banned LaTeX token {banned}")
-    commands = set(re.findall(r"\\([A-Za-z]+)", content))
-    forbidden = commands & {"constraintbox", "examplebox", "codebg", "exmp", "samplebox", "inputbox", "outputbox"}
-    if forbidden:
-        fail(f"{path}: undefined/hallucinated macro(s): {', '.join(sorted(forbidden))}")
+    findings = validate_content(content, str(path), require_sections=True)
+    if findings:
+        fail(findings[0].line())
     return len(re.findall(r"\\problem\s*\{", content))
 
 
@@ -60,20 +50,14 @@ def main() -> None:
     verify_template_hash()
     header, footer = read_template()
     files = list(BUILD_DIR.glob("*.tex"))
-    
     file_contents = []
     for file_path in files:
         content = file_path.read_text(encoding="utf-8")
-        
-        # Parse order_index from comment if it exists, otherwise default to large number
         m = re.search(r"%\s*order_index:\s*(\d+)", content, re.IGNORECASE)
         order_idx = int(m.group(1)) if m else 999999
-        
         file_contents.append((order_idx, file_path.name, file_path, content))
-        
-    # Sort by order_index, then by filename as fallback
+
     file_contents.sort()
-    
     body = []
     problem_count = 0
     for order_idx, name, file_path, content in file_contents:

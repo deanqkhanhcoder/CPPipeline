@@ -1,7 +1,7 @@
 ---
 title: Host LLM Execution State Machine
 version: 3.0.0
-type: Runtime Architecture
+type: Ki?n tr?c Runtime
 ---
 
 # Host LLM Execution State Machine
@@ -195,6 +195,14 @@ Host LLM phải hoạt động theo State Machine dưới đây. Mỗi state ph�
 **Failure:** REJECT - quality check failed
 
 ### OUTPUT
+**Next State:** CONTINUOUS IMPROVEMENT
+
+### CONTINUOUS IMPROVEMENT
+**Purpose:** Th?c hi?n V?ng l?p Root Cause (11 b??c) v? V?ng l?p ph?n h?i Ki?n th?c (Knowledge Feedback Loop). C?p nh?t Skill, Knowledge, Policy, Test n?u ph?t hi?n l? h?ng theo `.agents/policies/self_improvement_policy.md`.
+**Next State:** FINISH
+
+### FINISH
+**Purpose:** Ho?n t?t to?n b? quy tr?nh ?i?u ph?i v? t? c?i ti?n, tr? quy?n ?i?u khi?n v? cho ng??i d?ng.
 **Duration:** Instant  
 **Action:** Return results to user  
 **Validation:** None (already verified)

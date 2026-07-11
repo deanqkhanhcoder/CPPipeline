@@ -11,6 +11,14 @@ description: >
   "save context", "compressed agent output".
 ---
 
+## Declarative Dependencies
+- **Runtime**: None
+- **Policies**: None
+- **Knowledge**: None
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 Cavecrew = three subagent presets that emit caveman output. Same job as Anthropic defaults (`Explore`, edit-style agents, reviewer); difference is the tool-result they return is compressed, so main context shrinks per delegation.
 
 ## When to use cavecrew vs alternatives

@@ -6,6 +6,14 @@ description: >
   "caveman help", "what caveman commands", "how do I use caveman".
 ---
 
+## Declarative Dependencies
+- **Runtime**: None
+- **Policies**: None
+- **Knowledge**: None
+- **Required Skills**: None
+- **Optional Skills**: None
+- **Optional Knowledge**: None
+
 # Caveman Help
 
 Display this reference card when invoked. One-shot — do NOT change mode, write flag files, or persist anything. Output in caveman style.

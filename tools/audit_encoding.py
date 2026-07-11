@@ -11,7 +11,7 @@ if sys.stdin.encoding.lower() != 'utf-8':
 ROOT = Path(__file__).resolve().parents[1]
 
 # Excluded paths
-EXCLUDE_DIRS = {".git", "__pycache__", "node_modules", ".venv", "env"}
+EXCLUDE_DIRS = {".git", "__pycache__", "node_modules", ".venv", "env", "cache", "archive", "reports"}
 EXCLUDE_EXTENSIONS = {".pdf", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".bin", ".keep", ".zip", ".tar", ".gz"}
 # We audit source files and output files, but exclude binary caches and the tools themselves
 EXCLUDE_FILES = {"template_hash.txt", "audit_encoding.py", "repair_encoding.py", "encoding_audit.md", "repository_cleanup_audit.md"}

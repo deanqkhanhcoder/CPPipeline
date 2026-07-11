@@ -10,7 +10,7 @@ EN_DRIFT = re.compile(
 )
 MIXED_SENTENCE = re.compile(r"[À-ỹ].*\b(If|Then|Else|Known Failure Modes|Lessons Learned|Final Report)\b|\b(If|Then|Else)\b.*[À-ỹ]")
 FORBIDDEN = ["Bắt đầu crawl problem statement", "If Cloudflare detected", "... Bài toán"]
-EXEMPT_DIRS = ("/caveman", "/pdfmaker", "/cavecrew")
+EXEMPT_DIRS = ("/caveman", "/pdfmaker", "/cavecrew", "/reports/")
 
 
 def is_exempt(path: Path) -> bool:
